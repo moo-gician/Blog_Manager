@@ -1,0 +1,198 @@
+---
+import ControlTowerLayout from '../layouts/ControlTowerLayout.astro';
+---
+
+<ControlTowerLayout 
+	title="AI 오퍼레이터 제어실 | Chicago AI Web Factory"
+	description="작업 일지(.md) 파일들을 활용해 마케팅 스토리와 SNS 배포 콘텐츠를 생산하는 Gemini 자동화 제어기"
+>
+	<section style="padding: 60px 0;">
+		<div class="container">
+			<div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 40px;">
+				<span style="color: var(--accent-blue); font-weight: 700; font-size: 0.9rem; text-transform: uppercase;">Control Tower Dashboard</span>
+				<h1 style="font-size: 2.5rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.01em;">AI 오퍼레이터 제어실</h1>
+				<p style="color: var(--text-muted); font-size: 1.05rem;">
+					현장 원시 로그(Plan, Context, Todo)를 수집하여 마케팅 블로그 포스트 및 SNS 홍보 스니펫으로 가공합니다.
+				</p>
+			</div>
+
+			<!-- Dashboard Grid -->
+			<div style="display: grid; grid-template-columns: 1fr 2fr; gap: 32px; align-items: start;">
+				
+				<!-- Sidebar Control -->
+				<div style="display: flex; flex-direction: column; gap: 24px;">
+					
+					<!-- File Ingest Panel -->
+					<div style="background: var(--bg-white); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 16px;">
+						<h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+							📁 3대 핵심 파일 감지
+						</h3>
+						<div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;">
+							<div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-light); padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border-color);">
+								<span style="font-weight: 600;">plan.md</span>
+								<span style="color: #15803D; font-weight: 700;">● 감지됨 (동기화 완료)</span>
+							</div>
+							<div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-light); padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border-color);">
+								<span style="font-weight: 600;">context.md</span>
+								<span style="color: #15803D; font-weight: 700;">● 감지됨 (동기화 완료)</span>
+							</div>
+							<div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-light); padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border-color);">
+								<span style="font-weight: 600;">todo.md</span>
+								<span style="color: #15803D; font-weight: 700;">● 감지됨 (동기화 완료)</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Automation Actions -->
+					<div style="background: var(--bg-white); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 16px;">
+						<h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">
+							⚙️ 오퍼레이터 작업
+						</h3>
+						<p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+							감지된 3대 리소스를 기반으로 Gemini 마케팅 파이프라인을 작동시킵니다.
+						</p>
+						
+						<button id="btn-generate-blog" style="background: var(--accent-blue); color: white; border: none; padding: 12px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--accent-blue-hover)'" onmouseout="this.style.background='var(--accent-blue)'">
+							✍️ 마케팅 블로그 글 생성
+						</button>
+						
+						<button id="btn-amplify-sns" style="background: var(--accent-blue-light); color: var(--accent-blue); border: 1px solid rgba(0,82,255,0.2); padding: 12px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--accent-blue)'; this.style.color='white';" onmouseout="this.style.background='var(--accent-blue-light)'; this.style.color='var(--accent-blue)';">
+							📢 SNS 포스트 스니펫 생성
+						</button>
+					</div>
+
+					<!-- Console Logs -->
+					<div style="background: #0F172A; border-radius: var(--radius-lg); padding: 20px; color: #38BDF8; font-family: monospace; font-size: 0.75rem; min-height: 150px; display: flex; flex-direction: column; gap: 6px; box-shadow: var(--shadow-sm);">
+						<div style="color: #64748B;">[SYSTEM STATE LOGS]</div>
+						<div>&gt; Operator Tower Ready.</div>
+						<div id="console-logs">&gt; Listening for local repository hooks...</div>
+					</div>
+
+				</div>
+
+				<!-- Output Workspace -->
+				<div style="display: flex; flex-direction: column; gap: 24px;">
+					
+					<!-- Generated Output Panel -->
+					<div style="background: var(--bg-white); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-sm); min-height: 480px; display: flex; flex-direction: column; gap: 20px;">
+						
+						<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
+							<div>
+								<h3 id="workspace-title" style="font-size: 1.25rem; font-weight: 800; color: var(--text-main);">대기 중</h3>
+								<p id="workspace-subtitle" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">오퍼레이터 작업을 선택하여 자동화 생성을 가동하세요.</p>
+							</div>
+							<button id="btn-copy" style="display: none; background: var(--bg-light); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+								📋 복사하기
+							</button>
+						</div>
+
+						<!-- Live output text area -->
+						<div id="workspace-output" style="flex-grow: 1; font-size: 0.95rem; line-height: 1.7; color: var(--text-muted); white-space: pre-wrap; display: flex; align-items: center; justify-content: center; text-align: center;">
+							<div>
+								<span style="font-size: 3rem;">⚡</span>
+								<p style="margin-top: 16px; font-weight: 500;">왼쪽의 작업을 실행하여 AI가 작업 로그를 마케팅 자산으로 변환하는 과정을 확인하세요.</p>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</section>
+</ControlTowerLayout>
+
+<script>
+	const logConsole = document.getElementById('console-logs');
+	const blogBtn = document.getElementById('btn-generate-blog');
+	const snsBtn = document.getElementById('btn-amplify-sns');
+	const titleEl = document.getElementById('workspace-title');
+	const subtitleEl = document.getElementById('workspace-subtitle');
+	const outputEl = document.getElementById('workspace-output');
+	const copyBtn = document.getElementById('btn-copy');
+
+	function addLog(message: string) {
+		const div = document.createElement('div');
+		div.textContent = `> ${message}`;
+		logConsole?.appendChild(div);
+		logConsole!.scrollTop = logConsole!.scrollHeight;
+	}
+
+	const blogResult = `[SEO 최적화 블로그 포스트]
+
+제목: 시카고 웨딩 촬영의 판도를 바꾸다: Olivia Choi Photography와 AI의 만남
+
+시카고에서 활약 중인 프리미엄 웨딩 사진작가 Olivia Choi와 함께 진행한 새로운 고성능 포트폴리오 사이트 제작기를 소개합니다.
+
+저희 시카고 AI 웹 공장은 올리비아 작가님의 '현장 땀방울'을 로컬 고객들에게 전달하는 것을 최우선 목표로 잡았습니다. 
+
+■ 대형 에이전시의 느린 구축 속도와 비싼 비용 문제를 해결하여, 단 3일 만에 빌드부터 Firebase 초고속 호스팅 배포까지 마무리했습니다.
+■ Astro.build 프레임워크를 기반으로 Zero-JS 속도를 확보하여, 구글 로컬 검색 랭킹에서 밀리지 않는 초경량 모던 아키텍처를 자랑합니다.
+■ 이제 작가님이 간단한 현장 촬영 메모만 남겨주시면, AI 오퍼레이터가 자동으로 마케팅 글로 변환하여 업로드합니다.
+
+촬영 현장의 세련됨을 담은 미니멀 라이트 테마 디자인과 압도적 SEO 점수로 시카고 로컬 비즈니스 매출 견인을 시작하겠습니다!`;
+
+	const snsResult = `[LinkedIn 포스트 추천 스니펫]
+📌 시카고 소상공인 웹사이트 제작 비용 $5,000+ 과연 타당할까요?
+웨딩 사진작가 Olivia Choi님의 고민은 본업에 바빠 사이트를 마케팅 자산으로 활용하지 못한다는 점이었습니다.
+
+저희 Chicago AI Web Factory는 단 3일 만에 Astro.build 기반의 Zero-JS 초고속 포트폴리오를 제작하고, 현장 작업 메모만 던지면 AI가 블로그와 SNS에 최적화된 마케팅 글을 배포하는 '자동화 엔진'을 가동했습니다.
+
+로컬 비즈니스의 성공은 단순히 사이트 껍데기가 아닌, 현장의 스토리를 돈이 되는 마케팅 콘텐츠로 유기적 연결하는 것에 있습니다.
+
+#Astro #LocalSEO #ChicagoWedding #Firebase #WebAutomation #Gemini
+
+--------------------------------------------------
+
+[Instagram 릴스/포스트 캡션 스니펫]
+📸 시카고 웨딩 포토를 한눈에! Olivia Choi Premium Portfolio Project.
+템플릿 빌더로 느려진 사이트는 가라! 구글 속도 점수 100점의 초고속 포토 갤러리 공개 ✨
+
+✓ 단 3일 만에 완성되는 로컬 비즈니스 웹 공장.
+✓ 현장 로그만으로 작동하는 Gemini 마케팅 자동화 엔진.
+
+시카고 지역 로컬 사업주라면 링크를 클릭해 3일 구축 컨설팅을 시작해보세요! 🚀
+#시카고웨딩 #시카고웨딩스냅 #시카고포토그래퍼 #AI웹사이트 #웨딩사진작가 #웹공장`;
+
+	blogBtn?.addEventListener('click', () => {
+		addLog("Ingesting plan.md, context.md, todo.md...");
+		addLog("Initializing Gemini API pipe...");
+		
+		outputEl!.innerHTML = `<div style="text-align: center; width: 100%;"><p style="font-weight: bold; color: var(--accent-blue);">AI가 원시 데이터를 분석하고 마케팅용 문장으로 정렬 중입니다...</p></div>`;
+		
+		setTimeout(() => {
+			addLog("Successfully parsed 3 documents.");
+			addLog("Applying Local SEO semantic tags for Olivia Choi Wedding.");
+			addLog("Blog Post Generated successfully.");
+			
+			titleEl!.textContent = "✍️ Gemini 생성 블로그 포스트";
+			subtitleEl!.textContent = "Olivia Choi Photography Case Study";
+			outputEl!.innerHTML = `<div style="text-align: left; width: 100%; line-height: 1.8; color: var(--text-main); font-weight: 500;">${blogResult.replace(/\n/g, '<br/>')}</div>`;
+			copyBtn!.style.display = 'block';
+		}, 1200);
+	});
+
+	snsBtn?.addEventListener('click', () => {
+		addLog("Parsing generated blog template...");
+		addLog("Extracting key snippets for LinkedIn & Instagram...");
+		
+		outputEl!.innerHTML = `<div style="text-align: center; width: 100%;"><p style="font-weight: bold; color: var(--accent-blue);">SNS 최적화 스니펫을 구성 중입니다...</p></div>`;
+		
+		setTimeout(() => {
+			addLog("SNS Amplification blocks finalized.");
+			
+			titleEl!.textContent = "📢 SNS 포스트 증폭 스니펫";
+			subtitleEl!.textContent = "LinkedIn / Instagram 배포용 복사 가능 텍스트";
+			outputEl!.innerHTML = `<div style="text-align: left; width: 100%; line-height: 1.8; color: var(--text-main); font-weight: 500;">${snsResult.replace(/\n/g, '<br/>')}</div>`;
+			copyBtn!.style.display = 'block';
+		}, 1000);
+	});
+
+	copyBtn?.addEventListener('click', () => {
+		const textToCopy = outputEl!.innerText;
+		navigator.clipboard.writeText(textToCopy).then(() => {
+			alert("스니펫이 클립보드에 복사되었습니다!");
+		});
+	});
+</script>

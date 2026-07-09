@@ -1,0 +1,154 @@
+---
+interface Props {
+	title: string;
+	description: string;
+	image?: string;
+	pubDate?: Date;
+}
+
+const { title, description, image = '/images/olivia-wedding-hero.png', pubDate } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		
+		<!-- Primary Meta Tags -->
+		<title>{title} | Chicago AI Web Factory</title>
+		<meta name="title" content={`${title} | Chicago AI Web Factory`} />
+		<meta name="description" content={description} />
+		<meta name="generator" content={Astro.generator} />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content={pubDate ? "article" : "website"} />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={`${title} | Chicago AI Web Factory`} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={new URL(image, Astro.url)} />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={Astro.url} />
+		<meta property="twitter:title" content={`${title} | Chicago AI Web Factory`} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+		<!-- Custom Modern Light Design Theme -->
+		<style is:global>
+			:root {
+				--bg-white: #FFFFFF;
+				--bg-light: #F8FAFC;
+				--text-main: #0F172A;
+				--text-muted: #475569;
+				--accent-blue: #0052FF;
+				--accent-blue-hover: #0041CC;
+				--accent-blue-light: #EBF2FF;
+				--border-color: #E2E8F0;
+				--shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+				--shadow-md: 0 4px 20px -2px rgba(0, 82, 255, 0.08), 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+				--shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+				--radius-md: 12px;
+				--radius-lg: 16px;
+				--font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				font-family: var(--font-sans);
+				background-color: var(--bg-white);
+				color: var(--text-main);
+				line-height: 1.6;
+				overflow-x: hidden;
+			}
+
+			a {
+				color: inherit;
+				text-decoration: none;
+				transition: all 0.2s ease;
+			}
+
+			/* Container utilities */
+			.container {
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 0 24px;
+			}
+
+			/* AdSense responsive slot style */
+			.adsense-placeholder {
+				background: var(--bg-light);
+				border: 1px dashed var(--border-color);
+				border-radius: var(--radius-md);
+				padding: 20px;
+				text-align: center;
+				font-size: 0.8rem;
+				color: var(--text-muted);
+				margin: 2rem 0;
+			}
+		</style>
+	</head>
+	<body>
+		<header style="border-bottom: 1px solid var(--border-color); position: sticky; top: 0; background: rgba(255,255,255,0.8); backdrop-filter: blur(12px); z-index: 100;">
+			<div class="container" style="display: flex; justify-content: space-between; align-items: center; height: 72px;">
+				<a href="/" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; color: var(--accent-blue);">
+					<span style="background: var(--accent-blue); color: white; padding: 4px 10px; border-radius: 8px; font-size: 1.1rem;">CHI</span>
+					AI Web Factory
+				</a>
+				<nav style="display: flex; gap: 24px; font-weight: 600; font-size: 0.95rem;">
+					<a href="/" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">홈</a>
+					<a href="/#build-logs" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">빌드 로그</a>
+					<a href="/operator" style="color: var(--accent-blue);" onmouseover="this.style.color='var(--accent-blue-hover)'" onmouseout="this.style.color='var(--accent-blue)'">AI 오퍼레이터</a>
+				</nav>
+				<div>
+					<a href="/#consult" style="background: var(--accent-blue); color: white; padding: 10px 20px; border-radius: 99px; font-weight: 700; font-size: 0.9rem; transition: background 0.2s;" onmouseover="this.style.background='var(--accent-blue-hover)'" onmouseout="this.style.background='var(--accent-blue)'">3일 구축 문의</a>
+				</div>
+			</div>
+		</header>
+
+		<main>
+			<slot />
+		</main>
+
+		<footer style="background: var(--bg-light); border-top: 1px solid var(--border-color); padding: 60px 0 40px 0; margin-top: 80px;">
+			<div class="container">
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
+					<div>
+						<h3 style="font-weight: 800; color: var(--accent-blue); margin-bottom: 16px;">Chicago AI Web Factory</h3>
+						<p style="color: var(--text-muted); font-size: 0.95rem;">시카고 로컬 비즈니스의 실시간 스토리를 고성능 AI 콘텐츠 마케팅 엔진으로 연결합니다.</p>
+					</div>
+					<div>
+						<h4 style="font-weight: 700; margin-bottom: 16px;">바로가기</h4>
+						<ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.95rem; color: var(--text-muted);">
+							<li><a href="/" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">홈</a></li>
+							<li><a href="/#build-logs" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">빌드 로그</a></li>
+							<li><a href="/operator" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">오퍼레이터 대시보드</a></li>
+						</ul>
+					</div>
+					<div>
+						<h4 style="font-weight: 700; margin-bottom: 16px;">연락처</h4>
+						<p style="color: var(--text-muted); font-size: 0.95rem;">Chicago, IL</p>
+						<p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 8px;">Email: hello@chicagoaiweb.com</p>
+					</div>
+				</div>
+				<hr style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 24px;" />
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.9rem; color: var(--text-muted);">
+					<p>&copy; {new Date().getFullYear()} Chicago AI-Local Web Factory. All rights reserved.</p>
+					<p>Designed with Modern Light Style</p>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>

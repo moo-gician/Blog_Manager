@@ -1,0 +1,100 @@
+---
+import { getCollection, render } from 'astro:content';
+import ControlTowerLayout from '../../layouts/ControlTowerLayout.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: post,
+	}));
+}
+
+const post = Astro.props;
+const { Content } = await render(post);
+---
+
+<ControlTowerLayout title={post.data.title} description={post.data.description} image={post.data.heroImage}>
+	<article style="max-width: 800px; margin: 60px auto; padding: 0 24px;">
+		{post.data.heroImage && (
+			<img src={post.data.heroImage} alt={post.data.title} style="width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); margin-bottom: 40px; aspect-ratio: 16/9; object-fit: cover;" />
+		)}
+
+		<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+			{post.data.tags.map(tag => (
+				<span style="background: var(--accent-blue-light); color: var(--accent-blue); font-size: 0.75rem; padding: 4px 12px; border-radius: 99px; font-weight: 600;">
+					#{tag}
+				</span>
+			))}
+		</div>
+
+		<h1 style="font-size: 2.5rem; font-weight: 800; line-height: 1.2; color: var(--text-main); margin-bottom: 16px; letter-spacing: -0.01em;">
+			{post.data.title}
+		</h1>
+
+		<div style="display: flex; gap: 16px; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); flex-wrap: wrap;">
+			<span>📅 {post.data.pubDate.toLocaleDateString('ko-KR')}</span>
+			{post.data.client && <span>👤 클라이언트: {post.data.client}</span>}
+			{post.data.location && <span>📍 위치: {post.data.location}</span>}
+			<span style="background: #EBF2FF; color: var(--accent-blue); font-weight: 700; padding: 1px 10px; border-radius: 99px; font-size: 0.75rem;">
+				{post.data.status === 'completed' ? '완료됨' : post.data.status === 'in-progress' ? '진행 중' : '기획 단계'}
+			</span>
+		</div>
+
+		<!-- Markdown Rendered Content -->
+		<div class="prose">
+			<Content />
+		</div>
+
+		<!-- CTA Banner for Local Owners -->
+		<div style="background: var(--bg-light); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; text-align: center; margin-top: 80px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 16px; align-items: center;">
+			<span style="font-size: 1.5rem;">💡</span>
+			<h3 style="font-size: 1.4rem; font-weight: 700; color: var(--text-main);">나만의 초고속 AI 사이트 구축하기</h3>
+			<p style="color: var(--text-muted); font-size: 0.95rem; max-width: 500px; line-height: 1.6;">
+				올리비아 최 프로젝트처럼 속도와 마케팅이 결합된 웹사이트를 3일 만에 구축하세요. 일간 작업 로그만 넘기면 AI가 콘텐츠를 유기적으로 증폭합니다.
+			</p>
+			<a href="/#consult" style="background: var(--accent-blue); color: white; padding: 12px 28px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.95rem; margin-top: 8px;" onmouseover="this.style.background='var(--accent-blue-hover)'" onmouseout="this.style.background='var(--accent-blue)'">
+				3일 구축 컨설팅 신청하기
+			</a>
+		</div>
+	</article>
+</ControlTowerLayout>
+
+<style is:global>
+	/* Prose styling */
+	.prose h2 {
+		font-size: 1.75rem;
+		font-weight: 800;
+		color: var(--text-main);
+		margin: 2rem 0 1rem 0;
+	}
+	.prose h3 {
+		font-size: 1.3rem;
+		font-weight: 700;
+		color: var(--text-main);
+		margin: 1.5rem 0 0.75rem 0;
+	}
+	.prose p {
+		margin-bottom: 1.25rem;
+		line-height: 1.7;
+		color: var(--text-muted);
+		font-size: 1.05rem;
+	}
+	.prose ul {
+		margin-bottom: 1.25rem;
+		padding-left: 20px;
+		color: var(--text-muted);
+	}
+	.prose li {
+		margin-bottom: 6px;
+		font-size: 1.05rem;
+	}
+	.prose strong {
+		color: var(--text-main);
+	}
+	.prose hr {
+		border: 0;
+		border-top: 1px solid var(--border-color);
+		margin: 2.5rem 0;
+	}
+</style>
