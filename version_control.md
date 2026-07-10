@@ -2,16 +2,19 @@
 
 This document tracks the deployment and major updates matching the GitHub release commits.
 
+## v1.7.0 - Code Refactoring & Stale Cache Error Prevention
+- **Date**: 2026-07-10
+- **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
+- **Features**:
+  - **Smart Database Merger**: Refactored `/operator` page to intelligently merge newly synchronized projects and drafts from build-time static JSON (`db.json`) into the browser's `localStorage` state, eliminating cache desynchronization.
+  - **Defensive Null Checking**: Removed all strict non-null assertion operations (`!`) across client-side scripts inside `operator.astro` and `blog.astro` to ensure high runtime stability.
+  - **Try-Catch Scanner Boundaries**: Integrated error handling boundaries inside local file ingestion backend script (`sync-local-projects.js`), making the scanner resilient against folder read failures.
+
 ## v1.6.0 - DALO Brand Launch & Interactive Search Platform
 - **Date**: 2026-07-10
 - **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
 - **Features**:
-  - **Branding Upgrade (DALO)**: Created moon and rocket line-art SVG logo (`dalo-logo.svg`) and set as favicon/header logo. Applied slogan `"AI로 한계를 넘어, 달로 가자 (To the Moon with AI)"` in footer.
-  - **Interactive Hero (Josh Style)**: Installed mouse-following radial-gradient focus overlay inside home hero section.
-  - **Keyword Search Widget**: Implemented client-side real-time query modal fetching build-time search index data API (`/search.json`), accessible through the search header button.
-  - **2-Column Blog Layout**: Refocused `/blog` with Main Left list (image + details) and Sidebar Right containing project filters, popular articles (likes desc) and a mascot newsletter widget.
-  - **Storytelling About Page**: Created `/about` detailing founder's Chicago background, tech philosophy, fail-forward lessons, and the growth narrative.
-  - **Portfolio Product Gallery**: Injected portfolio showcases of pilot projects in card sections.
+  - Created SVG logo and favicon, added slogan, installed cursor-following radial gradient hero, real-time keyword search modal, 2-column magazine blog layout with sidebar filters, and Storytelling About Page.
 
 ## v1.5.0 - Layout Stabilization & Visual Refinement (Josh Comeau Style)
 - **Date**: 2026-07-10

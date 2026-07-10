@@ -219,7 +219,7 @@ const projectsList = db.projects;
 	let activeProject = 'all';
 
 	function applyFilter() {
-		gridContainer!.style.opacity = '0.3';
+		if (gridContainer) gridContainer.style.opacity = '0.3';
 
 		setTimeout(() => {
 			let visibleCount = 0;
@@ -237,12 +237,12 @@ const projectsList = db.projects;
 			});
 
 			if (visibleCount === 0) {
-				noPostsAlert!.classList.remove('hidden');
+				if (noPostsAlert) noPostsAlert.classList.remove('hidden');
 			} else {
-				noPostsAlert!.classList.add('hidden');
+				if (noPostsAlert) noPostsAlert.classList.add('hidden');
 			}
 
-			gridContainer!.style.opacity = '1';
+			if (gridContainer) gridContainer.style.opacity = '1';
 		}, 200);
 	}
 

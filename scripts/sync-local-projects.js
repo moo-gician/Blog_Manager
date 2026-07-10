@@ -30,34 +30,48 @@ function sync() {
     return;
   }
 
-  const db = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
-  const folders = fs.readdirSync(ROOT_DEV_PATH, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name);
+  let db;
+  try {
+    db = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+  } catch (err) {
+    console.error('❌ db.json 파싱 실패. JSON 형식이 올바른지 확인해주세요:', err);
+    return;
+  }
+
+  let folders = [];
+  try {
+    folders = fs.readdirSync(ROOT_DEV_PATH, { withFileTypes: true })
+      .filter(dirent => dirent.isDirectory())
+      .map(dirent => dirent.name);
+  } catch (err) {
+    console.error(`❌ ${ROOT_DEV_PATH} 디렉토리 스캔 실패:`, err);
+    return;
+  }
 
   let updatedCount = 0;
 
   folders.forEach(folderName => {
-    const projectPath = path.join(ROOT_DEV_PATH, folderName);
-    const planFile = path.join(projectPath, 'plan.md');
-    const contextFile = path.join(projectPath, 'context.md');
-    const todoFile = path.join(projectPath, 'todo.md');
+    try {
+      const projectPath = path.join(ROOT_DEV_PATH, folderName);
+      const planFile = path.join(projectPath, 'plan.md');
+      const contextFile = path.join(projectPath, 'context.md');
+      const todoFile = path.join(projectPath, 'todo.md');
 
-    // Ingest if at least one file exists
-    if (fs.existsSync(planFile) || fs.existsSync(contextFile) || fs.existsSync(todoFile)) {
-      const planContent = fs.existsSync(planFile) ? fs.readFileSync(planFile, 'utf-8') : '';
-      const contextContent = fs.existsSync(contextFile) ? fs.readFileSync(contextFile, 'utf-8') : '';
-      const todoContent = fs.existsSync(todoFile) ? fs.readFileSync(todoFile, 'utf-8') : '';
+      // Ingest if at least one file exists
+      if (fs.existsSync(planFile) || fs.existsSync(contextFile) || fs.existsSync(todoFile)) {
+        const planContent = fs.existsSync(planFile) ? fs.readFileSync(planFile, 'utf-8') : '';
+        const contextContent = fs.existsSync(contextFile) ? fs.readFileSync(contextFile, 'utf-8') : '';
+        const todoContent = fs.existsSync(todoFile) ? fs.readFileSync(todoFile, 'utf-8') : '';
 
-      // Check if project exists in database
-      let project = db.projects.find(p => p.id === folderName);
+        // Check if project exists in database
+        let project = db.projects.find(p => p.id === folderName);
 
-      if (!project) {
-        // Automatically register new project
-        project = {
-          id: folderName,
-          name: `${folderName.replace(/-/g, ' ')} (Sync)`,
-          path: projectPath,
+        if (!project) {
+          // Automatically register new project
+          project = {
+            id: folderName,
+            name: `${folderName.replace(/-/g, ' ')} (Sync)`,
+            path: projectPath,
           status: 'planning',
           tags: ['Chicago', 'AI-Factory'],
           lastSync: new Date().toISOString()
@@ -110,6 +124,8 @@ function sync() {
           });
         }
       }
+    } catch (err) {
+      console.error(`❌ 프로젝트 폴더 ${folderName} 처리 중 오류 발생:`, err);
     }
   });
 

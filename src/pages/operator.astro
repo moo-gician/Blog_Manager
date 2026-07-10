@@ -205,7 +205,34 @@ import db from '../data/db.json';
 	if (typeof window !== 'undefined') {
 		const saved = localStorage.getItem('control_tower_db');
 		if (saved) {
-			db = JSON.parse(saved);
+			try {
+				const parsed = JSON.parse(saved);
+				// SMART MERGER: Merge newly synchronized projects and drafts from initialDb into localStorage
+				if (parsed && Array.isArray(parsed.projects)) {
+					initialDb.projects.forEach(initProj => {
+						const existingIdx = parsed.projects.findIndex(p => p.id === initProj.id);
+						if (existingIdx > -1) {
+							parsed.projects[existingIdx] = initProj;
+						} else {
+							parsed.projects.push(initProj);
+						}
+					});
+				}
+				if (parsed && Array.isArray(parsed.drafts)) {
+					initialDb.drafts.forEach(initDraft => {
+						const existsInDrafts = parsed.drafts.some(d => d.id === initDraft.id);
+						const existsInPosts = parsed.posts ? parsed.posts.some(p => p.id === initDraft.id) : false;
+						if (!existsInDrafts && !existsInPosts) {
+							parsed.drafts.push(initDraft);
+						}
+					});
+				}
+				db = parsed;
+				localStorage.setItem('control_tower_db', JSON.stringify(db));
+			} catch (err) {
+				console.error("Failed to parse or merge database:", err);
+				localStorage.setItem('control_tower_db', JSON.stringify(initialDb));
+			}
 		} else {
 			localStorage.setItem('control_tower_db', JSON.stringify(initialDb));
 		}
@@ -300,33 +327,35 @@ import db from '../data/db.json';
 
 		const project = db.projects.find(p => p.id === draft.projectId);
 		
-		workbenchTitle!.textContent = draft.title;
-		workbenchMeta!.textContent = `📁 분류: ${project ? project.name : 'General Essay'}`;
-		htmlOutput!.innerHTML = parseToHumanFriendlyHTML(draft.content);
+		if (workbenchTitle) workbenchTitle.textContent = draft.title;
+		if (workbenchMeta) workbenchMeta.textContent = `📁 분류: ${project ? project.name : 'General Essay'}`;
+		if (htmlOutput) htmlOutput.innerHTML = parseToHumanFriendlyHTML(draft.content);
 
-		feedbackPanel!.classList.remove('hidden');
-		publishBtn!.classList.remove('hidden');
-		snsPanel!.classList.add('hidden');
+		if (feedbackPanel) feedbackPanel.classList.remove('hidden');
+		if (publishBtn) publishBtn.classList.remove('hidden');
+		if (snsPanel) snsPanel.classList.add('hidden');
 
 		renderDraftQueue();
 	}
 
 	feedbackSubmitBtn?.addEventListener('click', () => {
-		const val = feedbackInput.value.trim();
+		const val = feedbackInput ? feedbackInput.value.trim() : '';
 		if (!val || !selectedDraftId) return;
 
 		const draft = db.drafts.find(d => d.id === selectedDraftId);
 		if (!draft) return;
 
-		htmlOutput!.innerHTML = `<p class="text-blue-600 text-xs font-bold py-12 text-center animate-pulse">🤖 Gemini가 피드백을 수용하여 스토리 빌드 중...</p>`;
+		if (htmlOutput) {
+			htmlOutput.innerHTML = `<p class="text-blue-600 text-xs font-bold py-12 text-center animate-pulse">🤖 Gemini가 피드백을 수용하여 스토리 빌드 중...</p>`;
+		}
 
 		setTimeout(() => {
 			draft.content += `\n\n## ✍️ Gemini 피드백 반영 피드\n사령관님의 지시 사항을 검토하여 내용을 확장하였습니다: "${val}"`;
 			draft.title = `[개선됨] ` + draft.title;
 			
-			workbenchTitle!.textContent = draft.title;
-			htmlOutput!.innerHTML = parseToHumanFriendlyHTML(draft.content);
-			feedbackInput.value = '';
+			if (workbenchTitle) workbenchTitle.textContent = draft.title;
+			if (htmlOutput) htmlOutput.innerHTML = parseToHumanFriendlyHTML(draft.content);
+			if (feedbackInput) feedbackInput.value = '';
 			saveDatabase();
 		}, 1000);
 	});
@@ -394,19 +423,23 @@ import db from '../data/db.json';
 
 		saveDatabase();
 
-		workbenchTitle!.textContent = "배포 완료!";
-		workbenchMeta!.textContent = "A공식 호스팅 서버에 퍼블리싱되었으며 SNS 스니펫이 완성되었습니다.";
-		htmlOutput!.innerHTML = `
-			<div class="text-center py-10">
-				<span class="text-4xl">🎉</span>
-				<h3 class="font-bold text-slate-800 mt-4">저널 포스트 배포 성공</h3>
-				<p class="text-xs text-slate-500 mt-1">블로그 저널 목록에 배포되었습니다.</p>
-			</div>
-		`;
+		saveDatabase();
+
+		if (workbenchTitle) workbenchTitle.textContent = "배포 완료!";
+		if (workbenchMeta) workbenchMeta.textContent = "A공식 호스팅 서버에 퍼블리싱되었으며 SNS 스니펫이 완성되었습니다.";
+		if (htmlOutput) {
+			htmlOutput.innerHTML = `
+				<div class="text-center py-10">
+					<span class="text-4xl">🎉</span>
+					<h3 class="font-bold text-slate-800 mt-4">저널 포스트 배포 성공</h3>
+					<p class="text-xs text-slate-500 mt-1">블로그 저널 목록에 배포되었습니다.</p>
+				</div>
+			`;
+		}
 		
-		publishBtn!.classList.add('hidden');
-		feedbackPanel!.classList.add('hidden');
-		snsPanel!.classList.remove('hidden');
+		if (publishBtn) publishBtn.classList.add('hidden');
+		if (feedbackPanel) feedbackPanel.classList.add('hidden');
+		if (snsPanel) snsPanel.classList.remove('hidden');
 	});
 
 	flashGenerateBtn?.addEventListener('click', () => {
