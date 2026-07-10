@@ -12,25 +12,25 @@ interface Props {
 const { title, description, pubDate, slug, status, tags = [], heroImage } = Astro.props;
 ---
 
-<div class="card" style="background: var(--bg-light); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; height: 100%; box-shadow: var(--shadow-sm);">
+<div class="card" style="background: #ffffff; border: none; border-radius: 24px; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; height: 100%; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);">
 	{heroImage && (
-		<div style="position: relative; height: 180px; overflow: hidden; background: #eee;">
+		<div style="position: relative; height: 180px; overflow: hidden; background: #f8fafc;">
 			<img src={heroImage} alt={title} style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="card-img" />
-			<span style="position: absolute; top: 12px; right: 12px; background: white; color: var(--text-main); padding: 4px 10px; border-radius: 99px; font-size: 0.65rem; font-weight: 700; border: 1px solid var(--border-color);">
+			<span style="position: absolute; top: 12px; right: 12px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px); color: var(--text-main); padding: 4px 10px; border-radius: 99px; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; tracking-wider border: 1px solid rgba(0, 0, 0, 0.03);">
 				{status}
 			</span>
 		</div>
 	)}
-	<div style="padding: 24px; flex-grow: 1; display: flex; flex-direction: column; gap: 12px;">
-		<div style="display: flex; gap: 8px; flex-wrap: wrap;">
+	<div style="padding: 24px; flex-grow: 1; display: flex; flex-direction: column; gap: 12px; text-align: left;">
+		<div style="display: flex; gap: 6px; flex-wrap: wrap;">
 			{tags.slice(0, 3).map(tag => (
-				<span style="background: white; color: var(--text-muted); font-size: 0.65rem; padding: 2px 8px; border-radius: 6px; font-weight: 600; border: 1px solid var(--border-color);">
+				<span style="background: rgba(235, 242, 255, 0.7); color: #0052FF; font-size: 0.65rem; padding: 3px 10px; border-radius: 99px; font-weight: 700; border: 1px solid rgba(0, 82, 255, 0.08); text-transform: uppercase; tracking-wide">
 					#{tag}
 				</span>
 			))}
 		</div>
 
-		<h3 style="font-size: 1.15rem; font-weight: 800; line-height: 1.4; color: var(--text-main);">
+		<h3 style="font-size: 1.15rem; font-weight: 800; line-height: 1.4; color: var(--text-main); margin-top: 4px;">
 			<a href={`/blog/${slug}`} style="color: inherit;" class="card-link">
 				{title}
 			</a>
@@ -44,13 +44,11 @@ const { title, description, pubDate, slug, status, tags = [], heroImage } = Astr
 
 <style>
 	.card:hover {
-		transform: translateY(-4px);
-		box-shadow: var(--shadow-md);
-		border-color: rgba(0, 82, 255, 0.15);
-		background: #FFFFFF !important;
+		transform: translateY(-6px);
+		box-shadow: 0 20px 40px rgba(0, 82, 255, 0.06);
 	}
 	.card:hover .card-img {
-		transform: scale(1.03);
+		transform: scale(1.04);
 	}
 	.card-link:hover {
 		color: var(--accent-blue) !important;

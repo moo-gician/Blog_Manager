@@ -2,13 +2,23 @@
 
 This document tracks the deployment and major updates matching the GitHub release commits.
 
+## v1.8.0 - DALO UI Overhaul & Premium SaaS Aesthetics (Luna Standard)
+- **Date**: 2026-07-10
+- **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
+- **Features**:
+  - **Depth Layering (bg-slate-50 + bg-white)**: Reconfigured body background color to slate-50 (`#F8FAFC`) and card/sidebar backgrounds to white (`#ffffff`), producing clear depth layer.
+  - **Floating Glassmorphism Header**: Centered navigation header floating with top margin, `backdrop-filter: blur(20px)`, thin borders, and soft shadows.
+  - **Premium Bento Grid**: Configured project logs in an offset Bento grid structure, upgrading the layout visual.
+  - **Build Log Card Upgrades**: Overhauled `BuildLogCard.astro` by removing heavy borders, applying `rounded-[24px]`, `shadow-[0_8px_30px_rgb(0,0,0,0.04)]`, and pastel pills for tag labels.
+  - **Interactive Space Hero**: Overhauled main landing hero with `py-36` padding, space-themed radial gradient light source, and high contrast indigo-600 vs. ghost CTAs.
+  - **Luna Mascot speech bubble UI**: Injected mascot dialogue guidelines with speech bubbles within index and blog.
+  - **Stories and About Overhaul**: Configured `about.astro` in a centered, floating storytelling block.
+
 ## v1.7.0 - Code Refactoring & Stale Cache Error Prevention
 - **Date**: 2026-07-10
 - **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
 - **Features**:
-  - **Smart Database Merger**: Refactored `/operator` page to intelligently merge newly synchronized projects and drafts from build-time static JSON (`db.json`) into the browser's `localStorage` state, eliminating cache desynchronization.
-  - **Defensive Null Checking**: Removed all strict non-null assertion operations (`!`) across client-side scripts inside `operator.astro` and `blog.astro` to ensure high runtime stability.
-  - **Try-Catch Scanner Boundaries**: Integrated error handling boundaries inside local file ingestion backend script (`sync-local-projects.js`), making the scanner resilient against folder read failures.
+  - Smart Database Merger inside operator, defensive null checks, and try-catch directory scans.
 
 ## v1.6.0 - DALO Brand Launch & Interactive Search Platform
 - **Date**: 2026-07-10

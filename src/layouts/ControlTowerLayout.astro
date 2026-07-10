@@ -71,7 +71,7 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 
 			body {
 				font-family: var(--font-sans);
-				background-color: var(--bg-white);
+				background-color: var(--bg-light);
 				color: var(--text-main);
 				line-height: 1.6;
 				overflow-x: hidden;
@@ -85,36 +85,38 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 
 			/* Container utilities */
 			.container {
-				max-width: 1152px; /* max-w-6xl */
+				max-width: 1100px; /* max-w-[1100px] */
 				margin: 0 auto;
 				padding: 0 24px;
 			}
 		</style>
 	</head>
-	<body class="bg-white text-slate-900 font-sans leading-relaxed">
-		<!-- Header -->
-		<header style="border-bottom: 1px solid var(--border-color); position: sticky; top: 0; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(16px); z-index: 100;">
-			<div class="container" style="display: flex; justify-content: space-between; align-items: center; height: 72px;">
-				<a href="/" style="display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.25rem; color: var(--text-main);">
-					<img src="/images/dalo-logo.svg" alt="DALO Logo" style="width: 28px; height: 28px;" />
-					<span>DALO</span>
-				</a>
-				
-				<div style="display: flex; align-items: center; gap: 24px;">
-					<nav style="display: flex; gap: 20px; font-weight: 600; font-size: 0.9rem;">
-						<a href="/" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">홈</a>
-						<a href="/blog" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">빌드 저널</a>
-						<a href="/about" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">소개 (About)</a>
-						<a href="/operator" style="color: var(--accent-blue);" onmouseover="this.style.color='var(--accent-blue-hover)'" onmouseout="this.style.color='var(--accent-blue)'">오퍼레이터</a>
-					</nav>
+	<body class="bg-slate-50 text-slate-900 font-sans leading-relaxed">
+		<!-- Floating Centered Glassmorphism Header -->
+		<div style="position: sticky; top: 0; z-index: 100; padding: 16px 0; display: flex; justify-content: center;">
+			<header style="background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(15, 23, 42, 0.05); border-radius: 99px; box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04); width: calc(100% - 40px); max-width: 1100px; z-index: 100;">
+				<div style="display: flex; justify-content: space-between; align-items: center; height: 60px; padding: 0 24px;">
+					<a href="/" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.15rem; color: var(--text-main); letter-spacing: -0.03em;">
+						<img src="/images/dalo-logo.svg" alt="DALO Logo" style="width: 24px; height: 24px;" />
+						<span>DALO</span>
+					</a>
+					
+					<div style="display: flex; align-items: center; gap: 20px;">
+						<nav style="display: flex; gap: 20px; font-weight: 600; font-size: 0.85rem;">
+							<a href="/" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">홈</a>
+							<a href="/blog" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">빌드 저널</a>
+							<a href="/about" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">소개 (About)</a>
+							<a href="/operator" style="color: var(--accent-blue);" onmouseover="this.style.color='var(--accent-blue-hover)'" onmouseout="this.style.color='var(--accent-blue)'">오퍼레이터</a>
+						</nav>
 
-					<!-- Keyword Search Trigger -->
-					<button id="btn-search-trigger" style="background: none; border: none; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; padding: 4px;" class="hover:text-blue-600 transition">
-						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-					</button>
+						<!-- Keyword Search Trigger -->
+						<button id="btn-search-trigger" style="background: none; border: none; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; padding: 4px;" class="hover:text-blue-600 transition">
+							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+						</button>
+					</div>
 				</div>
-			</div>
-		</header>
+			</header>
+		</div>
 
 		<!-- Search Overlay Modal -->
 		<div id="search-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] hidden items-start justify-center pt-24 transition-opacity duration-300">
