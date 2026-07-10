@@ -19,3 +19,6 @@
 - **Niche**: Premium Wedding Photography in Chicago (serving downtown, Lincoln Park, West Loop, suburbs).
 - **Core Problem**: Her beautiful photos are locked in raw folders. She needs a fast portfolio site and a way to turn every wedding gig's prep notes, location details, and final delivery details into a localized blog post targeting local couples.
 - **Pilot Artifacts**: The Control Tower includes a content collection representing Olivia's project story to showcase our system's capabilities.
+
+## 4. Operational Decisions
+- **Synchronization Trigger**: Manual / On-demand. Real-time background file watching is disabled by preference to conserve resources. File ingestion and drafts queue generation occur when the operator triggers it via the CLI (`node scripts/sync-local-projects.js`) or the Admin workbench UI.
