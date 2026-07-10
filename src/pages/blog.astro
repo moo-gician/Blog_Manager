@@ -1,0 +1,146 @@
+---
+import ControlTowerLayout from '../layouts/ControlTowerLayout.astro';
+import db from '../data/db.json';
+
+// Fetch initial published posts from local database
+const posts = db.posts;
+
+// Extract all unique project tags + 'General' for filters
+const allTags = new Set<string>();
+posts.forEach(post => {
+	if (post.tags) {
+		post.tags.forEach(t => allTags.add(t));
+	}
+});
+const tagsList = Array.from(allTags);
+---
+
+<ControlTowerLayout 
+	title="마케팅 블로그 | Chicago AI Web Factory"
+	description="로컬 비즈니스 구축 일지 및 AI 자동화 기술 인사이트 에세이 목록"
+>
+	<section class="bg-white py-16">
+		<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+			<!-- Title -->
+			<div class="text-center max-w-2xl mx-auto mb-12 space-y-4">
+				<span class="text-blue-600 font-bold text-sm uppercase tracking-widest">Public Build Logs & Essays</span>
+				<h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">공장 빌드 스토리 및 AI 에세이</h1>
+				<p class="text-slate-500 text-base">
+					현장에서 수집한 실시간 작업 로그와 AI 오퍼레이터가 도출해낸 유익한 비즈니스 마케팅 통찰 목록입니다.
+				</p>
+			</div>
+
+			<!-- Filter Chips -->
+			<div class="flex flex-wrap justify-center gap-2.5 mb-12">
+				<button class="filter-btn active-filter" data-filter="all">
+					🌍 전체 보기
+				</button>
+				<button class="filter-btn" data-filter="General">
+					💡 General (에세이)
+				</button>
+				{tagsList.map(tag => (
+					<button class="filter-btn" data-filter={tag}>
+						#{tag}
+					</button>
+				))}
+			</div>
+
+			<!-- Posts Grid -->
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="blog-posts-grid">
+				{posts.map(post => (
+					<div class="blog-card border border-slate-200 hover:border-blue-400 bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col gap-4" data-tags={JSON.stringify(post.tags || [])}>
+						<div class="flex items-center gap-2">
+							<span class="bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full border border-blue-100">
+								{post.category}
+							</span>
+							<span class="text-xs text-slate-400">
+								📅 {new Date(post.pubDate).toLocaleDateString('ko-KR')}
+							</span>
+						</div>
+						
+						<h3 class="font-extrabold text-lg text-slate-900 leading-snug hover:text-blue-600 transition">
+							<a href={`/blog/${post.id}`}>
+								{post.title}
+							</a>
+						</h3>
+						
+						<p class="text-slate-500 text-sm line-clamp-3 leading-relaxed flex-grow">
+							{post.description}
+						</p>
+
+						<div class="border-t border-slate-100 pt-4 flex justify-between items-center text-xs text-slate-400 mt-2">
+							<div class="flex gap-2">
+								{post.tags && post.tags.slice(0, 3).map(tag => (
+									<span class="text-slate-500 font-medium">#{tag}</span>
+								))}
+							</div>
+							<div class="flex items-center gap-3">
+								<span>👍 {post.likes || 0}</span>
+								<span>💬 {post.comments ? post.comments.length : 0}</span>
+							</div>
+						</div>
+					</div>
+				))}
+			</div>
+
+			{posts.length === 0 && (
+				<div class="text-center py-20 text-slate-400">
+					<p class="font-semibold">등록된 공개 포스트가 없습니다.</p>
+				</div>
+			)}
+		</div>
+	</section>
+</ControlTowerLayout>
+
+<style>
+	.filter-btn {
+		background: #F1F5F9;
+		color: #475569;
+		border: 1px solid #E2E8F0;
+		padding: 8px 18px;
+		border-radius: 99px;
+		font-size: 0.85rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+	.filter-btn:hover {
+		background: #E2E8F0;
+		color: #0F172A;
+	}
+	.active-filter {
+		background: #0052FF !important;
+		color: white !important;
+		border-color: #0052FF !important;
+	}
+</style>
+
+<script>
+	const filterButtons = document.querySelectorAll('.filter-btn');
+	const blogCards = document.querySelectorAll('.blog-card') as NodeListOf<HTMLElement>;
+
+	filterButtons.forEach(btn => {
+		btn.addEventListener('click', (e) => {
+			// Toggle active class
+			filterButtons.forEach(b => b.classList.remove('active-filter'));
+			const currentBtn = e.currentTarget as HTMLButtonElement;
+			currentBtn.classList.add('active-filter');
+
+			const filterValue = currentBtn.getAttribute('data-filter');
+
+			blogCards.forEach(card => {
+				if (filterValue === 'all') {
+					card.style.display = 'flex';
+					return;
+				}
+
+				const cardTags = JSON.parse(card.getAttribute('data-tags') || '[]');
+				if (cardTags.includes(filterValue)) {
+					card.style.display = 'flex';
+				} else {
+					card.style.display = 'none';
+				}
+			});
+		});
+	});
+</script>

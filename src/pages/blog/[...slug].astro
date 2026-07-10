@@ -1,100 +1,290 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import ControlTowerLayout from '../../layouts/ControlTowerLayout.astro';
+import db from '../../data/db.json';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
+	const postsCollection = await getCollection('blog');
+	const dbPosts = db.posts;
+
+	const allPosts = [
+		...postsCollection.map(p => ({
+			id: p.id,
+			title: p.data.title,
+			description: p.data.description,
+			tags: p.data.tags,
+			pubDate: p.data.pubDate,
+			client: p.data.client || '',
+			location: p.data.location || '',
+			category: p.data.category,
+			content: p.body,
+			likes: 12,
+			comments: [
+				{ author: "사령관", text: "로컬 속도가 아주 만족스럽네요.", date: "2026-07-09T12:00:00Z" }
+			]
+		})),
+		...dbPosts.map(p => ({
+			id: p.id,
+			title: p.title,
+			description: p.description,
+			tags: p.tags,
+			pubDate: new Date(p.pubDate),
+			client: p.projectId,
+			location: 'Chicago, IL',
+			category: p.category,
+			content: p.content,
+			likes: p.likes || 0,
+			comments: p.comments || []
+		}))
+	];
+
+	// Filter duplicates
+	const seen = new Set();
+	const uniquePosts = allPosts.filter(p => {
+		const duplicate = seen.has(p.id);
+		seen.add(p.id);
+		return !duplicate;
+	});
+
+	return uniquePosts.map((post) => ({
 		params: { slug: post.id },
 		props: post,
 	}));
 }
 
 const post = Astro.props;
-const { Content } = await render(post);
+
+// Convert markdown to clean HTML client/server-side
+function mdToHTML(md: string) {
+	let html = md
+		.replace(/^# (.*$)/gim, '<h1 class="text-3xl font-extrabold text-slate-900 border-b border-slate-100 pb-2 mb-4">$1</h1>')
+		.replace(/^## (.*$)/gim, '<h2 class="text-xl font-bold text-slate-800 mt-8 mb-4">$1</h2>')
+		.replace(/^### (.*$)/gim, '<h3 class="text-md font-semibold text-slate-700 mt-6 mb-2">$1</h3>')
+		.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+		.replace(/\n\n/g, '</p><p class="text-slate-600 leading-relaxed mb-4">');
+
+	// Wrap in paragraph if not already started
+	if (!html.startsWith('<h1') && !html.startsWith('<h2') && !html.startsWith('<h3')) {
+		html = '<p class="text-slate-600 leading-relaxed mb-4">' + html + '</p>';
+	}
+
+	// Visual Placeholders styling
+	html = html.replace(/\[📷 이미지 추천 포인트: (.*?)\]/gim, `
+		<div class="my-8 border border-dashed border-blue-200 bg-blue-50/40 rounded-xl p-5 flex items-start gap-4">
+			<span class="text-2xl">📷</span>
+			<div>
+				<h4 class="text-xs font-bold text-blue-800 uppercase tracking-wide">Premium Visual Concept Recommendation</h4>
+				<p class="text-xs text-blue-700 mt-1">$1</p>
+				<span class="inline-flex items-center gap-1.5 mt-2 bg-blue-100 text-blue-800 text-[10px] font-semibold px-2 py-0.5 rounded">이미지 권장 가이드</span>
+			</div>
+		</div>
+	`);
+
+	return html;
+}
+
+const htmlContent = mdToHTML(post.content);
+
+// Schema.org Structured Data
+const schemaArticle = {
+	"@context": "https://schema.org",
+	"@type": post.category === "Build Log" ? "TechArticle" : "Article",
+	"headline": post.title,
+	"description": post.description,
+	"datePublished": post.pubDate.toISOString(),
+	"author": {
+		"@type": "Organization",
+		"name": "Chicago AI Web Factory"
+	},
+	"publisher": {
+		"@type": "Organization",
+		"name": "Chicago AI Web Factory",
+		"logo": {
+			"@type": "ImageObject",
+			"url": "https://chicago-ai-web-factory.web.app/favicon.svg"
+		}
+	}
+};
 ---
 
-<ControlTowerLayout title={post.data.title} description={post.data.description} image={post.data.heroImage}>
-	<article style="max-width: 800px; margin: 60px auto; padding: 0 24px;">
-		{post.data.heroImage && (
-			<img src={post.data.heroImage} alt={post.data.title} style="width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); margin-bottom: 40px; aspect-ratio: 16/9; object-fit: cover;" />
-		)}
+<ControlTowerLayout 
+	title={post.title} 
+	description={post.description}
+>
+	<!-- Schema.org JSON-LD -->
+	<script type="application/ld+json" set:html={JSON.stringify(schemaArticle)} />
 
-		<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
-			{post.data.tags.map(tag => (
-				<span style="background: var(--accent-blue-light); color: var(--accent-blue); font-size: 0.75rem; padding: 4px 12px; border-radius: 99px; font-weight: 600;">
+	<article class="max-w-3xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+		
+		<!-- Tags -->
+		<div class="flex flex-wrap gap-2 mb-6">
+			{post.tags.map(tag => (
+				<span class="bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full border border-blue-100">
 					#{tag}
 				</span>
 			))}
 		</div>
 
-		<h1 style="font-size: 2.5rem; font-weight: 800; line-height: 1.2; color: var(--text-main); margin-bottom: 16px; letter-spacing: -0.01em;">
-			{post.data.title}
+		<!-- Title -->
+		<h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+			{post.title}
 		</h1>
 
-		<div style="display: flex; gap: 16px; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); flex-wrap: wrap;">
-			<span>📅 {post.data.pubDate.toLocaleDateString('ko-KR')}</span>
-			{post.data.client && <span>👤 클라이언트: {post.data.client}</span>}
-			{post.data.location && <span>📍 위치: {post.data.location}</span>}
-			<span style="background: #EBF2FF; color: var(--accent-blue); font-weight: 700; padding: 1px 10px; border-radius: 99px; font-size: 0.75rem;">
-				{post.data.status === 'completed' ? '완료됨' : post.data.status === 'in-progress' ? '진행 중' : '기획 단계'}
+		<!-- Post Info Meta -->
+		<div class="flex flex-wrap items-center gap-4 text-xs text-slate-400 border-b border-slate-100 pb-6 mb-10">
+			<span>📅 {post.pubDate.toLocaleDateString('ko-KR')}</span>
+			{post.client && <span>👤 클라이언트: {post.client}</span>}
+			{post.location && <span>📍 위치: {post.location}</span>}
+			<span class="bg-blue-50 text-blue-600 font-semibold px-2 py-0.5 rounded border border-blue-100">
+				{post.category}
 			</span>
 		</div>
 
-		<!-- Markdown Rendered Content -->
-		<div class="prose">
-			<Content />
+		<!-- Clean HTML Post Content -->
+		<div class="prose max-w-none text-slate-800 leading-relaxed" set:html={htmlContent} />
+
+		<!-- Interactive Engagement Panel (Like / Share) -->
+		<div class="border-y border-slate-200 py-6 my-12 flex justify-between items-center flex-wrap gap-4">
+			<div class="flex items-center gap-3">
+				<button id="btn-like" class="bg-slate-50 hover:bg-red-50 hover:text-red-600 text-slate-700 font-bold border border-slate-200 rounded-xl px-4 py-2.5 text-sm transition flex items-center gap-2">
+					❤️ 좋아요 <span id="like-counter">{post.likes}</span>
+				</button>
+			</div>
+			
+			<button id="btn-share" class="bg-white hover:bg-slate-100 text-slate-700 font-bold border border-slate-200 rounded-xl px-4 py-2.5 text-sm transition flex items-center gap-2">
+				🔗 링크 공유하기
+			</button>
 		</div>
 
-		<!-- CTA Banner for Local Owners -->
-		<div style="background: var(--bg-light); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; text-align: center; margin-top: 80px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 16px; align-items: center;">
-			<span style="font-size: 1.5rem;">💡</span>
-			<h3 style="font-size: 1.4rem; font-weight: 700; color: var(--text-main);">나만의 초고속 AI 사이트 구축하기</h3>
-			<p style="color: var(--text-muted); font-size: 0.95rem; max-width: 500px; line-height: 1.6;">
-				올리비아 최 프로젝트처럼 속도와 마케팅이 결합된 웹사이트를 3일 만에 구축하세요. 일간 작업 로그만 넘기면 AI가 콘텐츠를 유기적으로 증폭합니다.
-			</p>
-			<a href="/#consult" style="background: var(--accent-blue); color: white; padding: 12px 28px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.95rem; margin-top: 8px;" onmouseover="this.style.background='var(--accent-blue-hover)'" onmouseout="this.style.background='var(--accent-blue)'">
-				3일 구축 컨설팅 신청하기
-			</a>
+		<!-- Firestore / Client Side Comments section -->
+		<div class="space-y-6">
+			<h3 class="font-extrabold text-xl text-slate-900 flex items-center gap-2">
+				💬 피드백 및 댓글
+			</h3>
+
+			<!-- Add comment form -->
+			<form id="comment-form" class="bg-slate-50 border border-slate-200 rounded-2xl p-6 space-y-4">
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<input type="text" id="comment-author" placeholder="닉네임" required class="w-full text-sm border border-slate-200 rounded-lg p-2.5 outline-none focus:border-blue-600 bg-white" />
+				</div>
+				<textarea id="comment-text" rows="3" placeholder="의견을 남겨주세요..." required class="w-full text-sm border border-slate-200 rounded-lg p-3 outline-none focus:border-blue-600 bg-white resize-none"></textarea>
+				<button type="submit" class="bg-slate-900 hover:bg-black text-white text-xs font-bold px-4 py-2.5 rounded-lg transition">
+					댓글 등록
+				</button>
+			</form>
+
+			<!-- Comments list -->
+			<div id="comments-list" class="space-y-4 pt-4">
+				{post.comments.map(c => (
+					<div class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm">
+						<div class="flex justify-between items-center text-xs mb-2">
+							<span class="font-bold text-slate-800">👤 {c.author}</span>
+							<span class="text-slate-400">{new Date(c.date).toLocaleDateString('ko-KR')}</span>
+						</div>
+						<p class="text-sm text-slate-600 leading-relaxed">{c.text}</p>
+					</div>
+				))}
+			</div>
 		</div>
+
 	</article>
 </ControlTowerLayout>
 
-<style is:global>
-	/* Prose styling */
-	.prose h2 {
-		font-size: 1.75rem;
-		font-weight: 800;
-		color: var(--text-main);
-		margin: 2rem 0 1rem 0;
+<script is:inline define:vars={{ postId: post.id, initialLikes: post.likes, initialComments: post.comments }}>
+	// Client side local updates to simulate dynamic likes and comment updates
+	const storageKey = `post_engagement_${postId}`;
+	let state = {
+		likes: initialLikes,
+		comments: initialComments
+	};
+
+	const saved = localStorage.getItem(storageKey);
+	if (saved) {
+		state = JSON.parse(saved);
+	} else {
+		localStorage.setItem(storageKey, JSON.stringify(state));
 	}
-	.prose h3 {
-		font-size: 1.3rem;
-		font-weight: 700;
-		color: var(--text-main);
-		margin: 1.5rem 0 0.75rem 0;
+
+	// UI update
+	const likeCounter = document.getElementById('like-counter');
+	const commentsList = document.getElementById('comments-list');
+	const likeBtn = document.getElementById('btn-like');
+	const shareBtn = document.getElementById('btn-share');
+	const commentForm = document.getElementById('comment-form');
+
+	if (likeCounter) likeCounter.textContent = state.likes;
+	
+	function renderComments() {
+		if (!commentsList) return;
+		commentsList.innerHTML = '';
+		state.comments.forEach(c => {
+			const div = document.createElement('div');
+			div.className = 'bg-white border border-slate-100 rounded-xl p-4 shadow-sm';
+			div.innerHTML = `
+				<div class="flex justify-between items-center text-xs mb-2">
+					<span class="font-bold text-slate-800">👤 ${c.author}</span>
+					<span class="text-slate-400">${new Date(c.date).toLocaleDateString('ko-KR')}</span>
+				</div>
+				<p class="text-sm text-slate-600 leading-relaxed">${c.text}</p>
+			`;
+			commentsList.appendChild(div);
+		});
 	}
-	.prose p {
-		margin-bottom: 1.25rem;
-		line-height: 1.7;
-		color: var(--text-muted);
-		font-size: 1.05rem;
-	}
-	.prose ul {
-		margin-bottom: 1.25rem;
-		padding-left: 20px;
-		color: var(--text-muted);
-	}
-	.prose li {
-		margin-bottom: 6px;
-		font-size: 1.05rem;
-	}
-	.prose strong {
-		color: var(--text-main);
-	}
-	.prose hr {
-		border: 0;
-		border-top: 1px solid var(--border-color);
-		margin: 2.5rem 0;
-	}
-</style>
+
+	renderComments();
+
+	likeBtn?.addEventListener('click', () => {
+		state.likes++;
+		likeCounter.textContent = state.likes;
+		localStorage.setItem(storageKey, JSON.stringify(state));
+		
+		// Optional: also push update to client-wide database to persist globally
+		const globalDb = JSON.parse(localStorage.getItem('control_tower_db') || '{}');
+		if (globalDb && globalDb.posts) {
+			const p = globalDb.posts.find(item => item.id === postId);
+			if (p) {
+				p.likes = state.likes;
+				localStorage.setItem('control_tower_db', JSON.stringify(globalDb));
+			}
+		}
+	});
+
+	shareBtn?.addEventListener('click', () => {
+		navigator.clipboard.writeText(window.location.href).then(() => {
+			alert('게시글 주소가 복사되었습니다!');
+		});
+	});
+
+	commentForm?.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const authorEl = document.getElementById('comment-author');
+		const textEl = document.getElementById('comment-text');
+		const author = authorEl.value.trim();
+		const text = textEl.value.trim();
+
+		if (!author || !text) return;
+
+		const newComment = {
+			author,
+			text,
+			date: new Date().toISOString()
+		};
+
+		state.comments.unshift(newComment);
+		localStorage.setItem(storageKey, JSON.stringify(state));
+		renderComments();
+
+		// Optional: save to client-wide globalDb
+		const globalDb = JSON.parse(localStorage.getItem('control_tower_db') || '{}');
+		if (globalDb && globalDb.posts) {
+			const p = globalDb.posts.find(item => item.id === postId);
+			if (p) {
+				p.comments = state.comments;
+				localStorage.setItem('control_tower_db', JSON.stringify(globalDb));
+			}
+		}
+
+		authorEl.value = '';
+		textEl.value = '';
+	});
+</script>
