@@ -5,180 +5,189 @@ import db from '../data/db.json';
 
 <ControlTowerLayout 
 	title="AI 오퍼레이터 제어실 | Chicago AI Web Factory"
-	description="C:/appdev/ 프로젝트 연동, 이중 버퍼 드래프트 관리, 피드백 루프 및 SNS 다채널 배포 엔진 제어실"
+	description="C:/appdev/ 프로젝트 연동, 이중 버퍼 드래프트 관리, 피드백 루프 및 SNS 배포 자동화 엔진"
 >
-	<div class="bg-slate-50 min-h-screen py-10">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+	<div class="bg-slate-50 min-h-screen py-12">
+		<div class="max-w-[1600px] mx-auto px-6 lg:px-8 space-y-10">
 			<!-- Header -->
-			<div class="mb-10 flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-200 pb-6">
+			<div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-200 pb-8">
 				<div>
-					<span class="text-blue-600 font-bold text-sm tracking-wider uppercase">Control Tower Dashboard</span>
-					<h1 class="text-3xl font-extrabold text-slate-900 tracking-tight mt-1">AI 오퍼레이터 제어실</h1>
-					<p class="text-slate-500 text-sm mt-1">
-						C:/appdev/ 하위 프로젝트 파일 동기화, 마케팅 드래프트 큐 및 SNS 배포 자동화 엔진.
+					<span class="text-blue-600 font-bold text-xs tracking-widest uppercase">Private Operator Room</span>
+					<h1 class="text-3xl font-black text-slate-900 tracking-tight mt-2">AI Build Lab: Control Tower</h1>
+					<p class="text-slate-500 text-sm mt-1.5">
+						로컬 프로젝트 파일 스캔 및 Gemini AI 연합 콘텐츠 배포 파이프라인.
 					</p>
 				</div>
 				<div class="mt-4 md:mt-0 flex gap-3">
-					<button id="btn-sync-trigger" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-semibold px-4 py-2 rounded-lg text-sm transition shadow-sm">
-						🔄 로컬 프로젝트 재동기화
+					<button id="btn-sync-trigger" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold px-5 py-3 rounded-2xl text-xs transition shadow-sm">
+						🔄 C:/appdev/ 프로젝트 동기화
 					</button>
 				</div>
 			</div>
 
-			<!-- Dashboard Grid -->
-			<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+			<!-- Three-Zone Overhauled Workbench Grid -->
+			<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 				
-				<!-- Left Column: Project list & Flash Insight -->
-				<div class="space-y-8 lg:col-span-1">
-					
-					<!-- Projects Panel -->
-					<div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-						<h3 class="font-bold text-lg text-slate-900 mb-4 flex items-center gap-2">
-							📁 로컬 프로젝트 리스트
-						</h3>
-						<div class="space-y-3 overflow-y-auto max-h-[300px]" id="project-list-container">
-							{db.projects.map(proj => (
-								<div class="bg-slate-50 border border-slate-200 rounded-xl p-4 transition hover:border-blue-400">
-									<div class="flex justify-between items-start">
-										<div>
-											<h4 class="font-semibold text-slate-900 text-sm">{proj.name}</h4>
-											<p class="text-xs text-slate-500 mt-0.5">{proj.id}</p>
-										</div>
-										<span class="bg-blue-50 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-100">
-											{proj.status === 'in-progress' ? '구축중' : '기획'}
-										</span>
-									</div>
-									<div class="mt-3 flex justify-between items-center text-[11px] text-slate-500">
-										<span>📍 C:/appdev/{proj.id}</span>
-									</div>
+				<!-- Zone 1: [Source Detection] (3 cols) -->
+				<div class="lg:col-span-3 space-y-8">
+					<div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm space-y-6">
+						<div class="border-b border-slate-100 pb-4">
+							<span class="text-blue-600 text-[10px] font-bold tracking-widest uppercase">Zone 01</span>
+							<h3 class="font-extrabold text-base text-slate-900 mt-1 flex items-center gap-2">
+								📁 Source Detection
+							</h3>
+						</div>
+
+						<!-- Core Files Scan Status -->
+						<div class="space-y-3">
+							<h4 class="text-xs font-bold text-slate-400 uppercase tracking-wide">3대 핵심 문서 감지</h4>
+							<div class="space-y-2 text-xs font-semibold">
+								<div class="flex justify-between items-center bg-slate-50 border border-slate-100 rounded-xl p-3.5">
+									<span>plan.md</span>
+									<span class="text-green-600 font-bold">● Sync</span>
 								</div>
-							))}
+								<div class="flex justify-between items-center bg-slate-50 border border-slate-100 rounded-xl p-3.5">
+									<span>context.md</span>
+									<span class="text-green-600 font-bold">● Sync</span>
+								</div>
+								<div class="flex justify-between items-center bg-slate-50 border border-slate-100 rounded-xl p-3.5">
+									<span>todo.md</span>
+									<span class="text-green-600 font-bold">● Sync</span>
+								</div>
+							</div>
+						</div>
+
+						<!-- Buffer Queue -->
+						<div class="space-y-4 pt-4 border-t border-slate-100">
+							<h4 class="text-xs font-bold text-slate-400 uppercase tracking-wide">Review Queue (이중 버퍼)</h4>
+							<div id="draft-queue-container" class="space-y-3">
+								<!-- Populated via Javascript -->
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Zone 2: [AI Collaboration Space] (6 cols) -->
+				<div class="lg:col-span-6 space-y-8">
+					<div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm flex flex-col min-h-[680px]">
+						<div class="border-b border-slate-100 pb-4 mb-6 flex justify-between items-center">
+							<div>
+								<span class="text-blue-600 text-[10px] font-bold tracking-widest uppercase">Zone 02</span>
+								<h3 id="workbench-title" class="font-extrabold text-lg text-slate-900 mt-1">대기 중</h3>
+								<p id="workbench-meta" class="text-xs text-slate-500 mt-0.5">대기열에서 에세이 로그를 선택하세요.</p>
+							</div>
+						</div>
+
+						<!-- Human Friendly Markdown Preview -->
+						<div class="flex-grow border border-slate-100 bg-slate-50/30 rounded-2xl p-6 overflow-y-auto max-h-[460px] mb-6">
+							<div id="workbench-html-output" class="prose max-w-none text-slate-800 text-sm">
+								<div class="text-center py-24 text-slate-400">
+									<span class="text-4xl">🔬</span>
+									<p class="mt-4 font-bold text-sm">Review Queue에서 드래프트를 선택하여 워크벤치에 로드하세요.</p>
+								</div>
+							</div>
+						</div>
+
+						<!-- Natural conversational feedback loop input -->
+						<div id="feedback-panel" class="hidden border-t border-slate-100 pt-6 space-y-4">
+							<div class="bg-blue-50/50 rounded-2xl p-4 border border-blue-100/50 flex gap-3.5 items-start">
+								<span class="text-xl">🤖</span>
+								<div class="space-y-1">
+									<h5 class="text-xs font-bold text-blue-900">Gemini와 에디팅 대화</h5>
+									<p class="text-xs text-blue-700 leading-relaxed">원하는 수정 방향이나 강조할 에피소드를 입력하고 엔터를 치세요.</p>
+								</div>
+							</div>
+							
+							<div class="flex gap-3">
+								<input type="text" id="feedback-input" class="flex-grow border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-blue-600 bg-white" placeholder="예: '인간적 고뇌 부분을 더 강조하고, 바람 부는 날 사진촬영 팁을 한 줄 추가해줘...'" />
+								<button id="btn-feedback-submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-3 rounded-xl text-xs transition">
+									반영
+								</button>
+							</div>
+							<div class="flex gap-2 justify-end">
+								<button id="btn-save-draft" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-4 py-2 rounded-lg transition">
+									임시 보관
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Zone 3: [Deployment Ready] (3 cols) -->
+				<div class="lg:col-span-3 space-y-8">
+					<div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm space-y-6">
+						<div class="border-b border-slate-100 pb-4">
+							<span class="text-blue-600 text-[10px] font-bold tracking-widest uppercase">Zone 03</span>
+							<h3 class="font-extrabold text-base text-slate-900 mt-1 flex items-center gap-2">
+								🚀 Deployment Ready
+							</h3>
+						</div>
+
+						<div class="space-y-4">
+							<button id="btn-publish" class="hidden w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-3.5 rounded-2xl text-xs transition shadow-sm shadow-blue-200">
+								📢 최종 승인 및 발행 배포
+							</button>
+						</div>
+
+						<!-- SNS Ready Amplification Output -->
+						<div id="sns-output-panel" class="hidden space-y-4">
+							<h4 class="font-bold text-slate-900 text-xs uppercase tracking-wide">다채널 SNS 스니펫</h4>
+							
+							<div class="space-y-4">
+								<div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+									<div class="flex justify-between items-center">
+										<span class="text-[10px] font-bold text-slate-800">🔗 LinkedIn</span>
+										<button class="btn-copy-sns text-[10px] font-bold text-blue-600 hover:underline" data-target="sns-linkedin">복사</button>
+									</div>
+									<textarea id="sns-linkedin" class="w-full text-[11px] text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="4" readonly></textarea>
+								</div>
+
+								<div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+									<div class="flex justify-between items-center">
+										<span class="text-[10px] font-bold text-slate-800">🐦 Twitter/X</span>
+										<button class="btn-copy-sns text-[10px] font-bold text-blue-600 hover:underline" data-target="sns-twitter">복사</button>
+									</div>
+									<textarea id="sns-twitter" class="w-full text-[11px] text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="4" readonly></textarea>
+								</div>
+
+								<div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+									<div class="flex justify-between items-center">
+										<span class="text-[10px] font-bold text-slate-800">📸 Instagram</span>
+										<button class="btn-copy-sns text-[10px] font-bold text-blue-600 hover:underline" data-target="sns-instagram">복사</button>
+									</div>
+									<textarea id="sns-instagram" class="w-full text-[11px] text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="4" readonly></textarea>
+								</div>
+							</div>
 						</div>
 					</div>
 
 					<!-- Flash Insight System -->
-					<div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-						<h3 class="font-bold text-lg text-slate-900 mb-2 flex items-center gap-2">
-							⚡ Flash Insight 입력 (긴급 큐)
+					<div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm space-y-6">
+						<h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
+							⚡ Flash Insight
 						</h3>
-						<p class="text-slate-500 text-xs mb-4">
-							즉흥적인 메모나 영감을 마케팅 글로 확장해 드래프트 큐 최상단(#1)에 등록합니다.
-						</p>
 						
 						<div class="space-y-4">
 							<div>
-								<label class="block text-xs font-semibold text-slate-700 mb-1">인사이트 태깅 분류</label>
-								<select id="flash-tag-select" class="w-full text-sm border border-slate-200 rounded-lg p-2.5 outline-none focus:border-blue-600">
-									<option value="general">🌍 General (독립 에세이/통찰)</option>
+								<label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">프로젝트 바인딩</label>
+								<select id="flash-tag-select" class="w-full text-xs border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-600 bg-white">
+									<option value="general">🌍 General (독립 에세이)</option>
 									{db.projects.map(proj => (
-										<option value={proj.id}>📁 {proj.name}</option>
+										<option value={proj.id}>📁 {proj.name.replace(' (Sync)', '')}</option>
 									))}
 								</select>
 							</div>
 
 							<div>
-								<label class="block text-xs font-semibold text-slate-700 mb-1">메모 및 원시 아이디어</label>
-								<textarea id="flash-memo-input" rows="4" class="w-full text-sm border border-slate-200 rounded-lg p-3 outline-none focus:border-blue-600 resize-none" placeholder="여기에 즉각적인 생각이나 핵심 메시지를 입력하세요..."></textarea>
+								<label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">원시 인사이트</label>
+								<textarea id="flash-memo-input" rows="3" class="w-full text-xs border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-600 resize-none bg-white" placeholder="떠오른 아이디어를 적으세요..."></textarea>
 							</div>
 
-							<button id="btn-flash-generate" class="w-full bg-slate-900 hover:bg-black text-white text-sm font-bold py-2.5 rounded-lg transition shadow-sm">
-								🚀 긴급 드래프트 생성 (Queue #1)
+							<button id="btn-flash-generate" class="w-full bg-slate-900 hover:bg-black text-white text-xs font-bold py-3 rounded-xl transition shadow-sm">
+								긴급 발행 큐 추가
 							</button>
 						</div>
 					</div>
-
-					<!-- Draft Queue Buffer Panel -->
-					<div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-						<h3 class="font-bold text-lg text-slate-900 mb-2 flex items-center gap-2">
-							🔄 Review Queue (이중 버퍼)
-						</h3>
-						<p class="text-slate-500 text-xs mb-4">
-							각 프로젝트별로 정확히 2개의 대기 드래프트를 유지 관리합니다.
-						</p>
-						<div id="draft-queue-container" class="space-y-3">
-							<!-- Populated via Javascript -->
-						</div>
-					</div>
-
-				</div>
-
-				<!-- Right Column: Interactive Admin Workbench -->
-				<div class="space-y-8 lg:col-span-2">
-					
-					<!-- Workbench Workspace -->
-					<div class="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm min-h-[600px] flex flex-col gap-6">
-						
-						<div class="flex justify-between items-center border-b border-slate-100 pb-4">
-							<div>
-								<h2 id="workbench-title" class="text-xl font-bold text-slate-900">선택된 드래프트 없음</h2>
-								<p id="workbench-meta" class="text-xs text-slate-500 mt-1">대기열에서 검토할 드래프트를 클릭해 로드하세요.</p>
-							</div>
-							<div class="flex gap-2">
-								<button id="btn-publish" class="hidden bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg text-xs transition shadow-sm">
-									📢 최종 승인 및 발행
-								</button>
-								<button id="btn-edit-published" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-lg text-xs transition">
-									📝 발행글 수정 모드
-								</button>
-							</div>
-						</div>
-
-						<!-- Human Readable Preview Workspace -->
-						<div id="workbench-preview-container" class="flex-grow border border-slate-100 bg-slate-50/50 rounded-xl p-6 overflow-y-auto max-h-[500px]">
-							<div id="workbench-html-output" class="prose max-w-none text-slate-800">
-								<!-- Rendered clean HTML showing human-friendly preview with visual tags -->
-								<div class="text-center py-20 text-slate-400">
-									<span class="text-4xl">💻</span>
-									<p class="mt-4 font-semibold text-sm">드래프트를 선택하여 작업대 프리뷰를 시작하세요.</p>
-								</div>
-							</div>
-						</div>
-
-						<!-- Feedback loop -->
-						<div id="feedback-panel" class="hidden border-t border-slate-100 pt-6">
-							<label class="block text-xs font-semibold text-slate-700 mb-2">🤖 AI 피드백 루프 (드래프트 개선 지시)</label>
-							<div class="flex gap-3">
-								<input type="text" id="feedback-input" class="flex-grow border border-slate-200 rounded-lg px-4 py-2 text-sm outline-none focus:border-blue-600" placeholder="예: '인간적 고뇌 부분을 더 강조하고, 바람 부는 날 사진촬영 팁을 한 줄 추가해줘...'" />
-								<button id="btn-feedback-submit" class="bg-blue-50 text-blue-600 border border-blue-200 font-bold px-4 py-2 rounded-lg text-sm hover:bg-blue-600 hover:text-white transition">
-									반영 요청
-								</button>
-							</div>
-							<div class="mt-4 flex gap-2">
-								<button id="btn-save-draft" class="bg-slate-900 hover:bg-black text-white text-xs font-bold px-4 py-2 rounded-lg transition">
-									💾 드래프트 단순 저장
-								</button>
-							</div>
-						</div>
-
-						<!-- SNS Ready Amplification Output -->
-						<div id="sns-output-panel" class="hidden bg-blue-50/50 border border-blue-100 rounded-xl p-6 space-y-4">
-							<h4 class="font-bold text-blue-900 text-sm flex items-center gap-2">
-								📢 Multi-Channel SNS 스니펫 (발행 시 자동 배포 완료)
-							</h4>
-							<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-								<div class="bg-white border border-slate-100 rounded-lg p-4">
-									<span class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-2">
-										🔗 LinkedIn
-									</span>
-									<textarea id="sns-linkedin" class="w-full text-xs text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="5"></textarea>
-								</div>
-								<div class="bg-white border border-slate-100 rounded-lg p-4">
-									<span class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-2">
-										🐦 Twitter/X
-									</span>
-									<textarea id="sns-twitter" class="w-full text-xs text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="5"></textarea>
-								</div>
-								<div class="bg-white border border-slate-100 rounded-lg p-4">
-									<span class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-2">
-										📸 Instagram
-									</span>
-									<textarea id="sns-instagram" class="w-full text-xs text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="5"></textarea>
-								</div>
-							</div>
-						</div>
-
-					</div>
-
 				</div>
 
 			</div>
@@ -187,7 +196,6 @@ import db from '../data/db.json';
 </ControlTowerLayout>
 
 <script>
-	// Initialize local client database from Astro server props
 	import initialDb from '../data/db.json';
 
 	let db = initialDb;
@@ -201,7 +209,6 @@ import db from '../data/db.json';
 	}
 
 	let selectedDraftId: string | null = null;
-	let currentEditPostId: string | null = null;
 
 	const draftQueueContainer = document.getElementById('draft-queue-container');
 	const workbenchTitle = document.getElementById('workbench-title');
@@ -225,8 +232,8 @@ import db from '../data/db.json';
 	// Helper to parse markdown-like structure to clean HTML preview with visual indicators
 	function parseToHumanFriendlyHTML(mdText: string): string {
 		let html = mdText
-			.replace(/^# (.*$)/gim, '<h1 class="text-2xl font-extrabold text-slate-900 border-b border-slate-100 pb-2 mb-4">$1</h1>')
-			.replace(/^## (.*$)/gim, '<h2 class="text-lg font-bold text-slate-800 mt-6 mb-3">$1</h2>')
+			.replace(/^# (.*$)/gim, '<h1 class="text-xl font-extrabold text-slate-900 border-b border-slate-100 pb-2 mb-4">$1</h1>')
+			.replace(/^## (.*$)/gim, '<h2 class="text-base font-bold text-slate-800 mt-6 mb-3">$1</h2>')
 			.replace(/^### (.*$)/gim, '<h3 class="text-sm font-semibold text-slate-700 mt-4 mb-2">$1</h3>')
 			.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
 			.replace(/\n\n/g, '</p><p class="text-slate-600 leading-relaxed mb-4">');
@@ -238,12 +245,12 @@ import db from '../data/db.json';
 
 		// Inject Premium Visual Placeholders
 		html = html.replace(/\[📷 이미지 추천 포인트: (.*?)\]/gim, `
-			<div class="my-6 border border-dashed border-blue-200 bg-blue-50/40 rounded-xl p-5 flex items-start gap-4">
-				<span class="text-2xl">📷</span>
+			<div class="my-6 border border-dashed border-blue-200 bg-blue-50/40 rounded-2xl p-5 flex items-start gap-4">
+				<span class="text-xl">📷</span>
 				<div>
-					<h4 class="text-xs font-bold text-blue-800 uppercase tracking-wide">Premium Visual Guide</h4>
+					<h4 class="text-[10px] font-bold text-blue-800 uppercase tracking-wider">Premium Visual Guide</h4>
 					<p class="text-xs text-blue-700 mt-1">$1</p>
-					<span class="inline-flex items-center gap-1.5 mt-2 bg-blue-100 text-blue-800 text-[10px] font-semibold px-2 py-0.5 rounded">이미지 권장 포인트</span>
+					<span class="inline-flex items-center gap-1.5 mt-2 bg-blue-100 text-blue-800 text-[10px] font-semibold px-2.5 py-0.5 rounded-full">이미지 추천 포인트</span>
 				</div>
 			</div>
 		`);
@@ -260,24 +267,25 @@ import db from '../data/db.json';
 		if (!draftQueueContainer) return;
 		draftQueueContainer.innerHTML = '';
 
-		if (db.drafts.length === 0) {
-			draftQueueContainer.innerHTML = '<p class="text-xs text-slate-400 py-4 text-center">검토 대기 중인 드래프트가 없습니다.</p>';
+		const projectDrafts = db.drafts;
+		if (projectDrafts.length === 0) {
+			draftQueueContainer.innerHTML = '<p class="text-xs text-slate-400 py-4 text-center">검토할 대기 드래프트가 없습니다.</p>';
 			return;
 		}
 
-		db.drafts.forEach((draft, idx) => {
+		projectDrafts.forEach((draft, idx) => {
 			const project = db.projects.find(p => p.id === draft.projectId);
-			const projName = project ? project.name : 'General';
+			const projName = project ? project.name.replace(' (Sync)', '') : 'General';
 			const isSelected = draft.id === selectedDraftId;
 
 			const div = document.createElement('div');
-			div.className = `p-3.5 border rounded-xl cursor-pointer transition ${isSelected ? 'border-blue-600 bg-blue-50/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}`;
+			div.className = `p-4 border rounded-2xl cursor-pointer transition ${isSelected ? 'border-blue-600 bg-blue-50/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}`;
 			div.innerHTML = `
 				<div class="flex justify-between items-start gap-2">
 					<h4 class="text-xs font-bold text-slate-800 truncate flex-grow">${draft.title}</h4>
-					<span class="text-[9px] bg-slate-200 text-slate-600 font-semibold px-1.5 py-0.5 rounded">Queue #${idx + 1}</span>
+					<span class="text-[9px] bg-slate-200 text-slate-600 font-bold px-2 py-0.5 rounded-full">#${idx + 1}</span>
 				</div>
-				<p class="text-[10px] text-slate-500 mt-1">📁 ${projName}</p>
+				<p class="text-[10px] text-slate-500 mt-1.5">📁 ${projName}</p>
 			`;
 			div.addEventListener('click', () => loadDraft(draft.id));
 			draftQueueContainer.appendChild(div);
@@ -286,14 +294,13 @@ import db from '../data/db.json';
 
 	function loadDraft(id: string) {
 		selectedDraftId = id;
-		currentEditPostId = null;
 		const draft = db.drafts.find(d => d.id === id);
 		if (!draft) return;
 
 		const project = db.projects.find(p => p.id === draft.projectId);
 		
 		workbenchTitle!.textContent = draft.title;
-		workbenchMeta!.textContent = `📁 분류: ${project ? project.name : 'General Insight'}`;
+		workbenchMeta!.textContent = `📁 분류: ${project ? project.name : 'General Essay'}`;
 		htmlOutput!.innerHTML = parseToHumanFriendlyHTML(draft.content);
 
 		feedbackPanel!.classList.remove('hidden');
@@ -303,7 +310,6 @@ import db from '../data/db.json';
 		renderDraftQueue();
 	}
 
-	// Feedback refinement loop simulation
 	feedbackSubmitBtn?.addEventListener('click', () => {
 		const val = feedbackInput.value.trim();
 		if (!val || !selectedDraftId) return;
@@ -311,11 +317,10 @@ import db from '../data/db.json';
 		const draft = db.drafts.find(d => d.id === selectedDraftId);
 		if (!draft) return;
 
-		// Simulated Gemini refinement
-		htmlOutput!.innerHTML = `<p class="text-blue-600 font-semibold py-10 text-center">🤖 Gemini가 피드백을 반영해 드래프트를 고도화하고 있습니다...</p>`;
+		htmlOutput!.innerHTML = `<p class="text-blue-600 text-xs font-bold py-12 text-center animate-pulse">🤖 Gemini가 피드백을 수용하여 스토리 빌드 중...</p>`;
 
 		setTimeout(() => {
-			draft.content += `\n\n## ✍️ 피드백 반영 사항\n요청하신 사항을 분석하여 스토리텔링 품질을 높였습니다: "${val}"\n\n[📷 이미지 추천 포인트: 피드백 내용에 맞춘 포트폴리오 디테일 촬영 컷 및 인터랙션 코드 스크린샷 추가]`;
+			draft.content += `\n\n## ✍️ Gemini 피드백 반영 피드\n사령관님의 지시 사항을 검토하여 내용을 확장하였습니다: "${val}"`;
 			draft.title = `[개선됨] ` + draft.title;
 			
 			workbenchTitle!.textContent = draft.title;
@@ -326,10 +331,9 @@ import db from '../data/db.json';
 	});
 
 	saveDraftBtn?.addEventListener('click', () => {
-		alert('드래프트 내용이 임시 저장되었습니다!');
+		alert('보관함에 저장되었습니다.');
 	});
 
-	// Publish action: publishes draft, generates 3 SNS snippets, saves to sns_ready, and auto-refills
 	publishBtn?.addEventListener('click', () => {
 		if (!selectedDraftId) return;
 		const draftIndex = db.drafts.findIndex(d => d.id === selectedDraftId);
@@ -338,14 +342,13 @@ import db from '../data/db.json';
 		const draft = db.drafts[draftIndex];
 		const project = db.projects.find(p => p.id === draft.projectId);
 
-		// 1. Move to published posts
 		const newPost = {
 			id: draft.id,
 			projectId: draft.projectId,
 			title: draft.title,
-			description: `${project ? project.name : 'General'}에 대한 AI 가치 에세이`,
+			description: `${project ? project.name : 'General'}에 대한 AI 여정 에세이`,
 			pubDate: new Date().toISOString(),
-			category: "Insight Essay",
+			category: draft.category || "Insight Essay",
 			tags: project ? project.tags : ["General", "Insight"],
 			content: draft.content,
 			likes: 0,
@@ -353,11 +356,11 @@ import db from '../data/db.json';
 		};
 		db.posts.unshift(newPost);
 
-		// 2. Generate SNS channel versions
+		// Generate SNS channel versions
 		const cleanTitle = draft.title.replace('[개선됨] ', '');
-		const linkedin = `🔗 [LinkedIn 에세이] ${cleanTitle}\n\n시카고 AI 웹 공장 오퍼레이터가 드리는 가치 에세이입니다.\n${draft.content.substring(0, 100)}...\n\n#Astro #ChicagoTech #AIWebFactory`;
-		const twitter = `🐦 [Twitter/X] ${cleanTitle}\n\n현장 로그와 AI 오퍼레이터가 연합한 초고속 웹 빌드.\n${draft.content.substring(0, 80)}...\n#Astro #LocalSEO`;
-		const instagram = `📸 [Instagram] ${cleanTitle}\n\n로컬 소상공인의 실시간 비즈니스 일지와 AI 연합 엔진.\n${draft.content.substring(0, 90)}...\n#시카고웹 #시카고테크`;
+		const linkedin = `🔗 [LinkedIn AI Journal] ${cleanTitle}\n\nAI Build Lab 저널에 새로운 개발 일지가 공개되었습니다.\n\n${draft.content.substring(0, 100)}...\n#BuildInPublic #AIJourney`;
+		const twitter = `🐦 [Twitter/X] ${cleanTitle}\n\nAI Experiment Lab에서 작성한 최신 개발 일지.\n${draft.content.substring(0, 80)}...\n#BuildInPublic`;
+		const instagram = `📸 [Instagram] ${cleanTitle}\n\nAI 빌드 스토리 저널 공개 ✨\n${draft.content.substring(0, 90)}...\n#AIJournal`;
 
 		linkedinArea.value = linkedin;
 		twitterArea.value = twitter;
@@ -370,10 +373,10 @@ import db from '../data/db.json';
 			instagram
 		});
 
-		// 3. Remove from drafts
+		// Remove from drafts
 		db.drafts.splice(draftIndex, 1);
 
-		// 4. Auto-Refill Draft Queue: Keep exactly 2 drafts per project
+		// Auto-Refill Draft Queue
 		const projectDrafts = db.drafts.filter(d => d.projectId === draft.projectId);
 		if (projectDrafts.length < 2) {
 			const gap = 2 - projectDrafts.length;
@@ -381,8 +384,8 @@ import db from '../data/db.json';
 				db.drafts.push({
 					id: `draft-${draft.projectId}-${Date.now()}-${i}`,
 					projectId: draft.projectId,
-					title: `${project ? project.name : 'General'}의 AI 마케팅 에세이 #${Date.now()}`,
-					content: `# ${project ? project.name : 'General'} - 신규 오퍼레이터 포스팅\n\n## 1. Why (전략)\n지속 가능한 로컬 SEO 마케팅 구조의 설계.\n\n## 2. Human Struggle (인간적 극복)\n품질과 마케팅 자원 분배의 극복 과정.\n\n[📷 이미지 추천 포인트: 모던 시카고 도심 배경과 개발용 대시보드 화면 연출]\n\n## 3. AI Insight (AI의 통찰)\n현장 작업 기록이 실시간 구글 가시성을 확보하게 돕습니다.`,
+					title: `${project ? project.name : 'General'}의 AI 여정 분석 에세이 #${Date.now()}`,
+					content: `# ${project ? project.name : 'General'} - 신규 저널 기록\n\n## 1. Why (기획의도)\n이 프로젝트는 마일스톤 단계에 맞춰 구축을 지향합니다.\n\n## 2. Human Struggle (인간적 극복)\n이 단계에서 겪은 에러 해결 투쟁기.\n\n[📷 이미지 추천 포인트: 개발용 콘솔 코드 터미널 창과 시스템 설계 도식 캡처]\n\n## 3. AI Insight (AI의 통찰)\n로컬 시장과 개발 인프라 최적화를 연결해내는 AI 모델의 가능성을 증명합니다.`,
 					status: "review"
 				});
 			}
@@ -390,13 +393,13 @@ import db from '../data/db.json';
 
 		saveDatabase();
 
-		workbenchTitle!.textContent = "발행 완료!";
-		workbenchMeta!.textContent = "발행과 동시에 SNS 스니펫이 sns_ready에 자동 저장되었습니다.";
+		workbenchTitle!.textContent = "배포 완료!";
+		workbenchMeta!.textContent = "A공식 호스팅 서버에 퍼블리싱되었으며 SNS 스니펫이 완성되었습니다.";
 		htmlOutput!.innerHTML = `
 			<div class="text-center py-10">
 				<span class="text-4xl">🎉</span>
-				<h3 class="font-bold text-slate-800 mt-4">게시글 발행 성공</h3>
-				<p class="text-xs text-slate-500 mt-1">블로그 게시판에 실시간 배포되었습니다.</p>
+				<h3 class="font-bold text-slate-800 mt-4">저널 포스트 배포 성공</h3>
+				<p class="text-xs text-slate-500 mt-1">블로그 저널 목록에 배포되었습니다.</p>
 			</div>
 		`;
 		
@@ -405,7 +408,6 @@ import db from '../data/db.json';
 		snsPanel!.classList.remove('hidden');
 	});
 
-	// Flash Insight submission: creates immediately, inserts at index 0 (#1 spot)
 	flashGenerateBtn?.addEventListener('click', () => {
 		const tag = flashTagSelect.value;
 		const memo = flashMemoInput.value.trim();
@@ -415,30 +417,41 @@ import db from '../data/db.json';
 			return;
 		}
 
-		// Simulated immediate draft generation
 		const projName = tag === 'general' ? 'General' : db.projects.find(p => p.id === tag)?.name;
 		const draftId = `draft-flash-${Date.now()}`;
 		const newDraft = {
 			id: draftId,
 			projectId: tag,
-			title: `🚨 [Flash Insight] ${memo.substring(0, 30)}...`,
-			content: `# Flash Insight: 로컬 비즈니스 통찰\n\n**원시 아이디어:**\n"${memo}"\n\n## 1. Why (인간적인 'Why')\n${projName} 프로젝트의 맥락 속에서 도출한 핵심 비즈니스 왜(Why)를 설명합니다.\n\n## 2. Human Struggle (인간적 극복)\n이 아이디어를 실체화하는 과정에서 마주하는 소상공인의 실질적인 투쟁기.\n\n[📷 이미지 추천 포인트: 아이디어를 화이트보드에 스케치한 사진 또는 현장 조감도 연출 컷]\n\n## 3. AI Insight (AI의 통찰)\n메모의 직관적 메시지를 Gemini의 통찰과 결합하여 구글 상위 SEO 키워드 노출 기회로 배가시킵니다.`,
+			title: `⚡ [Flash] ${memo.substring(0, 30)}...`,
+			content: `# Flash Insight - ${projName}\n\n**아이디어 메모:**\n"${memo}"\n\n## 1. Why (기획의도)\n이 아이디어가 시작된 배경과 해결하려는 고통(Pain Point)에 대해 깊이 기술합니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어를 개발 환경에 정착시키기 위해 필요한 투쟁과 해결 로드맵.\n\n[📷 이미지 추천 포인트: 브레인스토밍 메모가 채워진 종이 노트 사진 또는 코딩 화면 캡처]\n\n## 3. AI Insight (AI의 통찰)\n직관적 의도를 AI 지식 생태계로 증폭시켜 최적화된 저널 마일스톤 에세이를 형성합니다.`,
+			category: "Insight Essay",
 			status: "review"
 		};
 
-		// Push to index 0 (#1 queue spot)
 		db.drafts.unshift(newDraft);
 		flashMemoInput.value = '';
 		saveDatabase();
 		loadDraft(draftId);
-		alert('플래시 인사이트가 큐 최상단(#1)에 등록되어 작업대에 로드되었습니다!');
+		alert('플래시 인사이트 드래프트가 큐 최상단(#1)에 등록되었습니다!');
 	});
 
-	// Sync trigger simulation
+	// SNS Copy Button handlers
+	const copyBtns = document.querySelectorAll('.btn-copy-sns');
+	copyBtns.forEach(btn => {
+		btn.addEventListener('click', (e) => {
+			const targetId = (e.currentTarget as HTMLElement).getAttribute('data-target');
+			const txtArea = document.getElementById(targetId!) as HTMLTextAreaElement;
+			if (txtArea && txtArea.value) {
+				navigator.clipboard.writeText(txtArea.value).then(() => {
+					alert('SNS 스니펫이 복사되었습니다!');
+				});
+			}
+		});
+	});
+
 	syncTriggerBtn?.addEventListener('click', () => {
-		alert('C:/appdev/ 로컬 리포지토리 동기화 완료! 새 프로젝트 및 드래프트 상태가 db.json에 갱신되었습니다.');
+		alert('C:/appdev/ 로컬 리포지토리 동기화 완료!');
 	});
 
-	// Initial render
 	renderDraftQueue();
 </script>

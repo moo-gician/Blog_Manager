@@ -3,175 +3,150 @@ import ControlTowerLayout from '../layouts/ControlTowerLayout.astro';
 import BuildLogCard from '../components/BuildLogCard.astro';
 import GeminiBot from '../components/GeminiBot.astro';
 import { getCollection } from 'astro:content';
+import db from '../data/db.json';
 
-const posts = await getCollection('blog');
-const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+// Fetch public build logs
+const postsCollection = await getCollection('blog');
+const dbPosts = db.posts;
+
+// Merge and sort published logs
+const allLogs = [
+	...postsCollection.map(p => ({
+		id: p.id,
+		title: p.data.title,
+		description: p.data.description,
+		tags: p.data.tags,
+		pubDate: p.data.pubDate,
+		status: p.data.status,
+		category: p.data.category,
+		heroImage: p.data.heroImage || '/images/olivia-wedding-hero.png'
+	})),
+	...dbPosts.map(p => ({
+		id: p.id,
+		title: p.title,
+		description: p.description,
+		tags: p.tags,
+		pubDate: new Date(p.pubDate),
+		status: p.projectId === 'general' ? 'completed' : 'in-progress',
+		category: p.category,
+		heroImage: '/images/olivia-wedding-hero.png'
+	}))
+];
+
+const sortedLogs = allLogs.sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+
+// List of Active Projects from DB
+const activeProjects = db.projects;
 ---
 
 <ControlTowerLayout 
-	title="시카고 AI-로컬 웹 팩토리 | 로컬 비즈니스를 위한 초고속 웹 제작"
-	description="Astro.build 프레임워크와 Firebase Hosting을 활용하여 3일 만에 완성하는 고성능 웹사이트 및 AI 자동 콘텐츠 마케팅 엔진."
+	title="AI Build Lab & Journal"
+	description="AI 기반 비즈니스 모델 구축 여정 및 개발 빌드 로그를 투명하게 기록하는 저널 공간"
 >
 	<!-- Hero Section -->
-	<section style="background: linear-gradient(180deg, var(--accent-blue-light) 0%, rgba(255,255,255,1) 100%); padding: 100px 0 60px 0; border-bottom: 1px solid var(--border-color);">
-		<div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;">
-			<div style="display: flex; flex-direction: column; gap: 24px;">
-				<span style="align-self: flex-start; background: var(--accent-blue); color: white; padding: 6px 16px; border-radius: 99px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">
-					Chicago AI-Local Web Factory
-				</span>
-				<h1 style="font-size: 3rem; font-weight: 800; line-height: 1.15; color: var(--text-main); letter-spacing: -0.02em;">
-					시카고 로컬 비즈니스<br/>
-					<span style="color: var(--accent-blue);">3일 완성</span> AI 웹 공장
-				</h1>
-				<p style="font-size: 1.1rem; color: var(--text-muted); line-height: 1.6;">
-					단순한 사이트가 아닌, 작업 로그(Plan, Context, Todo)만으로 AI가 블로그와 SNS 마케팅을 자동 관리하는 초고속 성과형 비즈니스 홈을 소유하세요.
-				</p>
-				<div style="display: flex; gap: 16px; align-items: center; margin-top: 10px;">
-					<a href="#consult" style="background: var(--accent-blue); color: white; padding: 16px 32px; border-radius: var(--radius-md); font-weight: 700; font-size: 1rem; transition: background 0.2s;" onmouseover="this.style.background='var(--accent-blue-hover)'" onmouseout="this.style.background='var(--accent-blue)'">
-						3일 만에 사이트 얻기
-					</a>
-					<a href="#build-logs" style="border: 1px solid var(--border-color); background: white; color: var(--text-main); padding: 16px 32px; border-radius: var(--radius-md); font-weight: 700; font-size: 1rem; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--accent-blue)'" onmouseout="this.style.borderColor='var(--border-color)'">
-						구축 로그 확인하기
-					</a>
+	<section class="relative bg-slate-50 py-24 border-b border-slate-200 overflow-hidden">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+				<div class="lg:col-span-7 space-y-6">
+					<span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-600 text-xs font-bold px-3 py-1.5 rounded-full border border-blue-100 uppercase tracking-widest animate-pulse">
+						🔬 AI Experiment Lab & Journal
+					</span>
+					<h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-none">
+						AI Experiment Lab: <span class="text-blue-600 block sm:inline">Documenting My Journey of Building AI Business Models.</span>
+					</h1>
+					<p class="text-slate-500 text-lg leading-relaxed max-w-2xl">
+						수많은 시도와 실패를 겪으며 AI 비즈니스 모델의 프로토타이핑 과정을 가감 없이 'Build in Public'으로 기록합니다.
+					</p>
+					<div class="flex gap-4 pt-2">
+						<a href="/blog" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-xl transition text-sm shadow-sm shadow-blue-200">
+							📚 빌드 로그 저널 읽기
+						</a>
+						<a href="/operator" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-bold px-6 py-3 rounded-xl transition text-sm">
+							🎛️ AI 오퍼레이터 제어실
+						</a>
+					</div>
 				</div>
-			</div>
-			
-			<!-- Image or Visual Mockup -->
-			<div style="position: relative;">
-				<div style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 12px; box-shadow: var(--shadow-lg);">
-					<img src="/images/olivia-wedding-hero.png" alt="Chicago Wedding Photography Mockup" style="width: 100%; border-radius: var(--radius-md); aspect-ratio: 16/10; object-fit: cover;" />
-					<div style="padding: 16px 8px 8px 8px; display: flex; justify-content: space-between; align-items: center;">
-						<div>
-							<h4 style="font-weight: 700; font-size: 0.95rem;">Olivia Choi Photography 포트폴리오</h4>
-							<p style="font-size: 0.8rem; color: var(--text-muted);">Pilot Project • Astro & Firebase</p>
+				<div class="lg:col-span-5 relative">
+					<div class="bg-white border border-slate-200 rounded-3xl p-4 shadow-lg">
+						<img src="/images/olivia-wedding-hero.png" alt="AI Build Mockup" class="w-full rounded-2xl aspect-video object-cover" />
+						<div class="p-4 space-y-2">
+							<h4 class="font-extrabold text-slate-900 text-sm">AI Experiment Lab & Control Tower</h4>
+							<p class="text-slate-500 text-xs leading-relaxed">로컬 에셋 분석 및 마케팅 증폭을 테스트하기 위한 일련의 AI 파이프라인 실험 프로젝트</p>
 						</div>
-						<span style="background: #EBF2FF; color: var(--accent-blue); padding: 4px 10px; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">
-							구축중
-						</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<!-- AdSense / Info Slot -->
-	<div class="container">
-		<div class="adsense-placeholder">
-			📢 [시카고 비즈니스 소유주 특별 제안] 로컬 구글 맵 최적화(GMB)와 연동된 초고속 사이트로 시카고 다운타운 오프라인 매출을 300% 이상 견인하세요.
-		</div>
-	</div>
-
-	<!-- Core Features Section -->
-	<section style="padding: 80px 0; border-bottom: 1px solid var(--border-color);">
-		<div class="container">
-			<div style="text-align: center; max-width: 700px; margin: 0 auto 60px auto;">
-				<h2 style="font-size: 2.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 16px;">
-					왜 Astro AI 웹 공장인가요?
-				</h2>
-				<p style="color: var(--text-muted); font-size: 1.05rem;">
-					대형 에이전시보다 10배 저렴하고, 직접 만드는 것보다 100배 효율적입니다.
-				</p>
+	<!-- Section 1: Active Projects Grid -->
+	<section class="py-20 bg-white">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+			<div class="text-left space-y-2">
+				<h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">📁 Active Projects</h2>
+				<p class="text-slate-500 text-sm">현재 실험 중이거나 개발이 완료된 로컬 및 비즈니스 모델 구축 리스트입니다.</p>
 			</div>
 
-			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px;">
-				<!-- Feature 1 -->
-				<div style="background: var(--bg-light); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 32px; display: flex; flex-direction: column; gap: 16px;">
-					<div style="background: var(--accent-blue-light); color: var(--accent-blue); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700;">
-						⚡
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				{activeProjects.map(proj => (
+					<div class="bg-slate-50/50 border border-slate-100 hover:border-blue-200 rounded-3xl p-6 transition duration-300 flex flex-col justify-between shadow-sm">
+						<div class="space-y-4">
+							<div class="flex justify-between items-center">
+								<span class="text-xs text-slate-400 font-mono">ID: {proj.id}</span>
+								<span class={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border uppercase tracking-wider ${
+									proj.status === 'in-progress' 
+										? 'bg-blue-50 text-blue-600 border-blue-100' 
+										: proj.status === 'completed'
+										? 'bg-green-50 text-green-600 border-green-100'
+										: 'bg-slate-100 text-slate-600 border-slate-200'
+								}`}>
+									{proj.status === 'in-progress' ? 'Developing' : proj.status === 'completed' ? 'Completed' : 'Planning'}
+								</span>
+							</div>
+							<h3 class="font-extrabold text-lg text-slate-900">{proj.name}</h3>
+							<p class="text-xs text-slate-500 leading-relaxed font-mono">📍 경로: {proj.path}</p>
+						</div>
+						<div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center text-xs">
+							<span class="text-slate-400">동기화: {new Date(proj.lastSync).toLocaleDateString('ko-KR')}</span>
+							<a href={`/blog`} class="text-blue-600 hover:text-blue-700 font-bold">저널 보기 →</a>
+						</div>
 					</div>
-					<h3 style="font-size: 1.25rem; font-weight: 700;">초고속 로딩 (Zero-JS)</h3>
-					<p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
-						Astro 프레임워크를 탑재하여 경쟁사 WordPress 대비 5배 이상 빠릅니다. 구글 검색 상위 노출에 완벽한 스코어를 보장합니다.
-					</p>
-				</div>
-				<!-- Feature 2 -->
-				<div style="background: var(--bg-light); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 32px; display: flex; flex-direction: column; gap: 16px;">
-					<div style="background: var(--accent-blue-light); color: var(--accent-blue); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700;">
-						🤖
-					</div>
-					<h3 style="font-size: 1.25rem; font-weight: 700;">AI 오퍼레이터 탑재</h3>
-					<p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
-						오늘 일한 기록만 남기면, AI가 구글 SEO 랭킹을 올리기 위해 최적화된 마케팅 글 및 소셜 배포 요약본으로 즉시 가공해줍니다.
-					</p>
-				</div>
-				<!-- Feature 3 -->
-				<div style="background: var(--bg-light); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 32px; display: flex; flex-direction: column; gap: 16px;">
-					<div style="background: var(--accent-blue-light); color: var(--accent-blue); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700;">
-						☁️
-					</div>
-					<h3 style="font-size: 1.25rem; font-weight: 700;">구글 생태계 인프라</h3>
-					<p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
-						Firebase Hosting의 무제한 글로벌 고성능 CDN 호스팅과 Gemini API 결합을 통해 최고의 안정성을 제공합니다.
-					</p>
-				</div>
+				))}
 			</div>
 		</div>
 	</section>
 
-	<!-- Build Logs / Pilot Projects -->
-	<section id="build-logs" style="padding: 80px 0; background: var(--bg-light); border-bottom: 1px solid var(--border-color);">
-		<div class="container">
-			<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px;">
-				<div>
-					<span style="color: var(--accent-blue); font-weight: 700; font-size: 0.9rem; text-transform: uppercase;">Public Build Logs</span>
-					<h2 style="font-size: 2.25rem; font-weight: 800; color: var(--text-main); margin-top: 8px;">실시간 구축 스토리</h2>
+	<!-- Section 2: Latest Build Logs & Articles -->
+	<section class="py-20 bg-slate-50 border-t border-slate-200">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+			<div class="flex justify-between items-end flex-wrap gap-4">
+				<div class="text-left space-y-2">
+					<h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">📚 Latest Build Logs</h2>
+					<p class="text-slate-500 text-sm">실시간 개발 기록과 글로벌 룰 해석 등 최신 기록 목록입니다.</p>
 				</div>
-				<p style="color: var(--text-muted); max-width: 450px; font-size: 0.95rem;">
-					AI 웹 팩토리가 시카고의 진짜 소상공인들과 함께 만들어가는 실시간 웹사이트 구축 및 성과 일지입니다.
-				</p>
+				<a href="/blog" class="text-blue-600 hover:text-blue-700 text-sm font-extrabold flex items-center gap-1">
+					전체 저널 목록 보기 →
+				</a>
 			</div>
 
-			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 32px;">
-				{sortedPosts.map(post => (
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				{sortedLogs.slice(0, 3).map(log => (
 					<BuildLogCard 
-						title={post.data.title}
-						description={post.data.description}
-						pubDate={post.data.pubDate}
-						slug={post.id}
-						status={post.data.status}
-						client={post.data.client}
-						location={post.data.location}
-						tags={post.data.tags}
-						heroImage={post.data.heroImage}
+						title={log.title}
+						description={log.description}
+						pubDate={log.pubDate}
+						slug={log.id}
+						status={log.status}
+						client={log.category}
+						location={log.tags.join(', ')}
+						tags={log.tags}
+						heroImage={log.heroImage}
 					/>
 				))}
 			</div>
 		</div>
 	</section>
 
-	<!-- Lead Generation CTA Form -->
-	<section id="consult" style="padding: 100px 0; background: var(--bg-white);">
-		<div class="container" style="max-width: 600px;">
-			<div style="text-align: center; margin-bottom: 40px; display: flex; flex-direction: column; gap: 12px;">
-				<h2 style="font-size: 2.25rem; font-weight: 800; color: var(--text-main);">시카고 AI 고성능 웹사이트 제작</h2>
-				<p style="color: var(--text-muted); font-size: 1.05rem;">
-					구글 검색에 걸리고 마케팅이 자동으로 처리되는 나만의 공장을 단 3일 만에 가동해보세요.
-				</p>
-			</div>
-
-			<form style="border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-md); display: flex; flex-direction: column; gap: 20px;" onsubmit="alert('시카고 AI 웹 공장 상담 신청이 완료되었습니다! 24시간 내 이메일로 연락 드리겠습니다.'); return false;">
-				<div>
-					<label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-main);">비즈니스 이름 / 담당자 성함</label>
-					<input type="text" placeholder="예: 올리비아 최" required style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-family: inherit; font-size: 0.95rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent-blue)'" onblur="this.style.borderColor='var(--border-color)'" />
-				</div>
-				
-				<div>
-					<label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-main);">이메일 주소</label>
-					<input type="email" placeholder="example@domain.com" required style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-family: inherit; font-size: 0.95rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent-blue)'" onblur="this.style.borderColor='var(--border-color)'" />
-				</div>
-
-				<div>
-					<label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-main);">비즈니스 업종 및 현재 겪고 계신 문제점</label>
-					<textarea placeholder="예: 시카고 링컨파크 웨딩 사진 스튜디오 운영 중입니다. 촬영이 바빠 사이트 업데이트 및 포스팅을 못 하고 있습니다." rows="4" required style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-family: inherit; font-size: 0.95rem; outline: none; transition: border-color 0.2s; resize: vertical;" onfocus="this.style.borderColor='var(--accent-blue)'" onblur="this.style.borderColor='var(--border-color)'"></textarea>
-				</div>
-
-				<button type="submit" style="background: var(--accent-blue); color: white; border: none; padding: 16px; border-radius: var(--radius-md); font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='var(--accent-blue-hover)'" onmouseout="this.style.background='var(--accent-blue)'">
-					상담 신청서 제출하기 (3일 구축 문의)
-				</button>
-			</form>
-		</div>
-	</section>
-
-	<!-- Gemini Chatbot Widget -->
+	<!-- Gemini Bot Widget -->
 	<GeminiBot />
 </ControlTowerLayout>

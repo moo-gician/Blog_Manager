@@ -1,175 +1,270 @@
 ---
 import ControlTowerLayout from '../layouts/ControlTowerLayout.astro';
 import db from '../data/db.json';
+import { getCollection } from 'astro:content';
 
-// Fetch initial published posts from local database
-const posts = db.posts;
+// Fetch published logs from both sources
+const postsCollection = await getCollection('blog');
+const dbPosts = db.posts;
 
-// Sort posts: Pin 'Episode 0: The Origin' category to the top, then sort others by date desc
-const sortedPosts = [...posts].sort((a, b) => {
+const allPosts = [
+	...postsCollection.map(p => ({
+		id: p.id,
+		title: p.data.title,
+		description: p.data.description,
+		tags: p.data.tags,
+		pubDate: p.data.pubDate,
+		status: p.data.status, // e.g. planning, in-progress, completed
+		category: p.data.category,
+		projectId: 'olivia-choi-wedding',
+		heroImage: p.data.heroImage || '/images/olivia-wedding-hero.png'
+	})),
+	...dbPosts.map(p => ({
+		id: p.id,
+		title: p.title,
+		description: p.description,
+		tags: p.tags,
+		pubDate: new Date(p.pubDate),
+		status: p.projectId === 'general' ? 'completed' : 'in-progress',
+		category: p.category,
+		projectId: p.projectId,
+		heroImage: '/images/olivia-wedding-hero.png'
+	}))
+];
+
+// Sort posts: Pin 'Episode 0: The Origin' to the top, then sort by date desc
+const sortedPosts = allPosts.sort((a, b) => {
 	const aIsOrigin = a.category === 'Episode 0: The Origin';
 	const bIsOrigin = b.category === 'Episode 0: The Origin';
 	
 	if (aIsOrigin && !bIsOrigin) return -1;
 	if (!aIsOrigin && bIsOrigin) return 1;
 	
-	return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
+	return b.pubDate.valueOf() - a.pubDate.valueOf();
 });
 
-// Extract all unique project tags + 'General' for filters
-const allTags = new Set<string>();
-posts.forEach(post => {
-	if (post.tags) {
-		post.tags.forEach(t => allTags.add(t));
-	}
-});
-const tagsList = Array.from(allTags);
+// List of project folders from C:/appdev/
+const projectsList = db.projects;
 ---
 
 <ControlTowerLayout 
-	title="마케팅 블로그 | Chicago AI Web Factory"
-	description="로컬 비즈니스 구축 일지 및 AI 자동화 기술 인사이트 에세이 목록"
+	title="AI 빌드 저널 | AI Experiment Lab"
+	description="AI 비즈니스 모델 구축 프로젝트별 빌드 로그 및 마일스톤 에세이 기록지"
 >
-	<section class="bg-white py-16">
-		<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-			<!-- Title -->
-			<div class="text-center max-w-2xl mx-auto mb-12 space-y-4">
-				<span class="text-blue-600 font-bold text-sm uppercase tracking-widest">Public Build Logs & Essays</span>
-				<h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">공장 빌드 스토리 및 AI 에세이</h1>
-				<p class="text-slate-500 text-base">
-					현장에서 수집한 실시간 작업 로그와 AI 오퍼레이터가 도출해낸 유익한 비즈니스 마케팅 통찰 목록입니다.
-				</p>
-			</div>
-
-			<!-- Filter Chips -->
-			<div class="flex flex-wrap justify-center gap-2.5 mb-12">
-				<button class="filter-btn active-filter" data-filter="all">
-					🌍 전체 보기
-				</button>
-				<button class="filter-btn" data-filter="General">
-					💡 General (에세이)
-				</button>
-				{tagsList.map(tag => (
-					<button class="filter-btn" data-filter={tag}>
-						#{tag}
-					</button>
-				))}
-			</div>
-
-			<!-- Posts Grid -->
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="blog-posts-grid">
-				{sortedPosts.map(post => {
-					const isOrigin = post.category === 'Episode 0: The Origin';
-					return (
-						<div 
-							class={`blog-card border rounded-2xl p-6 shadow-sm transition-all duration-300 flex flex-col gap-4 ${
-								isOrigin 
-									? 'border-amber-400 bg-amber-50/20 shadow-amber-100/50 hover:border-amber-500 md:col-span-2' 
-									: 'border-slate-200 bg-white hover:border-blue-400'
-							}`} 
-							data-tags={JSON.stringify(post.tags || [])}
-							data-category={post.category}
-						>
-							<div class="flex items-center gap-2 flex-wrap">
-								{isOrigin ? (
-									<span class="bg-amber-100 text-amber-800 text-xs font-extrabold px-3 py-1 rounded-full border border-amber-200 animate-pulse flex items-center gap-1">
-										🎬 Episode 0: The Origin (기획 스토리)
-									</span>
-								) : (
-									<span class="bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full border border-blue-100">
-										{post.category}
-									</span>
-								)}
-								<span class="text-xs text-slate-400">
-									📅 {new Date(post.pubDate).toLocaleDateString('ko-KR')}
-								</span>
-							</div>
-							
-							<h3 class={`font-extrabold text-slate-900 leading-snug hover:text-blue-600 transition ${isOrigin ? 'text-2xl' : 'text-lg'}`}>
-								<a href={`/blog/${post.id}`}>
-									{post.title}
-								</a>
-							</h3>
-							
-							<p class="text-slate-500 text-sm leading-relaxed flex-grow">
-								{post.description}
-							</p>
-
-							<div class="border-t border-slate-100 pt-4 flex justify-between items-center text-xs text-slate-400 mt-2">
-								<div class="flex gap-2">
-									{post.tags && post.tags.slice(0, 3).map(tag => (
-										<span class="text-slate-500 font-medium">#{tag}</span>
-									))}
-								</div>
-								<div class="flex items-center gap-3">
-									<span>👍 {post.likes || 0}</span>
-									<span>💬 {post.comments ? post.comments.length : 0}</span>
-								</div>
+	<div class="bg-slate-50 min-h-screen py-16">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			
+			<!-- Layout Grid: Sidebar on Left, Magazine Grid on Right -->
+			<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+				
+				<!-- Left Sidebar: Project Folders Filter -->
+				<aside class="lg:col-span-3 space-y-6">
+					<div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm sticky top-24 space-y-6">
+						<div>
+							<h3 class="font-extrabold text-slate-900 text-sm mb-3">📁 Projects (C:/appdev)</h3>
+							<div class="space-y-1.5" id="sidebar-projects">
+								<button class="project-btn active-project-btn w-full text-left text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex justify-between items-center" data-project="all">
+									<span>🌍 전체 프로젝트</span>
+									<span class="bg-slate-200 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">{allPosts.length}</span>
+								</button>
+								<button class="project-btn w-full text-left text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex justify-between items-center" data-project="general">
+									<span>💡 General Essays</span>
+									<span class="bg-slate-100 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-full">{allPosts.filter(p => p.projectId === 'general').length}</span>
+								</button>
+								{projectsList.map(proj => {
+									const projPosts = allPosts.filter(p => p.projectId === proj.id);
+									return (
+										<button class="project-btn w-full text-left text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex justify-between items-center" data-project={proj.id}>
+											<span class="truncate pr-2">📁 {proj.name.replace(' (Sync)', '')}</span>
+											<span class="bg-slate-100 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-full flex-shrink-0">{projPosts.length}</span>
+										</button>
+									);
+								})}
 							</div>
 						</div>
-					);
-				})}
+					</div>
+				</aside>
+
+				<!-- Right Column: Content Logs -->
+				<main class="lg:col-span-9 space-y-8">
+					<!-- Top Navigation & Milestones Filtering -->
+					<div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+						<div>
+							<h2 class="font-extrabold text-slate-900 text-lg">AI Build Logs Journal</h2>
+							<p class="text-xs text-slate-500 mt-1">프로젝트 폴더 및 마일스톤 필터링을 조율하여 개발 여정을 추적하세요.</p>
+						</div>
+						
+						<!-- Milestone Stage Filters -->
+						<div class="flex flex-wrap gap-2" id="milestone-filters">
+							<button class="milestone-btn active-milestone-btn text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-100 text-slate-600 transition" data-status="all">전체 단계</button>
+							<button class="milestone-btn text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 transition" data-status="planning">Planning (기획)</button>
+							<button class="milestone-btn text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 transition" data-status="in-progress">Developing (개발)</button>
+							<button class="milestone-btn text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 transition" data-status="completed">Completed (완료)</button>
+							<button class="milestone-btn text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 transition" data-status="failed">Failed (실패)</button>
+						</div>
+					</div>
+
+					<!-- Magazine Grid Layout -->
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-8 transition-opacity duration-300" id="magazine-posts-grid">
+						{sortedPosts.map(post => {
+							const isOrigin = post.category === 'Episode 0: The Origin';
+							return (
+								<div 
+									class={`blog-card border rounded-3xl p-6 bg-white hover:border-blue-400 transition-all duration-300 flex flex-col gap-4 shadow-sm hover:shadow-md cursor-pointer ${
+										isOrigin 
+											? 'border-amber-400 bg-amber-50/10 shadow-amber-50/50 hover:border-amber-500 md:col-span-2' 
+											: 'border-slate-200'
+									}`} 
+									data-project={post.projectId}
+									data-status={post.status}
+									data-category={post.category}
+								>
+									<div class="flex items-center gap-2 flex-wrap text-xs">
+										{isOrigin ? (
+											<span class="bg-amber-100 text-amber-900 font-extrabold px-3 py-1 rounded-full border border-amber-200 flex items-center gap-1 animate-pulse">
+												🎬 Episode 0: The Origin (기획 스토리)
+											</span>
+										) : (
+											<span class="bg-blue-50 text-blue-600 font-bold px-2.5 py-1 rounded-full border border-blue-100">
+												{post.category}
+											</span>
+										)}
+										<span class="text-slate-400 font-mono">
+											📅 {new Date(post.pubDate).toLocaleDateString('ko-KR')}
+										</span>
+									</div>
+
+									<h3 class={`font-extrabold text-slate-900 leading-snug hover:text-blue-600 transition ${isOrigin ? 'text-2xl' : 'text-lg'}`}>
+										<a href={`/blog/${post.id}`}>
+											{post.title}
+										</a>
+									</h3>
+
+									<p class="text-slate-500 text-sm leading-relaxed line-clamp-3">
+										{post.description}
+									</p>
+
+									<div class="border-t border-slate-100 pt-4 flex justify-between items-center text-xs text-slate-400 mt-2">
+										<div class="flex gap-2">
+											{post.tags && post.tags.slice(0, 3).map(tag => (
+												<span class="text-slate-500 font-medium">#{tag}</span>
+											))}
+										</div>
+										<span class="font-bold text-slate-700 capitalize font-mono">🚀 Status: {post.status === 'in-progress' ? 'Developing' : post.status}</span>
+									</div>
+								</div>
+							);
+						})}
+					</div>
+
+					<div id="no-posts-alert" class="hidden text-center py-20 bg-white border border-slate-200 rounded-3xl text-slate-400 shadow-sm">
+						<span class="text-3xl">📭</span>
+						<p class="font-bold mt-4">조건에 매칭되는 빌드 로그 에세이가 없습니다.</p>
+					</div>
+
+				</main>
+
 			</div>
 
-			{posts.length === 0 && (
-				<div class="text-center py-20 text-slate-400">
-					<p class="font-semibold">등록된 공개 포스트가 없습니다.</p>
-				</div>
-			)}
 		</div>
-	</section>
+	</div>
 </ControlTowerLayout>
 
 <style>
-	.filter-btn {
-		background: #F1F5F9;
-		color: #475569;
-		border: 1px solid #E2E8F0;
-		padding: 8px 18px;
-		border-radius: 99px;
-		font-size: 0.85rem;
-		font-weight: 600;
-		cursor: pointer;
-		transition: all 0.2s ease;
+	.project-btn {
+		background: transparent;
+		color: #64748B;
 	}
-	.filter-btn:hover {
-		background: #E2E8F0;
+	.project-btn:hover {
+		background: #F1F5F9;
 		color: #0F172A;
 	}
-	.active-filter {
+	.active-project-btn {
 		background: #0052FF !important;
 		color: white !important;
-		border-color: #0052FF !important;
+	}
+
+	.active-milestone-btn {
+		background: #0F172A !important;
+		color: white !important;
+		border-color: #0F172A !important;
+	}
+
+	/* Smooth fade filter transition */
+	.blog-card {
+		transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	.fade-out {
+		opacity: 0;
+		transform: scale(0.95);
+		pointer-events: none;
 	}
 </style>
 
 <script>
-	const filterButtons = document.querySelectorAll('.filter-btn');
+	const projectBtns = document.querySelectorAll('.project-btn');
+	const milestoneBtns = document.querySelectorAll('.milestone-btn');
 	const blogCards = document.querySelectorAll('.blog-card') as NodeListOf<HTMLElement>;
+	const gridContainer = document.getElementById('magazine-posts-grid');
+	const noPostsAlert = document.getElementById('no-posts-alert');
 
-	filterButtons.forEach(btn => {
-		btn.addEventListener('click', (e) => {
-			// Toggle active class
-			filterButtons.forEach(b => b.classList.remove('active-filter'));
-			const currentBtn = e.currentTarget as HTMLButtonElement;
-			currentBtn.classList.add('active-filter');
+	let activeProject = 'all';
+	let activeStatus = 'all';
 
-			const filterValue = currentBtn.getAttribute('data-filter');
+	function applyFilter() {
+		// Fade out container briefly
+		gridContainer!.style.opacity = '0.3';
+
+		setTimeout(() => {
+			let visibleCount = 0;
 
 			blogCards.forEach(card => {
-				if (filterValue === 'all') {
-					card.style.display = 'flex';
-					return;
-				}
+				const cardProj = card.getAttribute('data-project');
+				const cardStatus = card.getAttribute('data-status');
 
-				// If filter is General, check if General tag matches
-				const cardTags = JSON.parse(card.getAttribute('data-tags') || '[]');
-				if (cardTags.includes(filterValue) || (filterValue === 'General' && cardTags.includes('General'))) {
+				const matchProj = activeProject === 'all' || cardProj === activeProject;
+				// Mapping 'in-progress' logic for Developing status
+				const normalizedStatus = cardStatus === 'in-progress' ? 'in-progress' : cardStatus;
+				const matchStatus = activeStatus === 'all' || normalizedStatus === activeStatus;
+
+				if (matchProj && matchStatus) {
 					card.style.display = 'flex';
+					visibleCount++;
 				} else {
 					card.style.display = 'none';
 				}
 			});
+
+			if (visibleCount === 0) {
+				noPostsAlert!.classList.remove('hidden');
+			} else {
+				noPostsAlert!.classList.add('hidden');
+			}
+
+			// Fade back in
+			gridContainer!.style.opacity = '1';
+		}, 200);
+	}
+
+	projectBtns.forEach(btn => {
+		btn.addEventListener('click', (e) => {
+			projectBtns.forEach(b => b.classList.remove('active-project-btn'));
+			const current = e.currentTarget as HTMLButtonElement;
+			current.classList.add('active-project-btn');
+			
+			activeProject = current.getAttribute('data-project') || 'all';
+			applyFilter();
+		});
+	});
+
+	milestoneBtns.forEach(btn => {
+		btn.addEventListener('click', (e) => {
+			milestoneBtns.forEach(b => b.classList.remove('active-milestone-btn'));
+			const current = e.currentTarget as HTMLButtonElement;
+			current.classList.add('active-milestone-btn');
+
+			activeStatus = current.getAttribute('data-status') || 'all';
+			applyFilter();
 		});
 	});
 </script>
