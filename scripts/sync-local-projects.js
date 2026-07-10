@@ -88,14 +88,24 @@ function sync() {
           4. Process: Analyze before code modifications, implement modular steps, perform QA checks.
           5. Marketing: Apply '약문통 원해자' framework ('Why', 'Human Struggle', 'AI Insight').
         `;
+
+        const mergedContent = planContent + ' ' + contextContent + ' ' + todoContent;
+        const originKeywords = ["시작", "문제", "아이디어", "Background", "Problem", "overall plan/timeline"];
+        const hasOriginKeyword = originKeywords.some(keyword => mergedContent.includes(keyword));
+        const determinedCategory = hasOriginKeyword ? 'Episode 0: The Origin' : 'Build Log';
         
         for (let i = 0; i < gap; i++) {
           const draftId = `draft-${folderName}-${Date.now()}-${i}`;
           db.drafts.push({
             id: draftId,
             projectId: folderName,
-            title: `${project.name}의 AI 기반 마케팅 에세이 #${projectDrafts.length + i + 1}`,
-            content: `# ${project.name} - 현장 로그에서 얻은 비즈니스 가치\n\n## 1. Why (전략)\n${project.name} 프로젝트는 3대 핵심 파일(Plan/Context/Todo)의 'Supreme Logic'에 기반하여 설계되었습니다. 기술 스택은 Google Ecosystem인 Firebase Hosting을 선택하여 3일 만에 빠른 구축과 탄탄한 보안을 약속합니다.\n\n## 2. Human Struggle (인간적 극복)\n이 과정에서 발생한 수작업 갱신 문제를 해결하고 모던 라이트 디자인을 이식하기 위한 개발자들의 땀방울이 녹아있습니다.\n\n[📷 이미지 추천 포인트: 화이트 배경에 일렉트릭 블루 포인트로 구현된 로컬 비즈니스 모바일 캘린더 화면과 0.4초의 로딩속도를 자랑하는 모바일 최적화 스크린샷]\n\n## 3. AI Insight (AI의 통찰)\n로컬 시카고 시장의 높은 키워드 경쟁 속에서, 오직 현장에서 도출된 실제 데이터를 마케팅 스토리로 증폭시킴으로써 광고비 없이도 압도적인 구글 맵 최적화 순위를 유지하게 됩니다.`,
+            title: determinedCategory === 'Episode 0: The Origin' 
+              ? `🎬 [Episode 0: Origin] ${project.name}의 시작점과 아이디어의 태동`
+              : `${project.name}의 AI 기반 마케팅 에세이 #${projectDrafts.length + i + 1}`,
+            content: determinedCategory === 'Episode 0: The Origin'
+              ? `# Episode 0: The Origin - ${project.name}의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.`
+              : `# ${project.name} - 현장 로그에서 얻은 비즈니스 가치\n\n## 1. Why (전략)\n${project.name} 프로젝트는 3대 핵심 파일(Plan/Context/Todo)의 'Supreme Logic'에 기반하여 설계되었습니다. 기술 스택은 Google Ecosystem인 Firebase Hosting을 선택하여 3일 만에 빠른 구축과 탄탄한 보안을 약속합니다.\n\n## 2. Human Struggle (인간적 극복)\n이 과정에서 발생한 수작업 갱신 문제를 해결하고 모던 라이트 디자인을 이식하기 위한 개발자들의 땀방울이 녹아있습니다.\n\n[📷 이미지 추천 포인트: 화이트 배경에 일렉트릭 블루 포인트로 구현된 로컬 비즈니스 모바일 캘린더 화면과 0.4초의 로딩속도를 자랑하는 모바일 최적화 스크린샷]\n\n## 3. AI Insight (AI의 통찰)\n로컬 시카고 시장의 높은 키워드 경쟁 속에서, 오직 현장에서 도출된 실제 데이터를 마케팅 스토리로 증폭시킴으로써 광고비 없이도 압도적인 구글 맵 최적화 순위를 유지하게 됩니다.`,
+            category: determinedCategory,
             status: "review"
           });
         }

@@ -23,6 +23,11 @@
 ## 4. Operational Decisions
 - **Synchronization Trigger**: Manual / On-demand. Real-time background file watching is disabled by preference to conserve resources. File ingestion and drafts queue generation occur when the operator triggers it via the CLI (`node scripts/sync-local-projects.js`) or the Admin workbench UI.
 
+## 3.6. Special Handling for 'Origin Stories'
+- **Concept**: If a project log contains keywords like "시작", "문제", "아이디어", "Background", "Problem", or "overall plan/timeline", it is designated as `'Episode 0: The Origin'`.
+- **Tone**: Personal, vulnerable, yet visionary. Focuses on the core human pain points to build client empathy.
+- **UI Treatment**: Pinned/highlighted at the start of the project's timeline on the public blog to give readers immediate background context.
+
 ## 3.7. Global Rule Documentation & Interpretation
 - **Source**: Root customization files (AGENTS.md / Global rules config).
 - **Core Principle**: All generated blog drafts must refer to the Global Rules as the 'Supreme Logic' to maintain consistent tone, technical stack priorities (Google Ecosystem, Astro, Firebase), design constraints (Modern Light Design), and project tracking SOPs (3-core files, '약문통 원해자' framework).

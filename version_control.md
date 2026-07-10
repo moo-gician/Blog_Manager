@@ -2,13 +2,22 @@
 
 This document tracks the deployment and major updates matching the GitHub release commits.
 
+## v1.3.0 - Origin Stories Handling ('Episode 0: The Origin')
+- **Date**: 2026-07-10
+- **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
+- **Features**:
+  - Added Section `3.6. Special Handling for 'Origin Stories'` in [`context.md`](file:///c:/AppDev/Blog_Manager/context.md).
+  - Modified [`sync-local-projects.js`](file:///c:/AppDev/Blog_Manager/scripts/sync-local-projects.js) to inspect project files for origin keywords ("시작", "문제", "아이디어", "Background", "Problem", "overall plan/timeline") and tag generated drafts with `'Episode 0: The Origin'` category.
+  - Implemented UI pinning and premium gold border/badge layout highlighting on [`blog.astro`](file:///c:/AppDev/Blog_Manager/src/pages/blog.astro) for posts matching `'Episode 0: The Origin'` to establish the project's background context.
+  - Created [`rebuild-drafts.js`](file:///c:/AppDev/Blog_Manager/scripts/rebuild-drafts.js) helper script to flush old drafts and trigger a clean sync of the new Origin logic.
+
 ## v1.2.0 - Global Rules Documentation & Supreme Logic Integration
 - **Date**: 2026-07-10
 - **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
 - **Features**:
-  - Documented `3.7. Global Rule Documentation & Interpretation` in [`context.md`](file:///c:/AppDev/Blog_Manager/context.md).
-  - Injected 3 high-quality draft essays in [`db.json`](file:///c:/AppDev/Blog_Manager/src/data/db.json) under the `General` category, explaining the Memory System, Modern Light Design, and '약문통 원해자' framework along with their "Behind the Scenes" stories.
-  - Modified [`sync-local-projects.js`](file:///c:/AppDev/Blog_Manager/scripts/sync-local-projects.js) to enforce `SUPREME_LOGIC` rules during AI content generation to guarantee tone and technical claim consistency.
+  - Documented `3.7. Global Rule Documentation & Interpretation` in `context.md`.
+  - Injected 3 high-quality draft essays in `db.json` explaining Global Rules.
+  - Modified `sync-local-projects.js` to enforce `SUPREME_LOGIC` context rules.
 
 ## v1.1.0 - Advanced Bidirectional Control Tower & Admin Workbench
 - **Date**: 2026-07-10

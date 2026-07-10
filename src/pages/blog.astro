@@ -5,6 +5,17 @@ import db from '../data/db.json';
 // Fetch initial published posts from local database
 const posts = db.posts;
 
+// Sort posts: Pin 'Episode 0: The Origin' category to the top, then sort others by date desc
+const sortedPosts = [...posts].sort((a, b) => {
+	const aIsOrigin = a.category === 'Episode 0: The Origin';
+	const bIsOrigin = b.category === 'Episode 0: The Origin';
+	
+	if (aIsOrigin && !bIsOrigin) return -1;
+	if (!aIsOrigin && bIsOrigin) return 1;
+	
+	return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
+});
+
 // Extract all unique project tags + 'General' for filters
 const allTags = new Set<string>();
 posts.forEach(post => {
@@ -47,40 +58,57 @@ const tagsList = Array.from(allTags);
 
 			<!-- Posts Grid -->
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="blog-posts-grid">
-				{posts.map(post => (
-					<div class="blog-card border border-slate-200 hover:border-blue-400 bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col gap-4" data-tags={JSON.stringify(post.tags || [])}>
-						<div class="flex items-center gap-2">
-							<span class="bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full border border-blue-100">
-								{post.category}
-							</span>
-							<span class="text-xs text-slate-400">
-								📅 {new Date(post.pubDate).toLocaleDateString('ko-KR')}
-							</span>
-						</div>
-						
-						<h3 class="font-extrabold text-lg text-slate-900 leading-snug hover:text-blue-600 transition">
-							<a href={`/blog/${post.id}`}>
-								{post.title}
-							</a>
-						</h3>
-						
-						<p class="text-slate-500 text-sm line-clamp-3 leading-relaxed flex-grow">
-							{post.description}
-						</p>
+				{sortedPosts.map(post => {
+					const isOrigin = post.category === 'Episode 0: The Origin';
+					return (
+						<div 
+							class={`blog-card border rounded-2xl p-6 shadow-sm transition-all duration-300 flex flex-col gap-4 ${
+								isOrigin 
+									? 'border-amber-400 bg-amber-50/20 shadow-amber-100/50 hover:border-amber-500 md:col-span-2' 
+									: 'border-slate-200 bg-white hover:border-blue-400'
+							}`} 
+							data-tags={JSON.stringify(post.tags || [])}
+							data-category={post.category}
+						>
+							<div class="flex items-center gap-2 flex-wrap">
+								{isOrigin ? (
+									<span class="bg-amber-100 text-amber-800 text-xs font-extrabold px-3 py-1 rounded-full border border-amber-200 animate-pulse flex items-center gap-1">
+										🎬 Episode 0: The Origin (기획 스토리)
+									</span>
+								) : (
+									<span class="bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full border border-blue-100">
+										{post.category}
+									</span>
+								)}
+								<span class="text-xs text-slate-400">
+									📅 {new Date(post.pubDate).toLocaleDateString('ko-KR')}
+								</span>
+							</div>
+							
+							<h3 class={`font-extrabold text-slate-900 leading-snug hover:text-blue-600 transition ${isOrigin ? 'text-2xl' : 'text-lg'}`}>
+								<a href={`/blog/${post.id}`}>
+									{post.title}
+								</a>
+							</h3>
+							
+							<p class="text-slate-500 text-sm leading-relaxed flex-grow">
+								{post.description}
+							</p>
 
-						<div class="border-t border-slate-100 pt-4 flex justify-between items-center text-xs text-slate-400 mt-2">
-							<div class="flex gap-2">
-								{post.tags && post.tags.slice(0, 3).map(tag => (
-									<span class="text-slate-500 font-medium">#{tag}</span>
-								))}
-							</div>
-							<div class="flex items-center gap-3">
-								<span>👍 {post.likes || 0}</span>
-								<span>💬 {post.comments ? post.comments.length : 0}</span>
+							<div class="border-t border-slate-100 pt-4 flex justify-between items-center text-xs text-slate-400 mt-2">
+								<div class="flex gap-2">
+									{post.tags && post.tags.slice(0, 3).map(tag => (
+										<span class="text-slate-500 font-medium">#{tag}</span>
+									))}
+								</div>
+								<div class="flex items-center gap-3">
+									<span>👍 {post.likes || 0}</span>
+									<span>💬 {post.comments ? post.comments.length : 0}</span>
+								</div>
 							</div>
 						</div>
-					</div>
-				))}
+					);
+				})}
 			</div>
 
 			{posts.length === 0 && (
@@ -134,8 +162,9 @@ const tagsList = Array.from(allTags);
 					return;
 				}
 
+				// If filter is General, check if General tag matches
 				const cardTags = JSON.parse(card.getAttribute('data-tags') || '[]');
-				if (cardTags.includes(filterValue)) {
+				if (cardTags.includes(filterValue) || (filterValue === 'General' && cardTags.includes('General'))) {
 					card.style.display = 'flex';
 				} else {
 					card.style.display = 'none';
