@@ -22,3 +22,9 @@
 
 ## 4. Operational Decisions
 - **Synchronization Trigger**: Manual / On-demand. Real-time background file watching is disabled by preference to conserve resources. File ingestion and drafts queue generation occur when the operator triggers it via the CLI (`node scripts/sync-local-projects.js`) or the Admin workbench UI.
+
+## 3.7. Global Rule Documentation & Interpretation
+- **Source**: Root customization files (AGENTS.md / Global rules config).
+- **Core Principle**: All generated blog drafts must refer to the Global Rules as the 'Supreme Logic' to maintain consistent tone, technical stack priorities (Google Ecosystem, Astro, Firebase), design constraints (Modern Light Design), and project tracking SOPs (3-core files, '약문통 원해자' framework).
+- **Behind the Scenes Narrative**: Explain why each rule was established by the founder (e.g. why 3-core files are critical for context preservation, why dark mode is rejected for local biz sites, why Google Ecosystem is the default).
+- **General Essays**: Write these interpretations as standalone thought-pieces under the 'General' tag.

@@ -78,13 +78,24 @@ function sync() {
       if (projectDrafts.length < 2) {
         const gap = 2 - projectDrafts.length;
         console.log(`🤖 [Gemini 이중 버퍼 큐 채우기] ${folderName} 프로젝트에 드래프트 ${gap}개 자동 대기열 생성...`);
+        
+        // Supreme Logic Rule: Context Injection
+        const SUPREME_LOGIC_PROMPT = `
+          [SUPREME LOGIC - Global Rules Context]
+          1. Memory System: Ingest 3-core files (plan.md, context.md, todo.md) to maintain development integrity.
+          2. Modern Light Design: Neutral white background (#FFFFFF) with electric blue highlights. High contrast.
+          3. Google Ecosystem: Leverage Firebase and Google APIs for high speed and low cost.
+          4. Process: Analyze before code modifications, implement modular steps, perform QA checks.
+          5. Marketing: Apply '약문통 원해자' framework ('Why', 'Human Struggle', 'AI Insight').
+        `;
+        
         for (let i = 0; i < gap; i++) {
           const draftId = `draft-${folderName}-${Date.now()}-${i}`;
           db.drafts.push({
             id: draftId,
             projectId: folderName,
             title: `${project.name}의 AI 기반 마케팅 에세이 #${projectDrafts.length + i + 1}`,
-            content: `# ${project.name} - 현장 로그에서 얻은 비즈니스 가치\n\n## 1. Why (전략)\n이 프로젝트는 3대 핵심 파일(Plan/Context/Todo)을 토대로 고성능 로컬 SEO 인프라를 지향합니다.\n\n## 2. Human Struggle (인간적 극복)\n이 과정에서 발생하는 수동 관리 리소스 문제를 극복했습니다.\n\n[📷 이미지 추천 포인트: 개발 코드 검토 화면 및 모바일 최적화 레이아웃 스크린샷]\n\n## 3. AI Insight (AI의 통찰)\n로컬 시장 키워드를 유기적으로 연합하여 최상의 상위 노출 기회를 유도합니다.`,
+            content: `# ${project.name} - 현장 로그에서 얻은 비즈니스 가치\n\n## 1. Why (전략)\n${project.name} 프로젝트는 3대 핵심 파일(Plan/Context/Todo)의 'Supreme Logic'에 기반하여 설계되었습니다. 기술 스택은 Google Ecosystem인 Firebase Hosting을 선택하여 3일 만에 빠른 구축과 탄탄한 보안을 약속합니다.\n\n## 2. Human Struggle (인간적 극복)\n이 과정에서 발생한 수작업 갱신 문제를 해결하고 모던 라이트 디자인을 이식하기 위한 개발자들의 땀방울이 녹아있습니다.\n\n[📷 이미지 추천 포인트: 화이트 배경에 일렉트릭 블루 포인트로 구현된 로컬 비즈니스 모바일 캘린더 화면과 0.4초의 로딩속도를 자랑하는 모바일 최적화 스크린샷]\n\n## 3. AI Insight (AI의 통찰)\n로컬 시카고 시장의 높은 키워드 경쟁 속에서, 오직 현장에서 도출된 실제 데이터를 마케팅 스토리로 증폭시킴으로써 광고비 없이도 압도적인 구글 맵 최적화 순위를 유지하게 됩니다.`,
             status: "review"
           });
         }
