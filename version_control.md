@@ -2,15 +2,22 @@
 
 This document tracks the deployment and major updates matching the GitHub release commits.
 
+## v1.6.0 - DALO Brand Launch & Interactive Search Platform
+- **Date**: 2026-07-10
+- **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
+- **Features**:
+  - **Branding Upgrade (DALO)**: Created moon and rocket line-art SVG logo (`dalo-logo.svg`) and set as favicon/header logo. Applied slogan `"AI로 한계를 넘어, 달로 가자 (To the Moon with AI)"` in footer.
+  - **Interactive Hero (Josh Style)**: Installed mouse-following radial-gradient focus overlay inside home hero section.
+  - **Keyword Search Widget**: Implemented client-side real-time query modal fetching build-time search index data API (`/search.json`), accessible through the search header button.
+  - **2-Column Blog Layout**: Refocused `/blog` with Main Left list (image + details) and Sidebar Right containing project filters, popular articles (likes desc) and a mascot newsletter widget.
+  - **Storytelling About Page**: Created `/about` detailing founder's Chicago background, tech philosophy, fail-forward lessons, and the growth narrative.
+  - **Portfolio Product Gallery**: Injected portfolio showcases of pilot projects in card sections.
+
 ## v1.5.0 - Layout Stabilization & Visual Refinement (Josh Comeau Style)
 - **Date**: 2026-07-10
 - **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
 - **Features**:
-  - **Global Navigation & Branding**: Fixed Header branding to `"LAB: AI Experiment Lab"`. Corrected home path to `href="/"`. Implemented backdrop blur (`backdrop-filter: blur(16px)`) with transparent header style.
-  - **Layout Centering**: Centered all views (Home, Blog, Operator) using `max-w-6xl mx-auto px-6` container alignments to create structured focus.
-  - **Typography & Whitespace**: Upgraded font stack to `Inter` and global line-height to `1.6`. Increased vertical margins and section padding (`py-24` and `gap-8`) for breathable layouts.
-  - **Admin Bento Grid & Workbench**: Reconstructed Operator Panel into a clean Bento Grid layout using off-white card backgrounds (`bg-slate-50`), `border-radius: 24px` (`rounded-[24px]`), and soft shadows. High contrast black-border workbench area as the central visual focal point.
-  - **Blog Cards & Sidebar**: Compacted project listing sidebar inside `/blog`. Simplified build log card parameters (BuildLogCard.astro) to show clean previews with minimized metadata.
+  - Global Navigation fixes, sticky backdrop blur header, Inter typography stack, bento grid layout and simplified preview cards.
 
 ## v1.4.0 - Strategic Pivot: AI Build Lab & Journal Launch
 - **Date**: 2026-07-10

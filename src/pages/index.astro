@@ -35,43 +35,62 @@ const allLogs = [
 
 const sortedLogs = allLogs.sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
 
-// List of Active Projects from DB
+// List of Active Projects
 const activeProjects = db.projects;
 ---
 
 <ControlTowerLayout 
-	title="AI Build Lab & Journal"
-	description="AI 기반 비즈니스 모델 구축 여정 및 개발 빌드 로그를 투명하게 기록하는 저널 공간"
+	title="DALO: To the Moon with AI"
+	description="AI 기반 비즈니스 모델 구축 여정과 DALO 성장 서사 로그를 투명하게 기록하는 공간"
 >
-	<!-- Hero Section -->
-	<section class="relative bg-slate-50/50 py-24 border-b border-slate-100 overflow-hidden">
-		<div class="max-w-6xl mx-auto px-6">
+	<!-- Interactive Hero Section -->
+	<section id="interactive-hero" class="relative bg-white py-24 border-b border-slate-100 overflow-hidden transition-all duration-300">
+		<!-- Background interactive gradient layer -->
+		<div id="hero-gradient" class="absolute inset-0 pointer-events-none opacity-20 transition-all duration-300" style="background: radial-gradient(circle 200px at 50% 50%, rgba(0, 82, 255, 0.15), transparent 80%);"></div>
+
+		<div class="max-w-6xl mx-auto px-6 relative z-10">
 			<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 				<div class="lg:col-span-7 space-y-6">
 					<span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-600 text-xs font-bold px-3 py-1.5 rounded-full border border-blue-100 uppercase tracking-widest animate-pulse">
-						🔬 AI Experiment Lab & Journal
+						🚀 DALO: To the Moon with AI
 					</span>
 					<h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
-						AI Experiment Lab: <span class="text-blue-600 block sm:inline">Documenting My Journey of Building AI Business Models.</span>
+						AI로 한계를 넘어,<br/><span class="text-blue-600">달로 가자.</span>
 					</h1>
 					<p class="text-slate-500 text-base leading-relaxed max-w-2xl">
 						수많은 시도와 실패를 겪으며 AI 비즈니스 모델의 프로토타이핑 과정을 가감 없이 'Build in Public'으로 기록합니다.
 					</p>
 					<div class="flex flex-wrap gap-4 pt-2">
 						<a href="/blog" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3.5 rounded-2xl transition text-xs shadow-sm hover:shadow shadow-blue-200">
-							📚 빌드 로그 저널 읽기
+							🚀 빌드 저널 읽기
 						</a>
-						<a href="/operator" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold px-6 py-3.5 rounded-2xl transition text-xs">
-							🎛️ AI 오퍼레이터 제어실
+						<a href="/about" class="bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 font-bold px-6 py-3.5 rounded-2xl transition text-xs">
+							👤 스토리 읽기 (About)
 						</a>
 					</div>
 				</div>
+				
+				<!-- Right Visual Section -->
 				<div class="lg:col-span-5 relative">
-					<div class="bg-white border border-slate-100 rounded-[24px] p-4 shadow-sm">
-						<img src="/images/olivia-wedding-hero.png" alt="AI Build Mockup" class="w-full rounded-[16px] aspect-video object-cover" />
-						<div class="p-4 space-y-2">
-							<h4 class="font-extrabold text-slate-900 text-sm">AI Experiment Lab & Control Tower</h4>
-							<p class="text-slate-500 text-xs leading-relaxed">로컬 에셋 분석 및 마케팅 증폭을 테스트하기 위한 일련의 AI 파이프라인 실험 프로젝트</p>
+					<div class="bg-slate-50 border border-slate-100 rounded-[24px] p-6 shadow-sm space-y-4">
+						<div class="flex items-center gap-3">
+							<span class="bg-blue-100 text-blue-600 p-2.5 rounded-xl font-extrabold text-xs">AI Mascot</span>
+							<h4 class="font-extrabold text-slate-900 text-sm">DALO AI Persona</h4>
+						</div>
+						<!-- Mascot Dialogue Box -->
+						<div class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm relative">
+							<p class="text-xs text-slate-700 leading-relaxed">
+								"달(Moon)로켓 탑승 준비 완료! 기술 이야기와 성장 극복기가 담긴 소식을 가장 빠르게 받아보세요."
+							</p>
+							<div class="absolute -left-2 top-4 w-4 h-4 bg-white border-l border-b border-slate-100 rotate-45"></div>
+						</div>
+						
+						<!-- Simplified Subscription Input inside Mascot Widget -->
+						<div class="space-y-2 pt-2">
+							<input type="email" id="mascot-email" placeholder="이메일 주소를 입력해 주세요..." class="w-full text-xs border border-slate-200 rounded-xl px-3 py-2.5 outline-none focus:border-blue-600 bg-white" />
+							<button id="btn-mascot-subscribe" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2.5 rounded-xl transition">
+								달로켓 뉴스레터 탑승하기
+							</button>
 						</div>
 					</div>
 				</div>
@@ -79,39 +98,51 @@ const activeProjects = db.projects;
 		</div>
 	</section>
 
-	<!-- Section 1: Active Projects Grid -->
+	<!-- Section 1: Product Gallery (Portfolio Section) -->
 	<section class="py-24 bg-white border-b border-slate-100">
 		<div class="max-w-6xl mx-auto px-6 space-y-12">
 			<div class="text-center space-y-2 max-w-2xl mx-auto">
-				<h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">📁 Active Projects</h2>
-				<p class="text-slate-500 text-sm">현재 실험 중이거나 개발이 완료된 로컬 및 비즈니스 모델 구축 리스트입니다.</p>
+				<h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">🛰️ Product Gallery (Portfolio)</h2>
+				<p class="text-slate-500 text-sm">DALO 실험실에서 만들어 낸 AI 비즈니스 성과물과 외부 연계 프로토타입입니다.</p>
 			</div>
 
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-				{activeProjects.map(proj => (
-					<div class="bg-slate-50 border border-slate-100 hover:border-blue-200 rounded-[24px] p-6 transition duration-300 flex flex-col justify-between shadow-sm">
-						<div class="space-y-4">
-							<div class="flex justify-between items-center">
-								<span class="text-xs text-slate-400 font-mono">ID: {proj.id}</span>
-								<span class={`text-[9px] font-extrabold px-2.5 py-1 rounded-full border uppercase tracking-wider ${
-									proj.status === 'in-progress' 
-										? 'bg-blue-50 text-blue-600 border-blue-100' 
-										: proj.status === 'completed'
-										? 'bg-green-50 text-green-600 border-green-100'
-										: 'bg-slate-100 text-slate-600 border-slate-200'
-								}`}>
-									{proj.status === 'in-progress' ? 'Developing' : proj.status === 'completed' ? 'Completed' : 'Planning'}
-								</span>
-							</div>
-							<h3 class="font-extrabold text-base text-slate-900">{proj.name.replace(' (Sync)', '')}</h3>
-							<p class="text-xs text-slate-500 leading-relaxed font-mono">📍 경로: {proj.path}</p>
-						</div>
-						<div class="mt-6 pt-4 border-t border-slate-200 flex justify-between items-center text-xs">
-							<span class="text-slate-400">동기화: {new Date(proj.lastSync).toLocaleDateString('ko-KR')}</span>
-							<a href={`/blog`} class="text-blue-600 hover:text-blue-700 font-bold">저널 보기 →</a>
-						</div>
+				<!-- Project Cards -->
+				<div class="bg-slate-50 border border-slate-100 hover:bg-white rounded-[24px] p-6 transition duration-300 flex flex-col justify-between shadow-sm hover:border-blue-300">
+					<div class="space-y-4">
+						<span class="bg-green-50 text-green-600 text-[9px] font-extrabold px-2.5 py-1 rounded-full border border-green-100 uppercase tracking-wider">Live & Operating</span>
+						<h3 class="font-extrabold text-base text-slate-900 mt-2">Olivia Choi Photography</h3>
+						<p class="text-slate-500 text-xs leading-relaxed">시카고 로컬 웨딩 전문 포토그래퍼를 위한 고성능 포트폴리오 갤러리 및 로컬 구글 맵 마케팅 연동 플랫폼.</p>
 					</div>
-				))}
+					<div class="pt-6 border-t border-slate-200/50 mt-6 flex justify-between items-center text-xs">
+						<span class="text-slate-400 font-mono">Astro + Firebase</span>
+						<a href="https://chicago-ai-web-factory.web.app/blog/olivia-choi-wedding" target="_blank" class="text-blue-600 hover:text-blue-700 font-bold">자세히 보기 →</a>
+					</div>
+				</div>
+
+				<div class="bg-slate-50 border border-slate-100 hover:bg-white rounded-[24px] p-6 transition duration-300 flex flex-col justify-between shadow-sm hover:border-blue-300">
+					<div class="space-y-4">
+						<span class="bg-blue-50 text-blue-600 text-[9px] font-extrabold px-2.5 py-1 rounded-full border border-blue-100 uppercase tracking-wider">Developing</span>
+						<h3 class="font-extrabold text-base text-slate-900 mt-2">StorySeed</h3>
+						<p class="text-slate-500 text-xs leading-relaxed">AI 에이전트와 LLM을 결합하여 창의적인 시나리오와 스토리를 자동 생성하고 시각화하는 콘텐츠 생산 파이프라인.</p>
+					</div>
+					<div class="pt-6 border-t border-slate-200/50 mt-6 flex justify-between items-center text-xs">
+						<span class="text-slate-400 font-mono">React + Fastify</span>
+						<a href="/blog" class="text-blue-600 hover:text-blue-700 font-bold">저널 보기 →</a>
+					</div>
+				</div>
+
+				<div class="bg-slate-50 border border-slate-100 hover:bg-white rounded-[24px] p-6 transition duration-300 flex flex-col justify-between shadow-sm hover:border-blue-300">
+					<div class="space-y-4">
+						<span class="bg-slate-100 text-slate-600 text-[9px] font-extrabold px-2.5 py-1 rounded-full border border-slate-200 uppercase tracking-wider">Planning</span>
+						<h3 class="font-extrabold text-base text-slate-900 mt-2">Habitmon</h3>
+						<p class="text-slate-500 text-xs leading-relaxed">사용자의 일일 습관과 목표 행동을 캐릭터 성장 게임화 기법으로 관리하는 AI 기반 데일리 코칭 앱.</p>
+					</div>
+					<div class="pt-6 border-t border-slate-200/50 mt-6 flex justify-between items-center text-xs">
+						<span class="text-slate-400 font-mono">Flutter + Firestore</span>
+						<a href="/blog" class="text-blue-600 hover:text-blue-700 font-bold">저널 보기 →</a>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -147,4 +178,31 @@ const activeProjects = db.projects;
 
 	<!-- Gemini Bot Widget -->
 	<GeminiBot />
+
+	<!-- Interactive Hero Script -->
+	<script>
+		const hero = document.getElementById('interactive-hero');
+		const gradient = document.getElementById('hero-gradient');
+
+		hero?.addEventListener('mousemove', (e) => {
+			const rect = hero.getBoundingClientRect();
+			const x = e.clientX - rect.left;
+			const y = e.clientY - rect.top;
+			gradient!.style.background = `radial-gradient(circle 240px at ${x}px ${y}px, rgba(0, 82, 255, 0.15), transparent 80%)`;
+		});
+
+		// Mascot Subscribe handler
+		const mascotEmail = document.getElementById('mascot-email') as HTMLInputElement;
+		const mascotBtn = document.getElementById('btn-mascot-subscribe');
+
+		mascotBtn?.addEventListener('click', () => {
+			const mail = mascotEmail.value.trim();
+			if (!mail) {
+				alert("이메일 주소를 입력해주세요!");
+				return;
+			}
+			alert(`🚀 "${mail}" 주소로 달로켓 탑승 신청이 완료되었습니다!`);
+			mascotEmail.value = '';
+		});
+	</script>
 </ControlTowerLayout>

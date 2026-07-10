@@ -1,0 +1,84 @@
+---
+import ControlTowerLayout from '../layouts/ControlTowerLayout.astro';
+---
+
+<ControlTowerLayout 
+	title="소개 (About) | DALO"
+	description="DALO의 창립자 스토리, 시카고에서의 삶, 그리고 AI 비즈니스 빌딩 철학을 나눕니다."
+>
+	<div class="bg-white min-h-screen py-20">
+		<div class="max-w-3xl mx-auto px-6 space-y-12">
+			
+			<!-- Headline -->
+			<div class="space-y-4 border-b border-slate-100 pb-8">
+				<span class="text-blue-600 font-bold text-xs uppercase tracking-widest">Story of DALO</span>
+				<h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">AI로 한계를 넘어, 달로 가자.</h1>
+				<p class="text-slate-500 text-sm">
+					DALO 프로젝트의 태동 배경과 시카고에서의 투쟁, 그리고 기술 철학을 공유합니다.
+				</p>
+			</div>
+
+			<!-- Story Content -->
+			<article class="prose max-w-none text-slate-700 text-sm leading-relaxed space-y-6">
+				
+				<h2 class="text-lg font-extrabold text-slate-900 mt-8 mb-4">📍 시카고 오프라인 현장과 AI의 교차점</h2>
+				<p>
+					시카고의 매서운 칼바람 속에서, 오프라인 로컬 비즈니스들이 겪는 디지털 전환의 장벽은 생각보다 높고 시렸습니다. 대형 마케팅 에이전시에 수천 달러를 지출하고도 결과가 미진해 절망하는 로컬 점포 사장님들을 보며, 저는 <strong>"Zero-JS에 기반한 고성능 정적 웹"</strong>과 <strong>"자동화된 AI 콘텐츠 파이프라인"</strong>의 결합을 상상하게 되었습니다.
+				</p>
+
+				<h2 class="text-lg font-extrabold text-slate-900 mt-8 mb-4">💔 수많은 실패와 깨달음</h2>
+				<p>
+					처음부터 순탄했던 것은 아닙니다. 첫 번째 AI 빌드 엔진 버전은 지나치게 무거워 응답 속도가 느렸고, 배포 보안 규칙 미비로 인해 서버 크레딧 폭탄을 맞는 뼈아픈 실패를 겪기도 했습니다. 심지어 API 호출 제약으로 작동이 중단되어 클라이언트들과의 신뢰가 깨질 뻔한 고비도 있었습니다.
+				</p>
+				<p>
+					하지만 저는 그 모든 실패 로그를 `context.md`에 투명하게 기록하고 분석하여, AI 에이전트의 영구 기억(Memory System)을 보정하고 'Supreme Logic' 규정을 구축해 나갔습니다. 그 결과 로컬 비즈니스의 현장 데이터로부터 가장 인간미 넘치는 마케팅 에세이를 자동으로 충전해내는 **DALO(달로) 엔진**이 완성될 수 있었습니다.
+				</p>
+
+				<blockquote class="border-l-4 border-blue-500 bg-blue-50/50 p-4 rounded-r-xl my-6 text-xs text-blue-900 font-semibold leading-relaxed">
+					"DALO(달로)는 AI라는 로켓을 타고, 현실의 수동적인 한계를 넘어서 성공의 지향점인 '달(Moon)'로 나아가고자 하는 무한한 성장 서사를 뜻합니다. 단순한 코딩을 넘어, 비즈니스의 가치를 실시간으로 증명합니다."
+				</blockquote>
+
+				<h2 class="text-lg font-extrabold text-slate-900 mt-8 mb-4">🚀 To the Moon with AI: DALO의 신조</h2>
+				<ul class="list-disc pl-5 space-y-2.5">
+					<li><strong>Build in Public (투명한 공개)</strong>: 성공의 단면만 보여주지 않습니다. 계획(`plan`), 문제(`context`), 오늘 할 일(`todo`)을 실시간으로 감시 및 동기화하여 여정 전체를 숨김없이 공개합니다.</li>
+					<li><strong>Extreme Speed (속도 중심)</strong>: Astro 정적 컴파일과 Firebase Hosting을 고수하여, 로딩 속도 0.5초 미만의 쾌적함을 유지합니다.</li>
+					<li><strong>Human Vibe (인간적인 정합)</strong>: AI가 생성하지만, 그 바탕엔 개발 현장에서 일어나는 인간적 투쟁(Struggle)과 영혼이 가미되어 있습니다.</li>
+				</ul>
+
+				<p class="pt-6">
+					이 여정은 계속 진행형입니다. DALO가 시카고를 넘어 글로벌 시장에서 로컬 비즈니스와 AI 시너지를 어디까지 끌어올릴 수 있을지, 달로켓의 성장 서사를 빌드 저널에서 실시간으로 함께 지켜봐 주십시오.
+				</p>
+			</article>
+
+			<!-- Newsletter Hook -->
+			<div class="bg-slate-50 border border-slate-100 rounded-[24px] p-8 text-center space-y-4">
+				<h3 class="font-extrabold text-slate-900 text-base">달로켓 탑승 대기열에 합류하세요</h3>
+				<p class="text-slate-500 text-xs max-w-md mx-auto leading-relaxed">
+					AI 빌드 랩의 투쟁기 및 유용한 마켓 플레이스 분석 레포트 메일을 실시간으로 배달해 드립니다.
+				</p>
+				<div class="max-w-sm mx-auto flex gap-2 pt-2">
+					<input type="email" id="about-email" placeholder="이메일 입력..." class="flex-grow text-xs border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-blue-600 bg-white" />
+					<button id="btn-about-subscribe" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-3 rounded-xl text-xs transition">
+						구독
+					</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</ControlTowerLayout>
+
+<script>
+	const aboutEmail = document.getElementById('about-email') as HTMLInputElement;
+	const aboutBtn = document.getElementById('btn-about-subscribe');
+
+	aboutBtn?.addEventListener('click', () => {
+		const mail = aboutEmail.value.trim();
+		if (!mail) {
+			alert('이메일 주소를 입력해주세요!');
+			return;
+		}
+		alert(`🚀 "${mail}" 주소로 달로켓 탑승 신청이 완료되었습니다!`);
+		aboutEmail.value = '';
+	});
+</script>

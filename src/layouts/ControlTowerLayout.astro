@@ -20,22 +20,22 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		
 		<!-- Primary Meta Tags -->
-		<title>{title} | Chicago AI Web Factory</title>
-		<meta name="title" content={`${title} | Chicago AI Web Factory`} />
+		<title>{title} | DALO</title>
+		<meta name="title" content={`${title} | DALO (To the Moon with AI)`} />
 		<meta name="description" content={description} />
 		<meta name="generator" content={Astro.generator} />
 
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content={pubDate ? "article" : "website"} />
 		<meta property="og:url" content={Astro.url} />
-		<meta property="og:title" content={`${title} | Chicago AI Web Factory`} />
+		<meta property="og:title" content={`${title} | DALO`} />
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content={new URL(image, Astro.url)} />
 
 		<!-- Twitter -->
 		<meta property="twitter:card" content="summary_large_image" />
 		<meta property="twitter:url" content={Astro.url} />
-		<meta property="twitter:title" content={`${title} | Chicago AI Web Factory`} />
+		<meta property="twitter:title" content={`${title} | DALO`} />
 		<meta property="twitter:description" content={description} />
 		<meta property="twitter:image" content={new URL(image, Astro.url)} />
 
@@ -89,65 +89,154 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 				margin: 0 auto;
 				padding: 0 24px;
 			}
-
-			/* AdSense responsive slot style */
-			.adsense-placeholder {
-				background: var(--bg-light);
-				border: 1px dashed var(--border-color);
-				border-radius: var(--radius-md);
-				padding: 20px;
-				text-align: center;
-				font-size: 0.8rem;
-				color: var(--text-muted);
-				margin: 2rem 0;
-			}
 		</style>
 	</head>
-	<body>
+	<body class="bg-white text-slate-900 font-sans leading-relaxed">
+		<!-- Header -->
 		<header style="border-bottom: 1px solid var(--border-color); position: sticky; top: 0; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(16px); z-index: 100;">
 			<div class="container" style="display: flex; justify-content: space-between; align-items: center; height: 72px;">
-				<a href="/" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.2rem; color: var(--text-main);">
-					<span style="background: var(--accent-blue); color: white; padding: 4px 10px; border-radius: 12px; font-size: 1rem; font-weight: 800;">LAB</span>
-					LAB: AI Experiment Lab
+				<a href="/" style="display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.25rem; color: var(--text-main);">
+					<img src="/images/dalo-logo.svg" alt="DALO Logo" style="width: 28px; height: 28px;" />
+					<span>DALO</span>
 				</a>
-				<nav style="display: flex; gap: 24px; font-weight: 600; font-size: 0.9rem;">
-					<a href="/" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">홈</a>
-					<a href="/blog" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">빌드 저널</a>
-					<a href="/operator" style="color: var(--accent-blue);" onmouseover="this.style.color='var(--accent-blue-hover)'" onmouseout="this.style.color='var(--accent-blue)'">오퍼레이터</a>
-				</nav>
+				
+				<div style="display: flex; align-items: center; gap: 24px;">
+					<nav style="display: flex; gap: 20px; font-weight: 600; font-size: 0.9rem;">
+						<a href="/" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">홈</a>
+						<a href="/blog" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">빌드 저널</a>
+						<a href="/about" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">소개 (About)</a>
+						<a href="/operator" style="color: var(--accent-blue);" onmouseover="this.style.color='var(--accent-blue-hover)'" onmouseout="this.style.color='var(--accent-blue)'">오퍼레이터</a>
+					</nav>
+
+					<!-- Keyword Search Trigger -->
+					<button id="btn-search-trigger" style="background: none; border: none; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; padding: 4px;" class="hover:text-blue-600 transition">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+					</button>
+				</div>
 			</div>
 		</header>
+
+		<!-- Search Overlay Modal -->
+		<div id="search-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] hidden items-start justify-center pt-24 transition-opacity duration-300">
+			<div class="bg-white border border-slate-100 rounded-[24px] max-w-xl w-full mx-4 p-6 shadow-xl space-y-4">
+				<div class="flex justify-between items-center border-b border-slate-100 pb-3">
+					<h3 class="font-extrabold text-sm text-slate-800">🔍 실시간 키워드 검색</h3>
+					<button id="btn-search-close" class="text-xs font-bold text-slate-400 hover:text-slate-800">닫기 (Esc)</button>
+				</div>
+				<input type="text" id="search-input" placeholder="검색어를 입력해 주세요..." class="w-full text-sm border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-blue-600 bg-slate-50" />
+				<div id="search-results-container" class="max-h-[300px] overflow-y-auto space-y-2.5">
+					<p class="text-xs text-slate-400 text-center py-6">검색어를 입력하면 매칭되는 저널이 노출됩니다.</p>
+				</div>
+			</div>
+		</div>
 
 		<main>
 			<slot />
 		</main>
 
+		<!-- Footer -->
 		<footer style="background: var(--bg-light); border-top: 1px solid var(--border-color); padding: 60px 0 40px 0; margin-top: 80px;">
 			<div class="container">
 				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
 					<div>
-						<h3 style="font-weight: 800; color: var(--accent-blue); margin-bottom: 16px;">AI Experiment Lab & Journal</h3>
-						<p style="color: var(--text-muted); font-size: 0.95rem;">A기반 비즈니스 모델 구축과 오픈 소스 형태의 개발 여정을 기록하는 블로그 저널 공간입니다.</p>
+						<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+							<img src="/images/dalo-logo.svg" alt="DALO Logo" style="width: 24px; height: 24px;" />
+							<span style="font-weight: 800; font-size: 1.15rem;">DALO</span>
+						</div>
+						<p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6;">"AI로 한계를 넘어, 달로 가자 (To the Moon with AI)."</p>
 					</div>
 					<div>
-						<h4 style="font-weight: 700; margin-bottom: 16px;">바로가기</h4>
-						<ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.95rem; color: var(--text-muted);">
+						<h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">바로가기</h4>
+						<ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem; color: var(--text-muted);">
 							<li><a href="/" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">홈</a></li>
 							<li><a href="/blog" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">빌드 저널</a></li>
+							<li><a href="/about" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">소개 (About)</a></li>
 							<li><a href="/operator" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">오퍼레이터</a></li>
 						</ul>
 					</div>
 					<div>
-						<h4 style="font-weight: 700; margin-bottom: 16px;">Journal Info</h4>
-						<p style="color: var(--text-muted); font-size: 0.95rem;">Build in Public & AI Development Journey</p>
+						<h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">소개</h4>
+						<p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6;">AI 비즈니스 모델 빌드 인 퍼블릭 저널.</p>
 					</div>
 				</div>
 				<hr style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 24px;" />
-				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.9rem; color: var(--text-muted);">
-					<p>&copy; {new Date().getFullYear()} AI Experiment Lab & Journal. All rights reserved.</p>
-					<p>Designed for AI Journey</p>
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.8rem; color: var(--text-muted);">
+					<p>&copy; {new Date().getFullYear()} DALO (To the Moon with AI). All rights reserved.</p>
+					<p>Designed in Josh Comeau Style</p>
 				</div>
 			</div>
 		</footer>
+
+		<!-- Search Client-Side Script -->
+		<script>
+			const searchTrigger = document.getElementById('btn-search-trigger');
+			const searchModal = document.getElementById('search-modal');
+			const searchClose = document.getElementById('btn-search-close');
+			const searchInput = document.getElementById('search-input') as HTMLInputElement;
+			const searchResults = document.getElementById('search-results-container');
+
+			let searchData: any[] = [];
+
+			// Fetch indices once
+			async function initSearch() {
+				try {
+					const res = await fetch('/search.json');
+					searchData = await res.json();
+				} catch (err) {
+					console.error("Failed to load search data:", err);
+				}
+			}
+
+			function toggleModal(open: boolean) {
+				if (open) {
+					searchModal?.classList.remove('hidden');
+					searchModal?.classList.add('flex');
+					searchInput.focus();
+					if (searchData.length === 0) initSearch();
+				} else {
+					searchModal?.classList.add('hidden');
+					searchModal?.classList.remove('flex');
+					searchInput.value = '';
+					searchResults!.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">검색어를 입력하면 매칭되는 저널이 노출됩니다.</p>`;
+				}
+			}
+
+			searchTrigger?.addEventListener('click', () => toggleModal(true));
+			searchClose?.addEventListener('click', () => toggleModal(false));
+			searchModal?.addEventListener('click', (e) => {
+				if (e.target === searchModal) toggleModal(false);
+			});
+
+			window.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape') toggleModal(false);
+			});
+
+			searchInput?.addEventListener('input', () => {
+				const query = searchInput.value.trim().toLowerCase();
+				if (!query) {
+					searchResults!.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">검색어를 입력하면 매칭되는 저널이 노출됩니다.</p>`;
+					return;
+				}
+
+				const matches = searchData.filter(item => 
+					item.title.toLowerCase().includes(query) || 
+					item.description.toLowerCase().includes(query) ||
+					(item.tags && item.tags.some((t: string) => t.toLowerCase().includes(query)))
+				);
+
+				if (matches.length === 0) {
+					searchResults!.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">검색 결과가 없습니다.</p>`;
+					return;
+				}
+
+				searchResults!.innerHTML = matches.map(item => `
+					<a href="/blog/${item.id}" class="block bg-slate-50 hover:bg-blue-50 border border-slate-100 rounded-xl p-3.5 transition">
+						<span class="bg-blue-100 text-blue-800 text-[9px] font-bold px-1.5 py-0.5 rounded">${item.category}</span>
+						<h4 class="text-xs font-bold text-slate-800 mt-1.5 leading-snug">${item.title}</h4>
+						<p class="text-[10px] text-slate-400 mt-1 line-clamp-1">${item.description}</p>
+					</a>
+				`).join('');
+			});
+		</script>
 	</body>
 </html>
