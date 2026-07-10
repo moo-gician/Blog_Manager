@@ -44,31 +44,31 @@ const activeProjects = db.projects;
 	description="AI 기반 비즈니스 모델 구축 여정 및 개발 빌드 로그를 투명하게 기록하는 저널 공간"
 >
 	<!-- Hero Section -->
-	<section class="relative bg-slate-50 py-24 border-b border-slate-200 overflow-hidden">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+	<section class="relative bg-slate-50/50 py-24 border-b border-slate-100 overflow-hidden">
+		<div class="max-w-6xl mx-auto px-6">
 			<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 				<div class="lg:col-span-7 space-y-6">
 					<span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-600 text-xs font-bold px-3 py-1.5 rounded-full border border-blue-100 uppercase tracking-widest animate-pulse">
 						🔬 AI Experiment Lab & Journal
 					</span>
-					<h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-none">
+					<h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
 						AI Experiment Lab: <span class="text-blue-600 block sm:inline">Documenting My Journey of Building AI Business Models.</span>
 					</h1>
-					<p class="text-slate-500 text-lg leading-relaxed max-w-2xl">
+					<p class="text-slate-500 text-base leading-relaxed max-w-2xl">
 						수많은 시도와 실패를 겪으며 AI 비즈니스 모델의 프로토타이핑 과정을 가감 없이 'Build in Public'으로 기록합니다.
 					</p>
-					<div class="flex gap-4 pt-2">
-						<a href="/blog" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-xl transition text-sm shadow-sm shadow-blue-200">
+					<div class="flex flex-wrap gap-4 pt-2">
+						<a href="/blog" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3.5 rounded-2xl transition text-xs shadow-sm hover:shadow shadow-blue-200">
 							📚 빌드 로그 저널 읽기
 						</a>
-						<a href="/operator" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-bold px-6 py-3 rounded-xl transition text-sm">
+						<a href="/operator" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold px-6 py-3.5 rounded-2xl transition text-xs">
 							🎛️ AI 오퍼레이터 제어실
 						</a>
 					</div>
 				</div>
 				<div class="lg:col-span-5 relative">
-					<div class="bg-white border border-slate-200 rounded-3xl p-4 shadow-lg">
-						<img src="/images/olivia-wedding-hero.png" alt="AI Build Mockup" class="w-full rounded-2xl aspect-video object-cover" />
+					<div class="bg-white border border-slate-100 rounded-[24px] p-4 shadow-sm">
+						<img src="/images/olivia-wedding-hero.png" alt="AI Build Mockup" class="w-full rounded-[16px] aspect-video object-cover" />
 						<div class="p-4 space-y-2">
 							<h4 class="font-extrabold text-slate-900 text-sm">AI Experiment Lab & Control Tower</h4>
 							<p class="text-slate-500 text-xs leading-relaxed">로컬 에셋 분석 및 마케팅 증폭을 테스트하기 위한 일련의 AI 파이프라인 실험 프로젝트</p>
@@ -80,20 +80,20 @@ const activeProjects = db.projects;
 	</section>
 
 	<!-- Section 1: Active Projects Grid -->
-	<section class="py-20 bg-white">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-			<div class="text-left space-y-2">
+	<section class="py-24 bg-white border-b border-slate-100">
+		<div class="max-w-6xl mx-auto px-6 space-y-12">
+			<div class="text-center space-y-2 max-w-2xl mx-auto">
 				<h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">📁 Active Projects</h2>
 				<p class="text-slate-500 text-sm">현재 실험 중이거나 개발이 완료된 로컬 및 비즈니스 모델 구축 리스트입니다.</p>
 			</div>
 
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 				{activeProjects.map(proj => (
-					<div class="bg-slate-50/50 border border-slate-100 hover:border-blue-200 rounded-3xl p-6 transition duration-300 flex flex-col justify-between shadow-sm">
+					<div class="bg-slate-50 border border-slate-100 hover:border-blue-200 rounded-[24px] p-6 transition duration-300 flex flex-col justify-between shadow-sm">
 						<div class="space-y-4">
 							<div class="flex justify-between items-center">
 								<span class="text-xs text-slate-400 font-mono">ID: {proj.id}</span>
-								<span class={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border uppercase tracking-wider ${
+								<span class={`text-[9px] font-extrabold px-2.5 py-1 rounded-full border uppercase tracking-wider ${
 									proj.status === 'in-progress' 
 										? 'bg-blue-50 text-blue-600 border-blue-100' 
 										: proj.status === 'completed'
@@ -103,10 +103,10 @@ const activeProjects = db.projects;
 									{proj.status === 'in-progress' ? 'Developing' : proj.status === 'completed' ? 'Completed' : 'Planning'}
 								</span>
 							</div>
-							<h3 class="font-extrabold text-lg text-slate-900">{proj.name}</h3>
+							<h3 class="font-extrabold text-base text-slate-900">{proj.name.replace(' (Sync)', '')}</h3>
 							<p class="text-xs text-slate-500 leading-relaxed font-mono">📍 경로: {proj.path}</p>
 						</div>
-						<div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center text-xs">
+						<div class="mt-6 pt-4 border-t border-slate-200 flex justify-between items-center text-xs">
 							<span class="text-slate-400">동기화: {new Date(proj.lastSync).toLocaleDateString('ko-KR')}</span>
 							<a href={`/blog`} class="text-blue-600 hover:text-blue-700 font-bold">저널 보기 →</a>
 						</div>
@@ -117,9 +117,9 @@ const activeProjects = db.projects;
 	</section>
 
 	<!-- Section 2: Latest Build Logs & Articles -->
-	<section class="py-20 bg-slate-50 border-t border-slate-200">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-			<div class="flex justify-between items-end flex-wrap gap-4">
+	<section class="py-24 bg-white">
+		<div class="max-w-6xl mx-auto px-6 space-y-12">
+			<div class="flex justify-between items-end flex-wrap gap-4 border-b border-slate-100 pb-6">
 				<div class="text-left space-y-2">
 					<h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">📚 Latest Build Logs</h2>
 					<p class="text-slate-500 text-sm">실시간 개발 기록과 글로벌 룰 해석 등 최신 기록 목록입니다.</p>
@@ -137,8 +137,6 @@ const activeProjects = db.projects;
 						pubDate={log.pubDate}
 						slug={log.id}
 						status={log.status}
-						client={log.category}
-						location={log.tags.join(', ')}
 						tags={log.tags}
 						heroImage={log.heroImage}
 					/>

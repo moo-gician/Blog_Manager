@@ -7,50 +7,52 @@ import db from '../data/db.json';
 	title="AI 오퍼레이터 제어실 | Chicago AI Web Factory"
 	description="C:/appdev/ 프로젝트 연동, 이중 버퍼 드래프트 관리, 피드백 루프 및 SNS 배포 자동화 엔진"
 >
-	<div class="bg-slate-50 min-h-screen py-12">
-		<div class="max-w-[1600px] mx-auto px-6 lg:px-8 space-y-10">
-			<!-- Header -->
-			<div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-200 pb-8">
+	<div class="bg-white min-h-screen py-20">
+		<!-- Main Centered Max-w-6xl Container -->
+		<div class="max-w-6xl mx-auto px-6 space-y-12">
+			
+			<!-- Header Block -->
+			<div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-100 pb-8 gap-4">
 				<div>
 					<span class="text-blue-600 font-bold text-xs tracking-widest uppercase">Private Operator Room</span>
-					<h1 class="text-3xl font-black text-slate-900 tracking-tight mt-2">AI Build Lab: Control Tower</h1>
-					<p class="text-slate-500 text-sm mt-1.5">
+					<h1 class="text-3xl font-extrabold text-slate-900 tracking-tight mt-1">AI Build Lab: Control Tower</h1>
+					<p class="text-slate-500 text-xs mt-1.5">
 						로컬 프로젝트 파일 스캔 및 Gemini AI 연합 콘텐츠 배포 파이프라인.
 					</p>
 				</div>
-				<div class="mt-4 md:mt-0 flex gap-3">
-					<button id="btn-sync-trigger" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold px-5 py-3 rounded-2xl text-xs transition shadow-sm">
+				<div class="flex gap-2">
+					<button id="btn-sync-trigger" class="bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 font-bold px-5 py-3 rounded-2xl text-xs transition shadow-sm">
 						🔄 C:/appdev/ 프로젝트 동기화
 					</button>
 				</div>
 			</div>
 
-			<!-- Three-Zone Overhauled Workbench Grid -->
+			<!-- Three-Zone Bento Grid Workbench -->
 			<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 				
-				<!-- Zone 1: [Source Detection] (3 cols) -->
-				<div class="lg:col-span-3 space-y-8">
-					<div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm space-y-6">
-						<div class="border-b border-slate-100 pb-4">
-							<span class="text-blue-600 text-[10px] font-bold tracking-widest uppercase">Zone 01</span>
-							<h3 class="font-extrabold text-base text-slate-900 mt-1 flex items-center gap-2">
+				<!-- Column 1: [Source Detection] (3 cols) -->
+				<div class="lg:col-span-3 space-y-6">
+					<div class="bg-slate-50 border border-slate-100 rounded-[24px] p-6 shadow-sm space-y-6">
+						<div class="border-b border-slate-200/50 pb-3">
+							<span class="text-blue-600 text-[9px] font-bold tracking-widest uppercase">Zone 01</span>
+							<h3 class="font-extrabold text-sm text-slate-900 mt-1 flex items-center gap-1.5">
 								📁 Source Detection
 							</h3>
 						</div>
 
 						<!-- Core Files Scan Status -->
-						<div class="space-y-3">
-							<h4 class="text-xs font-bold text-slate-400 uppercase tracking-wide">3대 핵심 문서 감지</h4>
-							<div class="space-y-2 text-xs font-semibold">
-								<div class="flex justify-between items-center bg-slate-50 border border-slate-100 rounded-xl p-3.5">
+						<div class="space-y-2">
+							<h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">3대 핵심 문서 감지</h4>
+							<div class="space-y-1.5 text-xs font-semibold">
+								<div class="flex justify-between items-center bg-white border border-slate-100 rounded-xl px-3 py-2.5">
 									<span>plan.md</span>
 									<span class="text-green-600 font-bold">● Sync</span>
 								</div>
-								<div class="flex justify-between items-center bg-slate-50 border border-slate-100 rounded-xl p-3.5">
+								<div class="flex justify-between items-center bg-white border border-slate-100 rounded-xl px-3 py-2.5">
 									<span>context.md</span>
 									<span class="text-green-600 font-bold">● Sync</span>
 								</div>
-								<div class="flex justify-between items-center bg-slate-50 border border-slate-100 rounded-xl p-3.5">
+								<div class="flex justify-between items-center bg-white border border-slate-100 rounded-xl px-3 py-2.5">
 									<span>todo.md</span>
 									<span class="text-green-600 font-bold">● Sync</span>
 								</div>
@@ -58,54 +60,55 @@ import db from '../data/db.json';
 						</div>
 
 						<!-- Buffer Queue -->
-						<div class="space-y-4 pt-4 border-t border-slate-100">
-							<h4 class="text-xs font-bold text-slate-400 uppercase tracking-wide">Review Queue (이중 버퍼)</h4>
-							<div id="draft-queue-container" class="space-y-3">
+						<div class="space-y-3 pt-4 border-t border-slate-200/50">
+							<h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Review Queue (이중 버퍼)</h4>
+							<div id="draft-queue-container" class="space-y-2.5">
 								<!-- Populated via Javascript -->
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<!-- Zone 2: [AI Collaboration Space] (6 cols) -->
-				<div class="lg:col-span-6 space-y-8">
-					<div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm flex flex-col min-h-[680px]">
-						<div class="border-b border-slate-100 pb-4 mb-6 flex justify-between items-center">
+				<!-- Column 2: [AI Collaboration Space] (6 cols) -->
+				<div class="lg:col-span-6 space-y-6">
+					<!-- Workbench: Main Focal Point -->
+					<div class="bg-white border-2 border-slate-900 rounded-[24px] p-6 shadow-md flex flex-col min-h-[640px]">
+						<div class="border-b border-slate-100 pb-3 mb-6 flex justify-between items-center">
 							<div>
-								<span class="text-blue-600 text-[10px] font-bold tracking-widest uppercase">Zone 02</span>
-								<h3 id="workbench-title" class="font-extrabold text-lg text-slate-900 mt-1">대기 중</h3>
-								<p id="workbench-meta" class="text-xs text-slate-500 mt-0.5">대기열에서 에세이 로그를 선택하세요.</p>
+								<span class="text-blue-600 text-[9px] font-bold tracking-widest uppercase">Zone 02: Focus Workbench</span>
+								<h3 id="workbench-title" class="font-extrabold text-base text-slate-900 mt-1">선택된 드래프트 없음</h3>
+								<p id="workbench-meta" class="text-[11px] text-slate-400 mt-0.5">왼쪽 대기열에서 검토할 에세이를 선택하세요.</p>
 							</div>
 						</div>
 
 						<!-- Human Friendly Markdown Preview -->
-						<div class="flex-grow border border-slate-100 bg-slate-50/30 rounded-2xl p-6 overflow-y-auto max-h-[460px] mb-6">
-							<div id="workbench-html-output" class="prose max-w-none text-slate-800 text-sm">
-								<div class="text-center py-24 text-slate-400">
-									<span class="text-4xl">🔬</span>
-									<p class="mt-4 font-bold text-sm">Review Queue에서 드래프트를 선택하여 워크벤치에 로드하세요.</p>
+						<div class="flex-grow border border-slate-100 bg-slate-50/50 rounded-2xl p-6 overflow-y-auto max-h-[420px] mb-6">
+							<div id="workbench-html-output" class="prose max-w-none text-slate-800 text-xs">
+								<div class="text-center py-20 text-slate-400">
+									<span class="text-3xl font-normal">🔬</span>
+									<p class="mt-4 font-bold text-xs">드래프트를 선택하여 작업대 프리뷰를 시작하세요.</p>
 								</div>
 							</div>
 						</div>
 
 						<!-- Natural conversational feedback loop input -->
-						<div id="feedback-panel" class="hidden border-t border-slate-100 pt-6 space-y-4">
-							<div class="bg-blue-50/50 rounded-2xl p-4 border border-blue-100/50 flex gap-3.5 items-start">
-								<span class="text-xl">🤖</span>
-								<div class="space-y-1">
-									<h5 class="text-xs font-bold text-blue-900">Gemini와 에디팅 대화</h5>
-									<p class="text-xs text-blue-700 leading-relaxed">원하는 수정 방향이나 강조할 에피소드를 입력하고 엔터를 치세요.</p>
+						<div id="feedback-panel" class="hidden border-t border-slate-100 pt-5 space-y-3">
+							<div class="bg-blue-50/50 rounded-xl p-3 border border-blue-100/50 flex gap-3 items-center">
+								<span class="text-lg">🤖</span>
+								<div class="space-y-0.5">
+									<h5 class="text-xs font-bold text-blue-900">Gemini와 에디팅 피드백</h5>
+									<p class="text-[10px] text-blue-700 leading-relaxed">원하는 수정 방향이나 구체적 에피소드를 추가 지시하세요.</p>
 								</div>
 							</div>
 							
-							<div class="flex gap-3">
-								<input type="text" id="feedback-input" class="flex-grow border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-blue-600 bg-white" placeholder="예: '인간적 고뇌 부분을 더 강조하고, 바람 부는 날 사진촬영 팁을 한 줄 추가해줘...'" />
-								<button id="btn-feedback-submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-3 rounded-xl text-xs transition">
+							<div class="flex gap-2">
+								<input type="text" id="feedback-input" class="flex-grow border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none focus:border-blue-600 bg-slate-50" placeholder="예: '인간적 고뇌 부분을 더 강조하고 스크린샷 팁 추가...'" />
+								<button id="btn-feedback-submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition">
 									반영
 								</button>
 							</div>
 							<div class="flex gap-2 justify-end">
-								<button id="btn-save-draft" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-4 py-2 rounded-lg transition">
+								<button id="btn-save-draft" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold px-3 py-1.5 rounded-lg transition">
 									임시 보관
 								</button>
 							</div>
@@ -113,64 +116,64 @@ import db from '../data/db.json';
 					</div>
 				</div>
 
-				<!-- Zone 3: [Deployment Ready] (3 cols) -->
-				<div class="lg:col-span-3 space-y-8">
-					<div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm space-y-6">
-						<div class="border-b border-slate-100 pb-4">
-							<span class="text-blue-600 text-[10px] font-bold tracking-widest uppercase">Zone 03</span>
-							<h3 class="font-extrabold text-base text-slate-900 mt-1 flex items-center gap-2">
+				<!-- Column 3: [Deployment Ready] (3 cols) -->
+				<div class="lg:col-span-3 space-y-6">
+					<div class="bg-slate-50 border border-slate-100 rounded-[24px] p-6 shadow-sm space-y-6">
+						<div class="border-b border-slate-200/50 pb-3">
+							<span class="text-blue-600 text-[9px] font-bold tracking-widest uppercase">Zone 03</span>
+							<h3 class="font-extrabold text-sm text-slate-900 mt-1 flex items-center gap-1.5">
 								🚀 Deployment Ready
 							</h3>
 						</div>
 
-						<div class="space-y-4">
-							<button id="btn-publish" class="hidden w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-3.5 rounded-2xl text-xs transition shadow-sm shadow-blue-200">
+						<div class="space-y-3">
+							<button id="btn-publish" class="hidden w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-2xl text-xs transition shadow-sm">
 								📢 최종 승인 및 발행 배포
 							</button>
 						</div>
 
 						<!-- SNS Ready Amplification Output -->
 						<div id="sns-output-panel" class="hidden space-y-4">
-							<h4 class="font-bold text-slate-900 text-xs uppercase tracking-wide">다채널 SNS 스니펫</h4>
+							<h4 class="font-bold text-slate-900 text-xs uppercase tracking-wide">SNS 스니펫 버퍼</h4>
 							
-							<div class="space-y-4">
-								<div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+							<div class="space-y-3">
+								<div class="bg-white border border-slate-100 rounded-xl p-3 space-y-1.5">
 									<div class="flex justify-between items-center">
-										<span class="text-[10px] font-bold text-slate-800">🔗 LinkedIn</span>
-										<button class="btn-copy-sns text-[10px] font-bold text-blue-600 hover:underline" data-target="sns-linkedin">복사</button>
+										<span class="text-[9px] font-bold text-slate-800">LinkedIn</span>
+										<button class="btn-copy-sns text-[9px] font-bold text-blue-600 hover:underline" data-target="sns-linkedin">복사</button>
 									</div>
-									<textarea id="sns-linkedin" class="w-full text-[11px] text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="4" readonly></textarea>
+									<textarea id="sns-linkedin" class="w-full text-[10px] text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="3" readonly></textarea>
 								</div>
 
-								<div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+								<div class="bg-white border border-slate-100 rounded-xl p-3 space-y-1.5">
 									<div class="flex justify-between items-center">
-										<span class="text-[10px] font-bold text-slate-800">🐦 Twitter/X</span>
-										<button class="btn-copy-sns text-[10px] font-bold text-blue-600 hover:underline" data-target="sns-twitter">복사</button>
+										<span class="text-[9px] font-bold text-slate-800">Twitter/X</span>
+										<button class="btn-copy-sns text-[9px] font-bold text-blue-600 hover:underline" data-target="sns-twitter">복사</button>
 									</div>
-									<textarea id="sns-twitter" class="w-full text-[11px] text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="4" readonly></textarea>
+									<textarea id="sns-twitter" class="w-full text-[10px] text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="3" readonly></textarea>
 								</div>
 
-								<div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+								<div class="bg-white border border-slate-100 rounded-xl p-3 space-y-1.5">
 									<div class="flex justify-between items-center">
-										<span class="text-[10px] font-bold text-slate-800">📸 Instagram</span>
-										<button class="btn-copy-sns text-[10px] font-bold text-blue-600 hover:underline" data-target="sns-instagram">복사</button>
+										<span class="text-[9px] font-bold text-slate-800">Instagram</span>
+										<button class="btn-copy-sns text-[9px] font-bold text-blue-600 hover:underline" data-target="sns-instagram">복사</button>
 									</div>
-									<textarea id="sns-instagram" class="w-full text-[11px] text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="4" readonly></textarea>
+									<textarea id="sns-instagram" class="w-full text-[10px] text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="3" readonly></textarea>
 								</div>
 							</div>
 						</div>
 					</div>
 
 					<!-- Flash Insight System -->
-					<div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm space-y-6">
-						<h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
+					<div class="bg-slate-50 border border-slate-100 rounded-[24px] p-6 shadow-sm space-y-4">
+						<h3 class="font-extrabold text-sm text-slate-900 flex items-center gap-1.5">
 							⚡ Flash Insight
 						</h3>
 						
-						<div class="space-y-4">
+						<div class="space-y-3">
 							<div>
-								<label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">프로젝트 바인딩</label>
-								<select id="flash-tag-select" class="w-full text-xs border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-600 bg-white">
+								<label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">프로젝트 태그</label>
+								<select id="flash-tag-select" class="w-full text-xs border border-slate-200 rounded-xl p-2.5 outline-none focus:border-blue-600 bg-white">
 									<option value="general">🌍 General (독립 에세이)</option>
 									{db.projects.map(proj => (
 										<option value={proj.id}>📁 {proj.name.replace(' (Sync)', '')}</option>
@@ -179,11 +182,11 @@ import db from '../data/db.json';
 							</div>
 
 							<div>
-								<label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">원시 인사이트</label>
-								<textarea id="flash-memo-input" rows="3" class="w-full text-xs border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-600 resize-none bg-white" placeholder="떠오른 아이디어를 적으세요..."></textarea>
+								<label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">아이디어 메모</label>
+								<textarea id="flash-memo-input" rows="2" class="w-full text-xs border border-slate-200 rounded-xl p-2.5 outline-none focus:border-blue-600 resize-none bg-white" placeholder="간단한 영감을 작성하세요..."></textarea>
 							</div>
 
-							<button id="btn-flash-generate" class="w-full bg-slate-900 hover:bg-black text-white text-xs font-bold py-3 rounded-xl transition shadow-sm">
+							<button id="btn-flash-generate" class="w-full bg-slate-900 hover:bg-black text-white text-xs font-bold py-2.5 rounded-xl transition shadow-sm">
 								긴급 발행 큐 추가
 							</button>
 						</div>
@@ -238,12 +241,10 @@ import db from '../data/db.json';
 			.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
 			.replace(/\n\n/g, '</p><p class="text-slate-600 leading-relaxed mb-4">');
 
-		// Wrap in paragraph if not already started
 		if (!html.startsWith('<h1') && !html.startsWith('<h2') && !html.startsWith('<h3')) {
 			html = '<p class="text-slate-600 leading-relaxed mb-4">' + html + '</p>';
 		}
 
-		// Inject Premium Visual Placeholders
 		html = html.replace(/\[📷 이미지 추천 포인트: (.*?)\]/gim, `
 			<div class="my-6 border border-dashed border-blue-200 bg-blue-50/40 rounded-2xl p-5 flex items-start gap-4">
 				<span class="text-xl">📷</span>
@@ -279,7 +280,7 @@ import db from '../data/db.json';
 			const isSelected = draft.id === selectedDraftId;
 
 			const div = document.createElement('div');
-			div.className = `p-4 border rounded-2xl cursor-pointer transition ${isSelected ? 'border-blue-600 bg-blue-50/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}`;
+			div.className = `p-3.5 border rounded-2xl cursor-pointer transition ${isSelected ? 'border-blue-600 bg-white shadow-sm' : 'border-transparent bg-white hover:bg-slate-100'}`;
 			div.innerHTML = `
 				<div class="flex justify-between items-start gap-2">
 					<h4 class="text-xs font-bold text-slate-800 truncate flex-grow">${draft.title}</h4>
@@ -423,7 +424,7 @@ import db from '../data/db.json';
 			id: draftId,
 			projectId: tag,
 			title: `⚡ [Flash] ${memo.substring(0, 30)}...`,
-			content: `# Flash Insight - ${projName}\n\n**아이디어 메모:**\n"${memo}"\n\n## 1. Why (기획의도)\n이 아이디어가 시작된 배경과 해결하려는 고통(Pain Point)에 대해 깊이 기술합니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어를 개발 환경에 정착시키기 위해 필요한 투쟁과 해결 로드맵.\n\n[📷 이미지 추천 포인트: 브레인스토밍 메모가 채워진 종이 노트 사진 또는 코딩 화면 캡처]\n\n## 3. AI Insight (AI의 통찰)\n직관적 의도를 AI 지식 생태계로 증폭시켜 최적화된 저널 마일스톤 에세이를 형성합니다.`,
+			content: `# Flash Insight - ${projName}\n\n**아이디어 메모:**\n"${memo}"\n\n## 1. Why (기획의도)\n이 아이디어가 시작된 배경과 해결하려는 고통(Pain Point)에 대해 깊이 기술합니다.\n\n## 2. Human Struggle (인간적 고뇌)\n이 아이디어를 개발 환경에 정착시키기 위해 필요한 투쟁과 해결 로드맵.\n\n[📷 이미지 추천 포인트: 브레인스토밍 메모가 채워진 종이 노트 사진 또는 코딩 화면 캡처]\n\n## 3. AI Insight (AI의 통찰)\n직관적 의도를 AI 지식 생태계로 증폭시켜 최적화된 저널 마일스톤 에세이를 형성합니다.`,
 			category: "Insight Essay",
 			status: "review"
 		};

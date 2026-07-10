@@ -51,36 +51,43 @@ const projectsList = db.projects;
 	title="AI 빌드 저널 | AI Experiment Lab"
 	description="AI 비즈니스 모델 구축 프로젝트별 빌드 로그 및 마일스톤 에세이 기록지"
 >
-	<div class="bg-slate-50 min-h-screen py-16">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+	<div class="bg-white min-h-screen py-20">
+		<div class="max-w-6xl mx-auto px-6 space-y-12">
 			
+			<!-- Header Block -->
+			<div class="text-center max-w-2xl mx-auto space-y-3">
+				<span class="text-blue-600 font-bold text-xs uppercase tracking-widest">AI Build Logs Journal</span>
+				<h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">AI 빌드 저널</h1>
+				<p class="text-slate-500 text-sm leading-relaxed">
+					프로젝트 폴더 및 마일스톤 단계를 필터링하여 개발 여정을 가독성 좋게 추적하세요.
+				</p>
+			</div>
+
 			<!-- Layout Grid: Sidebar on Left, Magazine Grid on Right -->
 			<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
 				
 				<!-- Left Sidebar: Project Folders Filter -->
 				<aside class="lg:col-span-3 space-y-6">
-					<div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm sticky top-24 space-y-6">
-						<div>
-							<h3 class="font-extrabold text-slate-900 text-sm mb-3">📁 Projects (C:/appdev)</h3>
-							<div class="space-y-1.5" id="sidebar-projects">
-								<button class="project-btn active-project-btn w-full text-left text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex justify-between items-center" data-project="all">
-									<span>🌍 전체 프로젝트</span>
-									<span class="bg-slate-200 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">{allPosts.length}</span>
-								</button>
-								<button class="project-btn w-full text-left text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex justify-between items-center" data-project="general">
-									<span>💡 General Essays</span>
-									<span class="bg-slate-100 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-full">{allPosts.filter(p => p.projectId === 'general').length}</span>
-								</button>
-								{projectsList.map(proj => {
-									const projPosts = allPosts.filter(p => p.projectId === proj.id);
-									return (
-										<button class="project-btn w-full text-left text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex justify-between items-center" data-project={proj.id}>
-											<span class="truncate pr-2">📁 {proj.name.replace(' (Sync)', '')}</span>
-											<span class="bg-slate-100 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-full flex-shrink-0">{projPosts.length}</span>
-										</button>
-									);
-								})}
-							</div>
+					<div class="bg-slate-50 border border-slate-100 rounded-[24px] p-6 shadow-sm sticky top-24 space-y-4">
+						<h3 class="font-extrabold text-slate-900 text-xs uppercase tracking-wider mb-2">📁 Projects</h3>
+						<div class="space-y-1" id="sidebar-projects">
+							<button class="project-btn active-project-btn w-full text-left text-xs font-bold px-3 py-2 rounded-xl transition flex justify-between items-center" data-project="all">
+								<span>전체 프로젝트</span>
+								<span class="bg-slate-200 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">{allPosts.length}</span>
+							</button>
+							<button class="project-btn w-full text-left text-xs font-bold px-3 py-2 rounded-xl transition flex justify-between items-center" data-project="general">
+								<span>💡 General Essays</span>
+								<span class="bg-white border border-slate-200 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-full">{allPosts.filter(p => p.projectId === 'general').length}</span>
+							</button>
+							{projectsList.map(proj => {
+								const projPosts = allPosts.filter(p => p.projectId === proj.id);
+								return (
+									<button class="project-btn w-full text-left text-xs font-bold px-3 py-2 rounded-xl transition flex justify-between items-center" data-project={proj.id}>
+										<span class="truncate pr-2">📁 {proj.name.replace(' (Sync)', '')}</span>
+										<span class="bg-white border border-slate-200 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-full flex-shrink-0">{projPosts.length}</span>
+									</button>
+								);
+							})}
 						</div>
 					</div>
 				</aside>
@@ -88,44 +95,41 @@ const projectsList = db.projects;
 				<!-- Right Column: Content Logs -->
 				<main class="lg:col-span-9 space-y-8">
 					<!-- Top Navigation & Milestones Filtering -->
-					<div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-						<div>
-							<h2 class="font-extrabold text-slate-900 text-lg">AI Build Logs Journal</h2>
-							<p class="text-xs text-slate-500 mt-1">프로젝트 폴더 및 마일스톤 필터링을 조율하여 개발 여정을 추적하세요.</p>
-						</div>
+					<div class="bg-slate-50 border border-slate-100 rounded-[24px] p-5 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+						<span class="text-xs font-bold text-slate-700">Milestone Stage:</span>
 						
 						<!-- Milestone Stage Filters -->
-						<div class="flex flex-wrap gap-2" id="milestone-filters">
-							<button class="milestone-btn active-milestone-btn text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-100 text-slate-600 transition" data-status="all">전체 단계</button>
-							<button class="milestone-btn text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 transition" data-status="planning">Planning (기획)</button>
-							<button class="milestone-btn text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 transition" data-status="in-progress">Developing (개발)</button>
-							<button class="milestone-btn text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 transition" data-status="completed">Completed (완료)</button>
-							<button class="milestone-btn text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 transition" data-status="failed">Failed (실패)</button>
+						<div class="flex flex-wrap gap-1.5" id="milestone-filters">
+							<button class="milestone-btn active-milestone-btn text-[11px] font-bold px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 transition" data-status="all">전체</button>
+							<button class="milestone-btn text-[11px] font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 transition" data-status="planning">Planning (기획)</button>
+							<button class="milestone-btn text-[11px] font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 transition" data-status="in-progress">Developing (개발)</button>
+							<button class="milestone-btn text-[11px] font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 transition" data-status="completed">Completed (완료)</button>
+							<button class="milestone-btn text-[11px] font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 transition" data-status="failed">Failed (실패)</button>
 						</div>
 					</div>
 
 					<!-- Magazine Grid Layout -->
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-8 transition-opacity duration-300" id="magazine-posts-grid">
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-6 transition-opacity duration-300" id="magazine-posts-grid">
 						{sortedPosts.map(post => {
 							const isOrigin = post.category === 'Episode 0: The Origin';
 							return (
 								<div 
-									class={`blog-card border rounded-3xl p-6 bg-white hover:border-blue-400 transition-all duration-300 flex flex-col gap-4 shadow-sm hover:shadow-md cursor-pointer ${
+									class={`blog-card border rounded-[24px] p-6 transition-all duration-300 flex flex-col gap-3 shadow-sm hover:shadow-md cursor-pointer ${
 										isOrigin 
-											? 'border-amber-400 bg-amber-50/10 shadow-amber-50/50 hover:border-amber-500 md:col-span-2' 
-											: 'border-slate-200'
+											? 'border-amber-300 bg-amber-50/10 shadow-amber-50/30 hover:border-amber-400 md:col-span-2' 
+											: 'border-slate-100 bg-slate-50 hover:bg-white'
 									}`} 
 									data-project={post.projectId}
 									data-status={post.status}
 									data-category={post.category}
 								>
-									<div class="flex items-center gap-2 flex-wrap text-xs">
+									<div class="flex items-center gap-2 flex-wrap text-[10px]">
 										{isOrigin ? (
 											<span class="bg-amber-100 text-amber-900 font-extrabold px-3 py-1 rounded-full border border-amber-200 flex items-center gap-1 animate-pulse">
-												🎬 Episode 0: The Origin (기획 스토리)
+												🎬 Episode 0: The Origin
 											</span>
 										) : (
-											<span class="bg-blue-50 text-blue-600 font-bold px-2.5 py-1 rounded-full border border-blue-100">
+											<span class="bg-white border border-slate-200 text-blue-600 font-bold px-2 py-0.5 rounded-md">
 												{post.category}
 											</span>
 										)}
@@ -134,30 +138,30 @@ const projectsList = db.projects;
 										</span>
 									</div>
 
-									<h3 class={`font-extrabold text-slate-900 leading-snug hover:text-blue-600 transition ${isOrigin ? 'text-2xl' : 'text-lg'}`}>
+									<h3 class={`font-extrabold text-slate-900 leading-snug hover:text-blue-600 transition ${isOrigin ? 'text-xl' : 'text-base'}`}>
 										<a href={`/blog/${post.id}`}>
 											{post.title}
 										</a>
 									</h3>
 
-									<p class="text-slate-500 text-sm leading-relaxed line-clamp-3">
+									<p class="text-slate-500 text-xs leading-relaxed line-clamp-2">
 										{post.description}
 									</p>
 
-									<div class="border-t border-slate-100 pt-4 flex justify-between items-center text-xs text-slate-400 mt-2">
-										<div class="flex gap-2">
+									<div class="border-t border-slate-200/50 pt-3 flex justify-between items-center text-[10px] text-slate-400 mt-1">
+										<div class="flex gap-1">
 											{post.tags && post.tags.slice(0, 3).map(tag => (
-												<span class="text-slate-500 font-medium">#{tag}</span>
+												<span class="text-slate-400 font-medium">#{tag}</span>
 											))}
 										</div>
-										<span class="font-bold text-slate-700 capitalize font-mono">🚀 Status: {post.status === 'in-progress' ? 'Developing' : post.status}</span>
+										<span class="font-bold text-slate-500 capitalize font-mono">🚀 {post.status === 'in-progress' ? 'Developing' : post.status}</span>
 									</div>
 								</div>
 							);
 						})}
 					</div>
 
-					<div id="no-posts-alert" class="hidden text-center py-20 bg-white border border-slate-200 rounded-3xl text-slate-400 shadow-sm">
+					<div id="no-posts-alert" class="hidden text-center py-20 bg-slate-50 border border-slate-100 rounded-[24px] text-slate-400 shadow-sm">
 						<span class="text-3xl">📭</span>
 						<p class="font-bold mt-4">조건에 매칭되는 빌드 로그 에세이가 없습니다.</p>
 					</div>
@@ -176,7 +180,7 @@ const projectsList = db.projects;
 		color: #64748B;
 	}
 	.project-btn:hover {
-		background: #F1F5F9;
+		background: #FFFFFF;
 		color: #0F172A;
 	}
 	.active-project-btn {
@@ -192,12 +196,7 @@ const projectsList = db.projects;
 
 	/* Smooth fade filter transition */
 	.blog-card {
-		transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-	.fade-out {
-		opacity: 0;
-		transform: scale(0.95);
-		pointer-events: none;
+		transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 </style>
 
@@ -212,7 +211,6 @@ const projectsList = db.projects;
 	let activeStatus = 'all';
 
 	function applyFilter() {
-		// Fade out container briefly
 		gridContainer!.style.opacity = '0.3';
 
 		setTimeout(() => {
@@ -223,7 +221,6 @@ const projectsList = db.projects;
 				const cardStatus = card.getAttribute('data-status');
 
 				const matchProj = activeProject === 'all' || cardProj === activeProject;
-				// Mapping 'in-progress' logic for Developing status
 				const normalizedStatus = cardStatus === 'in-progress' ? 'in-progress' : cardStatus;
 				const matchStatus = activeStatus === 'all' || normalizedStatus === activeStatus;
 
@@ -241,7 +238,6 @@ const projectsList = db.projects;
 				noPostsAlert!.classList.add('hidden');
 			}
 
-			// Fade back in
 			gridContainer!.style.opacity = '1';
 		}, 200);
 	}

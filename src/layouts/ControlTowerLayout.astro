@@ -42,7 +42,7 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 		<!-- Google Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 		<!-- Custom Modern Light Design Theme -->
 		<style is:global>
@@ -54,13 +54,13 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 				--accent-blue: #0052FF;
 				--accent-blue-hover: #0041CC;
 				--accent-blue-light: #EBF2FF;
-				--border-color: #E2E8F0;
-				--shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-				--shadow-md: 0 4px 20px -2px rgba(0, 82, 255, 0.08), 0 4px 6px -1px rgba(0, 0, 0, 0.03);
-				--shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-				--radius-md: 12px;
-				--radius-lg: 16px;
-				--font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+				--border-color: #F1F5F9;
+				--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+				--shadow-md: 0 4px 20px -2px rgba(0, 82, 255, 0.05), 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+				--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.02), 0 4px 6px -4px rgba(0, 0, 0, 0.02);
+				--radius-md: 16px;
+				--radius-lg: 24px;
+				--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 			}
 
 			* {
@@ -85,7 +85,7 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 
 			/* Container utilities */
 			.container {
-				max-width: 1200px;
+				max-width: 1152px; /* max-w-6xl */
 				margin: 0 auto;
 				padding: 0 24px;
 			}
@@ -104,13 +104,13 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 		</style>
 	</head>
 	<body>
-		<header style="border-bottom: 1px solid var(--border-color); position: sticky; top: 0; background: rgba(255,255,255,0.8); backdrop-filter: blur(12px); z-index: 100;">
+		<header style="border-bottom: 1px solid var(--border-color); position: sticky; top: 0; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(16px); z-index: 100;">
 			<div class="container" style="display: flex; justify-content: space-between; align-items: center; height: 72px;">
-				<a href="/" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; color: var(--accent-blue);">
-					<span style="background: var(--accent-blue); color: white; padding: 4px 10px; border-radius: 8px; font-size: 1.1rem;">LAB</span>
-					AI Experiment Lab
+				<a href="/" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.2rem; color: var(--text-main);">
+					<span style="background: var(--accent-blue); color: white; padding: 4px 10px; border-radius: 12px; font-size: 1rem; font-weight: 800;">LAB</span>
+					LAB: AI Experiment Lab
 				</a>
-				<nav style="display: flex; gap: 24px; font-weight: 600; font-size: 0.95rem;">
+				<nav style="display: flex; gap: 24px; font-weight: 600; font-size: 0.9rem;">
 					<a href="/" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">홈</a>
 					<a href="/blog" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">빌드 저널</a>
 					<a href="/operator" style="color: var(--accent-blue);" onmouseover="this.style.color='var(--accent-blue-hover)'" onmouseout="this.style.color='var(--accent-blue)'">오퍼레이터</a>

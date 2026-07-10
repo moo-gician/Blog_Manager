@@ -4,73 +4,53 @@ interface Props {
 	description: string;
 	pubDate: Date;
 	slug: string;
-	status: 'planning' | 'in-progress' | 'completed';
-	client?: string;
-	location?: string;
+	status: string;
 	tags?: string[];
 	heroImage?: string;
 }
 
-const { title, description, pubDate, slug, status, client, location, tags = [], heroImage } = Astro.props;
-
-const statusColors = {
-	'planning': { bg: '#FFF7ED', text: '#C2410C', label: '기획 단계' },
-	'in-progress': { bg: '#EBF2FF', text: '#0052FF', label: '구축 진행 중' },
-	'completed': { bg: '#F0FDF4', text: '#15803D', label: '완료 및 배포' },
-};
-
-const currentStatus = statusColors[status] || statusColors['planning'];
+const { title, description, pubDate, slug, status, tags = [], heroImage } = Astro.props;
 ---
 
-<div class="card" style="background: var(--bg-white); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; height: 100%; box-shadow: var(--shadow-sm);">
+<div class="card" style="background: var(--bg-light); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; height: 100%; box-shadow: var(--shadow-sm);">
 	{heroImage && (
-		<div style="position: relative; height: 200px; overflow: hidden; background: #eee;">
+		<div style="position: relative; height: 180px; overflow: hidden; background: #eee;">
 			<img src={heroImage} alt={title} style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="card-img" />
-			<span style={`position: absolute; top: 16px; right: 16px; background: ${currentStatus.bg}; color: ${currentStatus.text}; padding: 6px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(0, 82, 255, 0.1);`}>
-				{currentStatus.label}
+			<span style="position: absolute; top: 12px; right: 12px; background: white; color: var(--text-main); padding: 4px 10px; border-radius: 99px; font-size: 0.65rem; font-weight: 700; border: 1px solid var(--border-color);">
+				{status}
 			</span>
 		</div>
 	)}
 	<div style="padding: 24px; flex-grow: 1; display: flex; flex-direction: column; gap: 12px;">
 		<div style="display: flex; gap: 8px; flex-wrap: wrap;">
 			{tags.slice(0, 3).map(tag => (
-				<span style="background: var(--bg-light); color: var(--text-muted); font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 500;">
+				<span style="background: white; color: var(--text-muted); font-size: 0.65rem; padding: 2px 8px; border-radius: 6px; font-weight: 600; border: 1px solid var(--border-color);">
 					#{tag}
 				</span>
 			))}
 		</div>
 
-		<h3 style="font-size: 1.25rem; font-weight: 700; line-height: 1.4; color: var(--text-main);">
+		<h3 style="font-size: 1.15rem; font-weight: 800; line-height: 1.4; color: var(--text-main);">
 			<a href={`/blog/${slug}`} style="color: inherit;" class="card-link">
 				{title}
 			</a>
 		</h3>
 
-		<p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; flex-grow: 1;">
+		<p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; flex-grow: 1;">
 			{description}
 		</p>
-
-		<div style="margin-top: 12px; padding-top: 16px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-muted);">
-			{client && (
-				<span style="font-weight: 600; color: var(--text-main);">
-					👤 {client}
-				</span>
-			)}
-			<span>
-				📍 {location || '시카고'}
-			</span>
-		</div>
 	</div>
 </div>
 
 <style>
 	.card:hover {
-		transform: translateY(-6px);
+		transform: translateY(-4px);
 		box-shadow: var(--shadow-md);
-		border-color: rgba(0, 82, 255, 0.2);
+		border-color: rgba(0, 82, 255, 0.15);
+		background: #FFFFFF !important;
 	}
 	.card:hover .card-img {
-		transform: scale(1.05);
+		transform: scale(1.03);
 	}
 	.card-link:hover {
 		color: var(--accent-blue) !important;

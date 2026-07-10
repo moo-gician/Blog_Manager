@@ -2,22 +2,28 @@
 
 This document tracks the deployment and major updates matching the GitHub release commits.
 
+## v1.5.0 - Layout Stabilization & Visual Refinement (Josh Comeau Style)
+- **Date**: 2026-07-10
+- **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
+- **Features**:
+  - **Global Navigation & Branding**: Fixed Header branding to `"LAB: AI Experiment Lab"`. Corrected home path to `href="/"`. Implemented backdrop blur (`backdrop-filter: blur(16px)`) with transparent header style.
+  - **Layout Centering**: Centered all views (Home, Blog, Operator) using `max-w-6xl mx-auto px-6` container alignments to create structured focus.
+  - **Typography & Whitespace**: Upgraded font stack to `Inter` and global line-height to `1.6`. Increased vertical margins and section padding (`py-24` and `gap-8`) for breathable layouts.
+  - **Admin Bento Grid & Workbench**: Reconstructed Operator Panel into a clean Bento Grid layout using off-white card backgrounds (`bg-slate-50`), `border-radius: 24px` (`rounded-[24px]`), and soft shadows. High contrast black-border workbench area as the central visual focal point.
+  - **Blog Cards & Sidebar**: Compacted project listing sidebar inside `/blog`. Simplified build log card parameters (BuildLogCard.astro) to show clean previews with minimized metadata.
+
 ## v1.4.0 - Strategic Pivot: AI Build Lab & Journal Launch
 - **Date**: 2026-07-10
 - **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
 - **Features**:
   - Pivoted public branding from "Web Factory Sales" to "AI Experiment Lab & Journal".
-  - **Landing Page Redesign**: Removed all sales-oriented CTAs and forms. Added new hero section highlighting "Documenting My Journey of Building AI Business Models" and displayed active project grids and latest build logs.
-  - **Build Log Page Architecture**: Implemented left sidebar list of `C:/appdev/` projects, milestone filters (Planning, Developing, Completed, Failed), and high-readability magazine layout.
-  - **AI Operator Workbench Overhaul**: Implemented 24px rounded corners (`rounded-3xl`), expanded whitespace padding, and simplified layout with 3 clear zones: `[Source Detection]`, `[AI Collaboration Space]`, and `[Deployment Ready]`.
-  - Optimized SEO settings for "AI Development Journey" and "Build in Public".
+  - Redesigned landing page and added left sidebar projects list with milestone filtering.
 
 ## v1.3.0 - Origin Stories Handling ('Episode 0: The Origin')
 - **Date**: 2026-07-10
 - **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
 - **Features**:
-  - Added Section `3.6. Special Handling for 'Origin Stories'` in `context.md`.
-  - Modified `sync-local-projects.js` to inspect projects for origin keywords and tag generated drafts with `'Episode 0: The Origin'`.
+  - Added Origin Stories handling and keywords check.
   - Highlighted and pinned Origin posts on `blog.astro` with premium gold layouts.
 
 ## v1.2.0 - Global Rules Documentation & Supreme Logic Integration
