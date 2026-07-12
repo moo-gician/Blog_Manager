@@ -142,194 +142,13 @@
       "todo": "# 📋 Youtube_FNL 파이프라인 TODO (Phase 2: POV: Error 피벗)\n\n> **현재 상황:** \"POV: Error\" 채널 피벗 및 멀티 에이전트 구조 전면 리팩토링 진행.\n> 각 에이전트 개발 후 단독 실행하며 기능 및 API 연동 수준을 순차적으로 검증한다.\n\n---\n\n## 🔬 Phase 2: 에이전트 구현 및 단독 검증\n\n### 🟢 STEP A: 구글 시트 구조 및 DB 연동 최적화 (`sheets.js`, `sheets_setup.js`)\n* [x] **A-1.** `sheets_setup.js` 및 `reset_trends_sheet.js` 리팩토링 (최소화된 11개 헤더 구조로 초기화 및 셋업 스크립트 수정)\n* [x] **A-2.** `sheets.js`에서 11개 컬럼 연동 및 `logTrend`, `getTrendById`, `updateTrendStatus` 등 데이터 매핑 함수 리팩토링\n\n### 📥 STEP B: Agent 1 (Source Ingestor / 소스수집팀장) 구현\n* [/] **B-1.** 로컬 `yt-dlp` 및 구글 드라이브 업로더 연동 (Quota 에러 시 로컬 캐싱 및 Fallback)\n* [/] **B-2.** URL 중복 및 로컬 파일 감지 캐싱 로직 구현\n* [/] **B-3.** 단독 실행 스크립트 작성 및 텔레그램 감지 트리거 검증\n\n### 🧠 STEP C: Agent 2 (Context Tweaker / 콘텐츠기획팀장) 구현\n* [/] **C-1.** Gemini 1.5 Pro File API를 통한 원본 비디오 멀티모달 분석 로직 구현\n* [/] **C-2.** 비틀기 기획서(자막 싱크 + TTS 나레이션 대본) 생성용 프롬프트 정립\n* [/] **C-3.** 텔레그램 3대 기획안 인라인 승인 대기 대화 루프 수정 연동\n\n### ⚒️ STEP D: Agent 3 (Tweak Forge / 나레이션제작팀장) 구현\n* [/] **D-1.** 구글 클라우드 TTS를 이용한 무미건조한 AI 나레이션 음성 파일 생성\n* [/] **D-2.** 영상 오버레이용 SRT 자막 및 이미지 그래픽 에셋(Error PNG 등) 적재 로직 구현\n* [/] **D-3.** 유튜브 채널용 숏폼 썸네일 이미지 자동 생성 구현\n\n### 🎬 STEP E: Agent 4 (Seamless Editor / 영상편집팀장) 구현\n* [/] **E-1.** 로컬 FFmpeg 연동 및 오디오 덕킹(Audio Ducking) 명령 필터 구현\n* [/] **E-2.** 비디오에 AI Voiceover + 자막 + 오버레이 그래픽 병합 렌더링 검증\n* [/] **E-3.** 원본 비디오 길이에 맞춰 간결하게 25초 내외로 유연하게 출력 제어되는지 확인\n\n### 🚀 STEP F: Agent 5 (Publisher / 배포업로드팀장) 구현\n* [/] **F-1.** 완성된 최종 영상 텔레그램 직접 전송 및 2차 배포 승인 요청 구현 (Direct Play)\n* [/] **F-2.** 승인 시 Gemini 1.5 Flash를 이용한 `POV: <컨셉>` 문법의 유튜브 타이틀/태그 자동화 생성\n* [/] **F-3.** YouTube Data API v3를 통한 업로드 기능 검증\n\n---\n\n## 🚀 Phase 3: 전체 통합 및 자동화 검증\n\n- [/] **G-1.** 전체 에이전트(1➔2➔3➔4➔5) 연동 오케스트레이터 (`orchestrator.js`) 리팩토링\n- [ ] **G-2.** 텔레그램 2단계 수동 등록부터 최종 업로드까지의 엔드투엔드 시나리오 실행 테스트\n- [ ] **G-3.** 일일 Cron 스케줄러 가동 테스트\n\n"
     }
   ],
-  "drafts": [
-    {
-      "id": "draft-general-rule-yakmunton",
-      "projectId": "general",
-      "title": "💡 [글로벌 룰] 3장: 고객의 뼈를 때리는 '약문통 원해자' 마케팅 6단계 공식",
-      "content": "# 글로벌 룰 3장: '약문통 원해자' 6단계 공식\n\n기술의 우수성만 늘어놓는 웹사이트는 망합니다. 핵심은 사용자의 고통을 해결하는 가치의 제안입니다.\n\n## 1. Why (창립자의 의도)\n개발자들은 흔히 기능 개발에 취해 사용자가 진정 필요로 하는 이익을 설명하지 못합니다. 고객이 최소의 인풋으로 최대의 아웃풋을 낸다는 마케팅적 메커니즘을 기획 초기부터 탑재해 기형적인 기술 만능주의를 예방하기 위함입니다.\n\n## 2. Behind the Scenes (탄생 비화)\n창립자가 수많은 개발 외주 프로젝트를 관찰한 결과, $10,000가 넘는 화려한 사이트들도 정작 \"이 사이트가 나에게 무슨 이익을 주는가?\"에 답하지 못해 버려지는 것을 보았습니다. 이에 마케팅의 정수인 [약속-문제-통념-원인-해법-자각] 단계를 공식화하여, 모든 프로젝트의 기획 단계에서 이 순서를 밟지 않으면 빌드 프로세스를 차단하도록 SOP를 정의했습니다.\n\n[📷 이미지 추천 포인트: 약문통 원해자 단계별 깔끔한 도표 그래픽 및 미션 선언서 강조 인포그래픽]\n\n## 3. AI Insight (AI의 통찰)\nAI 오퍼레이터가 글을 쓰거나 코드를 작성할 때 '약문통 원해자' 프레임워크는 강력한 필터가 됩니다. 단순한 텍스트 나열을 넘어 독자가 자신의 문제를 깨닫고 전환(CTA) 버튼을 누르게 만드는 최강의 전환율 상승 엔진입니다."
-    },
-    {
-      "id": "draft-general-rule-lightdesign",
-      "projectId": "general",
-      "title": "💡 [글로벌 룰] 2장: 다크 모드를 거부하는 Modern Light 디자인의 미학",
-      "content": "# 글로벌 룰 2장: 다크 모드를 거부하는 Modern Light 디자인\n\n왜 시카고 AI 웹 공장은 수많은 개발자들이 선호하는 다크 모드를 배제하고 순백색(Bright Light) 테마를 강제할까요?\n\n## 1. Why (창립자의 의도)\n웹사이트는 개발자를 위한 것이 아닙니다. 로컬 비즈니스의 최종 소비자인 예비 부부, 학부모, 로컬 매장 방문 고객들에게 다크 모드는 어둡고 불안정한 느낌을 주기 쉽습니다. 대중에게 가장 높은 시인성과 깨끗한 전문성을 전달하기 위해 흰색(#FFFFFF) 배경과 신뢰의 일렉트릭 블루 포인트를 채택했습니다.\n\n## 2. Behind the Scenes (탄생 비화)\n초기 사진작가 포트폴리오를 다크 그레이 톤으로 퍼블리싱했을 때, 시카고의 예비 부부 고객들로부터 \"웨딩의 밝고 숭고한 분위기가 살지 않는다\"는 피드백을 받았습니다. 창립자는 즉각 \"실제 비즈니스 매출을 견인하는 디자인은 눈부시게 밝은 순백 테마에서 시작한다\"며 디자인 헌법을 Modern Light 스타일로 엄격하게 리포맷했습니다.\n\n[📷 이미지 추천 포인트: 밝은 대낮의 햇빛 아래에서도 완벽한 대비를 이루는 일렉트릭 블루 포인트와 Plus Jakarta Sans 타이포그래피 모바일 화면 스크린샷]\n\n## 3. AI Insight (AI의 통찰)\n다크 모드가 제공하는 눈의 피로 감소보다, 첫 인상에서 구매 전환을 유도하는 'Bright Light'의 감성적 가치가 3배 높습니다. AI는 디자인 설계 시 이 심리학적 가치(Value Creation)를 최우선으로 준수합니다.",
-      "status": "review"
-    },
-    {
-      "id": "draft-general-rule-memory",
-      "projectId": "general",
-      "title": "💡 [글로벌 룰] 1장: 3대 필수 문서와 에이전트의 뇌가 된 기억 시스템",
-      "content": "# 글로벌 룰 1장: 3대 필수 문서와 기억 시스템\n\n시카고 AI 웹 공장의 모든 개발과 의사결정은 plan.md, context.md, todo.md라는 3대 기억 장치에서 출발합니다.\n\n## 1. Why (창립자의 의도)\n개발 과정에서 AI 에이전트는 대화창 리셋이나 컨텍스트 윈도우 한계로 인해 이전의 중요한 비즈니스 규칙과 피드백을 유실하곤 했습니다. 사령관은 매번 똑같은 설명을 되풀이하고 코드가 롤백되는 재앙을 막기 위해, 대화의 한계를 초월하여 영구히 지속되는 3대 기억 문서를 모든 워크플로우의 'Supreme Logic'으로 명시했습니다.\n\n## 2. Behind the Scenes (탄생 비화)\n초기 빌드 테스트 중, 갤러리 로딩 방식을 최적화해 두었던 코드가 세션이 바뀐 에이전트에 의해 구형 템플릿 코드로 롤백된 사건이 있었습니다. 이에 격분한 창립자는 \"기록하지 않는 에이전트는 퇴출한다\"는 선언과 함께, 프로젝트 진입 직후 무조건 plan/context/todo부터 삼키는 /start 매커니즘을 전격 탑재했습니다.\n\n[📷 이미지 추천 포인트: plan, context, todo 파일들이 1:1로 깃 브랜치와 실시간 연동되어 버전을 형성하는 시스템 구조도]\n\n## 3. AI Insight (AI의 통찰)\n기억을 로컬 디렉토리의 단일 소스(Single Source of Truth)로 격리해 관리함으로써, 어떤 AI 코더가 들어와도 이전 결정을 100% 흡수하여 실수를 예방하고 롤백 없는 초고속 빌드를 가능하게 합니다.",
-      "status": "review"
-    },
-    {
-      "id": "draft-Amazon_KDP-1783687491524-0",
-      "projectId": "Amazon_KDP",
-      "title": "Amazon_KDP (Sync)의 AI 기반 마케팅 에세이 #1",
-      "content": "# Amazon_KDP (Sync) - 현장 로그에서 얻은 비즈니스 가치\n\n## 1. Why (전략)\nAmazon_KDP (Sync) 프로젝트는 3대 핵심 파일(Plan/Context/Todo)의 'Supreme Logic'에 기반하여 설계되었습니다. 기술 스택은 Google Ecosystem인 Firebase Hosting을 선택하여 3일 만에 빠른 구축과 탄탄한 보안을 약속합니다.\n\n## 2. Human Struggle (인간적 극복)\n이 과정에서 발생한 수작업 갱신 문제를 해결하고 모던 라이트 디자인을 이식하기 위한 개발자들의 땀방울이 녹아있습니다.\n\n[📷 이미지 추천 포인트: 화이트 배경에 일렉트릭 블루 포인트로 구현된 로컬 비즈니스 모바일 캘린더 화면과 0.4초의 로딩속도를 자랑하는 모바일 최적화 스크린샷]\n\n## 3. AI Insight (AI의 통찰)\n로컬 시카고 시장의 높은 키워드 경쟁 속에서, 오직 현장에서 도출된 실제 데이터를 마케팅 스토리로 증폭시킴으로써 광고비 없이도 압도적인 구글 맵 최적화 순위를 유지하게 됩니다.",
-      "category": "Build Log",
-      "status": "review"
-    },
-    {
-      "id": "draft-Amazon_KDP-1783687491524-1",
-      "projectId": "Amazon_KDP",
-      "title": "Amazon_KDP (Sync)의 AI 기반 마케팅 에세이 #2",
-      "content": "# Amazon_KDP (Sync) - 현장 로그에서 얻은 비즈니스 가치\n\n## 1. Why (전략)\nAmazon_KDP (Sync) 프로젝트는 3대 핵심 파일(Plan/Context/Todo)의 'Supreme Logic'에 기반하여 설계되었습니다. 기술 스택은 Google Ecosystem인 Firebase Hosting을 선택하여 3일 만에 빠른 구축과 탄탄한 보안을 약속합니다.\n\n## 2. Human Struggle (인간적 극복)\n이 과정에서 발생한 수작업 갱신 문제를 해결하고 모던 라이트 디자인을 이식하기 위한 개발자들의 땀방울이 녹아있습니다.\n\n[📷 이미지 추천 포인트: 화이트 배경에 일렉트릭 블루 포인트로 구현된 로컬 비즈니스 모바일 캘린더 화면과 0.4초의 로딩속도를 자랑하는 모바일 최적화 스크린샷]\n\n## 3. AI Insight (AI의 통찰)\n로컬 시카고 시장의 높은 키워드 경쟁 속에서, 오직 현장에서 도출된 실제 데이터를 마케팅 스토리로 증폭시킴으로써 광고비 없이도 압도적인 구글 맵 최적화 순위를 유지하게 됩니다.",
-      "category": "Build Log",
-      "status": "review"
-    },
-    {
-      "id": "draft-Blog_Manager-1783687491525-0",
-      "projectId": "Blog_Manager",
-      "title": "🎬 [Episode 0: Origin] Blog_Manager (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - Blog_Manager (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-Blog_Manager-1783687491525-1",
-      "projectId": "Blog_Manager",
-      "title": "🎬 [Episode 0: Origin] Blog_Manager (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - Blog_Manager (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-CampLink_Chicago-1783687491527-0",
-      "projectId": "CampLink_Chicago",
-      "title": "🎬 [Episode 0: Origin] CampLink_Chicago (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - CampLink_Chicago (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-CampLink_Chicago-1783687491527-1",
-      "projectId": "CampLink_Chicago",
-      "title": "🎬 [Episode 0: Origin] CampLink_Chicago (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - CampLink_Chicago (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-Habitmon-1783687491528-0",
-      "projectId": "Habitmon",
-      "title": "🎬 [Episode 0: Origin] Habitmon (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - Habitmon (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-Habitmon-1783687491528-1",
-      "projectId": "Habitmon",
-      "title": "🎬 [Episode 0: Origin] Habitmon (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - Habitmon (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-olivia-choi-wedding-1783687491528-0",
-      "projectId": "olivia-choi-wedding",
-      "title": "Olivia Choi Photography (Wedding)의 AI 기반 마케팅 에세이 #1",
-      "content": "# Olivia Choi Photography (Wedding) - 현장 로그에서 얻은 비즈니스 가치\n\n## 1. Why (전략)\nOlivia Choi Photography (Wedding) 프로젝트는 3대 핵심 파일(Plan/Context/Todo)의 'Supreme Logic'에 기반하여 설계되었습니다. 기술 스택은 Google Ecosystem인 Firebase Hosting을 선택하여 3일 만에 빠른 구축과 탄탄한 보안을 약속합니다.\n\n## 2. Human Struggle (인간적 극복)\n이 과정에서 발생한 수작업 갱신 문제를 해결하고 모던 라이트 디자인을 이식하기 위한 개발자들의 땀방울이 녹아있습니다.\n\n[📷 이미지 추천 포인트: 화이트 배경에 일렉트릭 블루 포인트로 구현된 로컬 비즈니스 모바일 캘린더 화면과 0.4초의 로딩속도를 자랑하는 모바일 최적화 스크린샷]\n\n## 3. AI Insight (AI의 통찰)\n로컬 시카고 시장의 높은 키워드 경쟁 속에서, 오직 현장에서 도출된 실제 데이터를 마케팅 스토리로 증폭시킴으로써 광고비 없이도 압도적인 구글 맵 최적화 순위를 유지하게 됩니다.",
-      "category": "Build Log",
-      "status": "review"
-    },
-    {
-      "id": "draft-olivia-choi-wedding-1783687491528-1",
-      "projectId": "olivia-choi-wedding",
-      "title": "Olivia Choi Photography (Wedding)의 AI 기반 마케팅 에세이 #2",
-      "content": "# Olivia Choi Photography (Wedding) - 현장 로그에서 얻은 비즈니스 가치\n\n## 1. Why (전략)\nOlivia Choi Photography (Wedding) 프로젝트는 3대 핵심 파일(Plan/Context/Todo)의 'Supreme Logic'에 기반하여 설계되었습니다. 기술 스택은 Google Ecosystem인 Firebase Hosting을 선택하여 3일 만에 빠른 구축과 탄탄한 보안을 약속합니다.\n\n## 2. Human Struggle (인간적 극복)\n이 과정에서 발생한 수작업 갱신 문제를 해결하고 모던 라이트 디자인을 이식하기 위한 개발자들의 땀방울이 녹아있습니다.\n\n[📷 이미지 추천 포인트: 화이트 배경에 일렉트릭 블루 포인트로 구현된 로컬 비즈니스 모바일 캘린더 화면과 0.4초의 로딩속도를 자랑하는 모바일 최적화 스크린샷]\n\n## 3. AI Insight (AI의 통찰)\n로컬 시카고 시장의 높은 키워드 경쟁 속에서, 오직 현장에서 도출된 실제 데이터를 마케팅 스토리로 증폭시킴으로써 광고비 없이도 압도적인 구글 맵 최적화 순위를 유지하게 됩니다.",
-      "category": "Build Log",
-      "status": "review"
-    },
-    {
-      "id": "draft-ReplyToon-1783687491529-0",
-      "projectId": "ReplyToon",
-      "title": "🎬 [Episode 0: Origin] ReplyToon (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - ReplyToon (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-ReplyToon-1783687491529-1",
-      "projectId": "ReplyToon",
-      "title": "🎬 [Episode 0: Origin] ReplyToon (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - ReplyToon (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-StorySeed-1783687491530-0",
-      "projectId": "StorySeed",
-      "title": "🎬 [Episode 0: Origin] StorySeed (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - StorySeed (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-StorySeed-1783687491530-1",
-      "projectId": "StorySeed",
-      "title": "🎬 [Episode 0: Origin] StorySeed (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - StorySeed (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-Telegram_Control_Tower-1783687491530-0",
-      "projectId": "Telegram_Control_Tower",
-      "title": "🎬 [Episode 0: Origin] Telegram_Control_Tower (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - Telegram_Control_Tower (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-Telegram_Control_Tower-1783687491530-1",
-      "projectId": "Telegram_Control_Tower",
-      "title": "🎬 [Episode 0: Origin] Telegram_Control_Tower (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - Telegram_Control_Tower (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-Todo_Telegram-1783687491531-0",
-      "projectId": "Todo_Telegram",
-      "title": "🎬 [Episode 0: Origin] Todo_Telegram (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - Todo_Telegram (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-Todo_Telegram-1783687491531-1",
-      "projectId": "Todo_Telegram",
-      "title": "🎬 [Episode 0: Origin] Todo_Telegram (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - Todo_Telegram (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-Youtube_FNL-1783687491532-0",
-      "projectId": "Youtube_FNL",
-      "title": "🎬 [Episode 0: Origin] Youtube_FNL (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - Youtube_FNL (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    },
-    {
-      "id": "draft-Youtube_FNL-1783687491532-1",
-      "projectId": "Youtube_FNL",
-      "title": "🎬 [Episode 0: Origin] Youtube_FNL (Sync)의 시작점과 아이디어의 태동",
-      "content": "# Episode 0: The Origin - Youtube_FNL (Sync)의 시작\n\n모든 프로젝트에는 깊은 문제의식이 존재합니다.\n\n## 1. Why (시작과 아이디어)\n이 프로젝트는 구체적인 Pain Point인 업무 불일치와 수동 수집의 한계라는 문제(Problem)에서 시작되었습니다. Background는 시카고 로컬 생태계의 비효율성이었으며, 이를 해결하기 위한 아이디어가 떠올랐습니다.\n\n## 2. Human Struggle (인간적 고뇌)\n아이디어는 있었지만, 바쁜 일과 중에서 기술적 스택(Astro, Firebase)과 구도를 연계하는 과정은 고난의 연속이었습니다.\n\n[📷 이미지 추천 포인트: 프로젝트의 아이디어와 전체 일정 타임라인(overall plan/timeline)이 화이트보드에 자유롭게 스케치된 현장 사진]\n\n## 3. AI Insight (AI의 통찰)\n'Episode 0'의 가치 제안은 비즈니스의 영혼입니다. AI는 사령관의 이 시작 스토리를 첫 페이지에 고정(Pin)하여, 모든 테크니컬 빌드 로그에 신뢰의 토대를 제공합니다.",
-      "category": "Episode 0: The Origin",
-      "status": "review"
-    }
-  ],
+  "drafts": [],
   "posts": [
     {
       "id": "olivia-choi-wedding",
       "projectId": "olivia-choi-wedding",
       "title": "Olivia Choi Photography - Premium Wedding Portfolio",
-      "description": "시카고 프리미엄 웨딩 사진작가 Olivia Choi의 초고속 포트폴리오 웹사이트 및 AI 자동 마케팅 엔진 구축 빌드 로그",
+      "description": "Ultra-fast portfolio website and AI automated marketing engine build log for Chicago premium wedding photographer Olivia Choi",
       "pubDate": "2026-07-09T11:29:44-05:00",
       "category": "Build Log",
       "tags": [
@@ -337,7 +156,7 @@
         "Chicago Wedding",
         "Astro"
       ],
-      "content": "# Olivia Choi Photography: 시카고 웨딩 사진작가를 위한 AI 기반 초고속 웹 빌드\n\n시카고의 로컬 비즈니스 생태계에서 온라인 입지를 다지는 것은 매우 중요합니다.\n\n## 1. Plan (전략 및 'Why')\n올리비아의 고해상도 이미지를 훼손하지 않으면서도, 단 3일 만에 구글 검색 최적화가 완료된 포트폴리오 웹사이트를 구축합니다.\n\n## 2. Context\n시카고 지역은 계절성이 뚜렷하여 야외 웨딩 및 실내 촬영 수요가 집중됩니다.\n\n## 3. Todo\nAstro의 초고속 스피드와 AI 콘텐츠 엔진의 시너지를 기대하세요.",
+      "content": "# Olivia Choi Photography: AI-Powered Ultra-Fast Web Build for a Chicago Wedding Photographer\n\nEstablishing an online presence in Chicago's local business ecosystem is crucial. This project is about building a system that automatically converts on-site stories into marketing assets while elevating the brand value of premium wedding photographer **Olivia Choi**, who operates in downtown Chicago, Lincoln Park, West Loop, and beyond.",
       "likes": 5,
       "comments": [
         {

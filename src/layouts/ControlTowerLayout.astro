@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 
 interface Props {
@@ -13,11 +13,12 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 ---
 
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<ClientRouter />
 		
 		<!-- Primary Meta Tags -->
 		<title>{title} | DALO</title>
@@ -26,68 +27,188 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 		<meta name="generator" content={Astro.generator} />
 
 		<!-- Open Graph / Facebook -->
-		<meta property="og:type" content={pubDate ? "article" : "website"} />
+		<meta property="og:type" content="website" />
 		<meta property="og:url" content={Astro.url} />
-		<meta property="og:title" content={`${title} | DALO`} />
+		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
-		<meta property="og:image" content={new URL(image, Astro.url)} />
+		<meta property="og:image" content={new URL(image || '/images/dalo-logo.svg', Astro.url)} />
 
 		<!-- Twitter -->
 		<meta property="twitter:card" content="summary_large_image" />
 		<meta property="twitter:url" content={Astro.url} />
-		<meta property="twitter:title" content={`${title} | DALO`} />
+		<meta property="twitter:title" content={title} />
 		<meta property="twitter:description" content={description} />
-		<meta property="twitter:image" content={new URL(image, Astro.url)} />
+		<meta property="twitter:image" content={new URL(image || '/images/dalo-logo.svg', Astro.url)} />
 
 		<!-- Google Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-		<!-- Custom Modern Light Design Theme -->
+		<!-- Custom Modern Light Design Theme (Josh Comeau HSL System) -->
 		<style is:global>
 			:root {
-				--bg-white: #FFFFFF;
-				--bg-light: #F8FAFC;
-				--text-main: #0F172A;
-				--text-muted: #475569;
-				--accent-blue: #0052FF;
-				--accent-blue-hover: #0041CC;
-				--accent-blue-light: #EBF2FF;
-				--border-color: #F1F5F9;
-				--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
-				--shadow-md: 0 4px 20px -2px rgba(0, 82, 255, 0.05), 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-				--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.02), 0 4px 6px -4px rgba(0, 0, 0, 0.02);
-				--radius-md: 16px;
-				--radius-lg: 24px;
-				--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+				/* ── Josh Comeau-quality HSL Color System ── */
+				--color-text:       hsl(222deg 22% 5%);
+				--color-text-muted: hsl(225deg 12% 44%);
+				--color-background: hsl(0deg 0% 100%);
+				--color-bg-subtle:  hsl(220deg 20% 97%);
+				--color-bg-light:   hsl(220deg 22% 96%);
+
+				/* Primary / Action */
+				--color-primary:    hsl(240deg 95% 62%);
+				--color-primary-hover: hsl(240deg 95% 55%);
+				--color-primary-light: hsl(220deg 90% 96%);
+
+				/* Secondary */
+				--color-secondary:  hsl(333deg 100% 45%);
+				--color-decorative: hsl(200deg 75% 65%);
+
+				/* Grays (Josh style — slightly cool-tinted) */
+				--color-gray-50:  hsl(225deg 40% 97%);
+				--color-gray-100: hsl(225deg 25% 92%);
+				--color-gray-200: hsl(225deg 16% 86%);
+				--color-gray-300: hsl(225deg 8% 78%);
+				--color-gray-400: hsl(225deg 8% 68%);
+				--color-gray-500: hsl(225deg 7% 56%);
+				--color-gray-600: hsl(225deg 12% 44%);
+				--color-gray-700: hsl(225deg 15% 32%);
+				--color-gray-800: hsl(225deg 20% 22%);
+				--color-gray-900: hsl(225deg 25% 12%);
+
+				/* Semantic tokens */
+				--color-border:   hsl(220deg 16% 92%);
+				--color-border-strong: hsl(220deg 16% 82%);
+
+				/* Cloud / wave colours (for SVG backgrounds) */
+				--color-cloud-300: hsl(200deg 60% 94%);
+				--color-cloud-500: hsl(200deg 55% 88%);
+
+				/* Shadows — layered, direction-aware */
+				--shadow-sm: 0 1px 3px hsl(222deg 30% 10% / 0.04), 0 1px 2px hsl(222deg 30% 10% / 0.03);
+				--shadow-md: 0 4px 16px hsl(222deg 30% 10% / 0.06), 0 2px 4px hsl(222deg 30% 10% / 0.04);
+				--shadow-lg: 0 16px 48px hsl(225deg 80% 55% / 0.08), 0 4px 8px hsl(222deg 30% 10% / 0.04);
+				--shadow-card: 0 2px 12px hsl(225deg 25% 10% / 0.04);
+				--shadow-hover: 0 20px 48px hsl(225deg 80% 55% / 0.09);
+
+				/* Radius */
+				--radius-sm: 8px;
+				--radius-md: 14px;
+				--radius-lg: 20px;
+				--radius-xl: 28px;
+				--radius-pill: 999px;
+
+				/* Typography */
+				--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+				/* Transitions */
+				--ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+				--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+				/* Legacy tokens (backward compat) */
+				--bg-white: hsl(0deg 0% 100%);
+				--bg-light:  hsl(220deg 22% 96%);
+				--text-main: hsl(222deg 22% 5%);
+				--text-muted: hsl(225deg 12% 44%);
+				--accent-blue: hsl(240deg 95% 62%);
+				--accent-blue-hover: hsl(240deg 95% 55%);
+				--accent-blue-light: hsl(220deg 90% 96%);
+				--border-color: hsl(220deg 16% 92%);
+				--shadow-lg: 0 16px 48px hsl(225deg 80% 55% / 0.08);
+				--radius-md: 14px;
+				--radius-lg: 20px;
 			}
 
-			* {
-				box-sizing: border-box;
-				margin: 0;
-				padding: 0;
-			}
+			*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 			body {
 				font-family: var(--font-sans);
-				background-color: var(--bg-light);
-				color: var(--text-main);
-				line-height: 1.6;
+				background-color: var(--color-bg-light);
+				color: var(--color-text);
+				line-height: 1.65;
 				overflow-x: hidden;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
 			}
 
-			a {
-				color: inherit;
-				text-decoration: none;
-				transition: all 0.2s ease;
-			}
+			a { color: inherit; text-decoration: none; transition: color 200ms ease; }
 
-			/* Container utilities */
+			/* Container */
 			.container {
-				max-width: 1100px; /* max-w-[1100px] */
+				max-width: 1100px;
 				margin: 0 auto;
 				padding: 0 24px;
+			}
+
+			/* ── Josh Comeau Animations ── */
+
+			/* 1. Fade-in-up (page transitions) */
+			@keyframes fadeInUp {
+				from { opacity: 0; transform: translateY(24px); }
+				to   { opacity: 1; transform: translateY(0); }
+			}
+			.animate-fade-in-up {
+				animation: fadeInUp 0.65s var(--ease-spring) both;
+			}
+
+			/* 2. Scroll-driven stagger reveal */
+			@keyframes revealUp {
+				from { opacity: 0; transform: translateY(32px); }
+				to   { opacity: 1; transform: translateY(0); }
+			}
+			.reveal {
+				opacity: 0;
+				transform: translateY(32px);
+			}
+			.reveal.visible {
+				animation: revealUp 0.7s var(--ease-spring) both;
+			}
+			/* Stagger delays */
+			.reveal-d1 { animation-delay: 0ms; }
+			.reveal-d2 { animation-delay: 80ms; }
+			.reveal-d3 { animation-delay: 160ms; }
+			.reveal-d4 { animation-delay: 240ms; }
+			.reveal-d5 { animation-delay: 320ms; }
+			.reveal-d6 { animation-delay: 400ms; }
+
+			/* 3. Hover lift (Josh's universal card spring) */
+			.hover-lift {
+				transition: transform var(--ease-spring) 350ms, box-shadow 350ms ease;
+			}
+			.hover-lift:hover {
+				transform: translateY(-4px);
+				box-shadow: var(--shadow-hover);
+			}
+
+			/* 4. Category tag hover (Josh bubble scale) */
+			.category-tag {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				padding: 8px 16px;
+				border-radius: var(--radius-pill);
+				font-size: 0.8rem;
+				font-weight: 700;
+				background: var(--color-gray-50);
+				border: 1.5px solid var(--color-border);
+				color: var(--color-gray-700);
+				cursor: pointer;
+				transition:
+					transform 250ms var(--ease-spring),
+					background 200ms ease,
+					border-color 200ms ease,
+					color 200ms ease;
+			}
+			.category-tag:hover {
+				transform: scale(1.05);
+				background: var(--color-primary-light);
+				border-color: hsl(225deg 70% 82%);
+				color: var(--color-primary);
+			}
+			.category-tag.active {
+				background: var(--color-primary);
+				border-color: var(--color-primary);
+				color: #fff;
 			}
 		</style>
 	</head>
@@ -103,10 +224,10 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 					
 					<div style="display: flex; align-items: center; gap: 20px;">
 						<nav style="display: flex; gap: 20px; font-weight: 600; font-size: 0.85rem;">
-							<a href="/" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">홈</a>
-							<a href="/blog" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">빌드 저널</a>
-							<a href="/about" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">소개 (About)</a>
-							<a href="/operator" style="color: var(--accent-blue);" onmouseover="this.style.color='var(--accent-blue-hover)'" onmouseout="this.style.color='var(--accent-blue)'">오퍼레이터</a>
+							<a href="/" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">Home</a>
+							<a href="/blog" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">Build Journal</a>
+							<a href="/about" style="color: var(--text-muted);" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">About</a>
+							<a href="/operator" style="color: var(--accent-blue);" onmouseover="this.style.color='var(--accent-blue-hover)'" onmouseout="this.style.color='var(--accent-blue)'">Operator</a>
 						</nav>
 
 						<!-- Keyword Search Trigger -->
@@ -122,52 +243,147 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 		<div id="search-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] hidden items-start justify-center pt-24 transition-opacity duration-300">
 			<div class="bg-white border border-slate-100 rounded-[24px] max-w-xl w-full mx-4 p-6 shadow-xl space-y-4">
 				<div class="flex justify-between items-center border-b border-slate-100 pb-3">
-					<h3 class="font-extrabold text-sm text-slate-800">🔍 실시간 키워드 검색</h3>
-					<button id="btn-search-close" class="text-xs font-bold text-slate-400 hover:text-slate-800">닫기 (Esc)</button>
+					<h3 class="font-extrabold text-sm text-slate-800">🔍 Real-time Keyword Search</h3>
+					<button id="btn-search-close" class="text-xs font-bold text-slate-400 hover:text-slate-800">Close (Esc)</button>
 				</div>
-				<input type="text" id="search-input" placeholder="검색어를 입력해 주세요..." class="w-full text-sm border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-blue-600 bg-slate-50" />
+				<input type="text" id="search-input" placeholder="Enter search keyword..." class="w-full text-sm border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-blue-600 bg-slate-50" />
 				<div id="search-results-container" class="max-h-[300px] overflow-y-auto space-y-2.5">
-					<p class="text-xs text-slate-400 text-center py-6">검색어를 입력하면 매칭되는 저널이 노출됩니다.</p>
+					<p class="text-xs text-slate-400 text-center py-6">Matching journals will appear here when you type.</p>
 				</div>
 			</div>
 		</div>
 
-		<main>
+		<main class="max-w-[1100px] w-[calc(100%-40px)] mx-auto">
 			<slot />
 		</main>
 
-		<!-- Footer -->
-		<footer style="background: var(--bg-light); border-top: 1px solid var(--border-color); padding: 60px 0 40px 0; margin-top: 80px;">
-			<div class="container">
-				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
+		<!-- Josh Comeau-style Wave Footer -->
+		<footer class="jwc-footer">
+			<!-- Wave SVG top edge -->
+			<div class="jwc-footer-wave" aria-hidden="true">
+				<svg viewBox="0 0 1200 80" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M0 80C150 20 300 0 450 30C600 60 700 10 850 5C1000 0 1100 40 1200 80H0Z" fill="var(--color-cloud-300)"/>
+					<path d="M0 80C200 40 380 20 550 45C720 70 900 25 1200 80H0Z" fill="var(--color-cloud-500)" opacity="0.55"/>
+				</svg>
+			</div>
+
+			<!-- Floating moon rocket mascot (Josh portrait style) -->
+			<div class="jwc-footer-mascot" aria-hidden="true">🌙🚀</div>
+
+			<!-- Footer links -->
+			<div class="container jwc-footer-inner">
+				<div class="jwc-footer-grid">
 					<div>
-						<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-							<img src="/images/dalo-logo.svg" alt="DALO Logo" style="width: 24px; height: 24px;" />
-							<span style="font-weight: 800; font-size: 1.15rem;">DALO</span>
+						<div class="jwc-footer-brand">
+							<img src="/images/dalo-logo.svg" alt="DALO Logo" width="22" height="22" />
+							<span>DALO</span>
 						</div>
-						<p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6;">"AI로 한계를 넘어, 달로 가자 (To the Moon with AI)."</p>
+						<p class="jwc-footer-tagline">"Beyond limits with AI — To the Moon."</p>
 					</div>
 					<div>
-						<h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">바로가기</h4>
-						<ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem; color: var(--text-muted);">
-							<li><a href="/" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">홈</a></li>
-							<li><a href="/blog" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">빌드 저널</a></li>
-							<li><a href="/about" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">소개 (About)</a></li>
-							<li><a href="/operator" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">오퍼레이터</a></li>
+						<h4 class="jwc-footer-heading">Quick Links</h4>
+						<ul class="jwc-footer-links">
+							<li><a href="/">Home</a></li>
+							<li><a href="/blog">Build Journal</a></li>
+							<li><a href="/about">About</a></li>
+							<li><a href="/operator">Operator</a></li>
 						</ul>
 					</div>
 					<div>
-						<h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">소개</h4>
-						<p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6;">AI 비즈니스 모델 빌드 인 퍼블릭 저널.</p>
+						<h4 class="jwc-footer-heading">About</h4>
+						<p class="jwc-footer-about">AI Business Model Build-in-Public Journal. Documenting every experiment, failure, and win.</p>
 					</div>
 				</div>
-				<hr style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 24px;" />
-				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.8rem; color: var(--text-muted);">
-					<p>&copy; {new Date().getFullYear()} DALO (To the Moon with AI). All rights reserved.</p>
-					<p>Designed in Josh Comeau Style</p>
+				<hr class="jwc-footer-hr" />
+				<div class="jwc-footer-bottom">
+					<p>&copy; {new Date().getFullYear()} DALO — To the Moon with AI. All rights reserved.</p>
+					<p>Inspired by Josh W. Comeau's design philosophy ✨</p>
 				</div>
 			</div>
 		</footer>
+
+		<style is:global>
+			/* Josh Wave Footer */
+			.jwc-footer {
+				position: relative;
+				margin-top: 80px;
+				background: var(--color-cloud-300);
+				padding-bottom: 40px;
+				overflow: hidden;
+			}
+			.jwc-footer-wave {
+				width: 100%;
+				height: 80px;
+				overflow: hidden;
+				margin-top: -2px;
+			}
+			.jwc-footer-wave svg {
+				width: 100%; height: 100%;
+				display: block;
+			}
+			.jwc-footer-mascot {
+				text-align: center;
+				font-size: 2.5rem;
+				margin-bottom: -8px;
+				animation: floatBob 3s ease-in-out infinite;
+			}
+			@keyframes floatBob {
+				0%, 100% { transform: translateY(0px); }
+				50% { transform: translateY(-8px); }
+			}
+			.jwc-footer-inner { padding-top: 32px; }
+			.jwc-footer-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: 36px;
+				margin-bottom: 36px;
+			}
+			.jwc-footer-brand {
+				display: flex; align-items: center; gap: 8px;
+				font-weight: 800; font-size: 1.1rem;
+				margin-bottom: 12px;
+				color: var(--color-text);
+			}
+			.jwc-footer-tagline {
+				color: var(--color-gray-600);
+				font-size: 0.82rem;
+				line-height: 1.65;
+				font-style: italic;
+			}
+			.jwc-footer-heading {
+				font-weight: 700;
+				font-size: 0.85rem;
+				color: var(--color-text);
+				margin-bottom: 14px;
+				letter-spacing: 0.02em;
+			}
+			.jwc-footer-links {
+				list-style: none;
+				display: flex; flex-direction: column; gap: 8px;
+				font-size: 0.83rem;
+				color: var(--color-gray-600);
+			}
+			.jwc-footer-links a:hover { color: var(--color-primary); }
+			.jwc-footer-about {
+				font-size: 0.82rem;
+				color: var(--color-gray-600);
+				line-height: 1.65;
+			}
+			.jwc-footer-hr {
+				border: 0;
+				border-top: 1px solid hsl(200deg 30% 82%);
+				margin-bottom: 20px;
+			}
+			.jwc-footer-bottom {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				flex-wrap: wrap;
+				gap: 12px;
+				font-size: 0.76rem;
+				color: var(--color-gray-500);
+			}
+		</style>
 
 		<!-- Search Client-Side Script -->
 		<script>
@@ -199,7 +415,7 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 					searchModal?.classList.add('hidden');
 					searchModal?.classList.remove('flex');
 					searchInput.value = '';
-					searchResults!.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">검색어를 입력하면 매칭되는 저널이 노출됩니다.</p>`;
+					searchResults!.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">Matching journals will appear here when you type.</p>`;
 				}
 			}
 
@@ -216,7 +432,7 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 			searchInput?.addEventListener('input', () => {
 				const query = searchInput.value.trim().toLowerCase();
 				if (!query) {
-					searchResults!.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">검색어를 입력하면 매칭되는 저널이 노출됩니다.</p>`;
+					searchResults!.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">Matching journals will appear here when you type.</p>`;
 					return;
 				}
 
@@ -227,7 +443,7 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 				);
 
 				if (matches.length === 0) {
-					searchResults!.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">검색 결과가 없습니다.</p>`;
+					searchResults!.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">No results found.</p>`;
 					return;
 				}
 
@@ -238,6 +454,25 @@ const { title, description, image = '/images/olivia-wedding-hero.png', pubDate }
 						<p class="text-[10px] text-slate-400 mt-1 line-clamp-1">${item.description}</p>
 					</a>
 				`).join('');
+			});
+		</script>
+
+		<!-- Scroll-reveal IntersectionObserver (Josh Comeau style stagger) -->
+		<script is:inline>
+			document.addEventListener('astro:page-load', () => {
+				const reveals = document.querySelectorAll('.reveal');
+				if (!reveals.length) return;
+
+				const io = new IntersectionObserver((entries) => {
+					entries.forEach(entry => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add('visible');
+							io.unobserve(entry.target);
+						}
+					});
+				}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+				reveals.forEach(el => io.observe(el));
 			});
 		</script>
 	</body>

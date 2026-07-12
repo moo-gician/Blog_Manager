@@ -4,12 +4,12 @@ import db from '../data/db.json';
 ---
 
 <ControlTowerLayout 
-	title="AI 오퍼레이터 제어실 | Chicago AI Web Factory"
-	description="C:/appdev/ 프로젝트 연동, 이중 버퍼 드래프트 관리, 피드백 루프 및 SNS 배포 자동화 엔진"
+	title="AI Operator Control Room | Chicago AI Web Factory"
+	description="C:/appdev/ project integration, double buffer draft management, feedback loop, and SNS deployment automation engine"
 >
 	<div class="bg-white min-h-screen py-20">
-		<!-- Main Centered Max-w-6xl Container -->
-		<div class="max-w-6xl mx-auto px-6 space-y-12">
+		<!-- Main Centered Max-w-[1100px] Container -->
+		<div class="max-w-[1100px] mx-auto px-6 space-y-12">
 			
 			<!-- Header Block -->
 			<div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-100 pb-8 gap-4">
@@ -17,12 +17,12 @@ import db from '../data/db.json';
 					<span class="text-blue-600 font-bold text-xs tracking-widest uppercase">Private Operator Room</span>
 					<h1 class="text-3xl font-extrabold text-slate-900 tracking-tight mt-1">AI Build Lab: Control Tower</h1>
 					<p class="text-slate-500 text-xs mt-1.5">
-						로컬 프로젝트 파일 스캔 및 Gemini AI 연합 콘텐츠 배포 파이프라인.
+						Local project file scanning and Gemini AI federated content deployment pipeline.
 					</p>
 				</div>
 				<div class="flex gap-2">
 					<button id="btn-sync-trigger" class="bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 font-bold px-5 py-3 rounded-2xl text-xs transition shadow-sm">
-						🔄 C:/appdev/ 프로젝트 동기화
+						🔄 Sync C:/appdev/ projects
 					</button>
 				</div>
 			</div>
@@ -30,41 +30,19 @@ import db from '../data/db.json';
 			<!-- Three-Zone Bento Grid Workbench -->
 			<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 				
-				<!-- Column 1: [Source Detection] (3 cols) -->
+				<!-- Column 1: [Knowledge Vault] (3 cols) -->
 				<div class="lg:col-span-3 space-y-6">
-					<div class="bg-slate-50 border border-slate-100 rounded-[24px] p-6 shadow-sm space-y-6">
+					<div class="bg-slate-50 border border-slate-100 rounded-[24px] p-5 shadow-sm space-y-5">
 						<div class="border-b border-slate-200/50 pb-3">
-							<span class="text-blue-600 text-[9px] font-bold tracking-widest uppercase">Zone 01</span>
+							<span class="text-blue-600 text-[9px] font-bold tracking-widest uppercase">Zone 01: Vault</span>
 							<h3 class="font-extrabold text-sm text-slate-900 mt-1 flex items-center gap-1.5">
-								📁 Source Detection
+								🗄️ Knowledge Vault
 							</h3>
 						</div>
 
-						<!-- Core Files Scan Status -->
-						<div class="space-y-2">
-							<h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">3대 핵심 문서 감지</h4>
-							<div class="space-y-1.5 text-xs font-semibold">
-								<div class="flex justify-between items-center bg-white border border-slate-100 rounded-xl px-3 py-2.5">
-									<span>plan.md</span>
-									<span class="text-green-600 font-bold">● Sync</span>
-								</div>
-								<div class="flex justify-between items-center bg-white border border-slate-100 rounded-xl px-3 py-2.5">
-									<span>context.md</span>
-									<span class="text-green-600 font-bold">● Sync</span>
-								</div>
-								<div class="flex justify-between items-center bg-white border border-slate-100 rounded-xl px-3 py-2.5">
-									<span>todo.md</span>
-									<span class="text-green-600 font-bold">● Sync</span>
-								</div>
-							</div>
-						</div>
-
-						<!-- Buffer Queue -->
-						<div class="space-y-3 pt-4 border-t border-slate-200/50">
-							<h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Review Queue (이중 버퍼)</h4>
-							<div id="draft-queue-container" class="space-y-2.5">
-								<!-- Populated via Javascript -->
-							</div>
+						<!-- Dynamic Accordion Tree Container -->
+						<div id="accordion-tree-container" class="space-y-2">
+							<!-- Populated via Javascript accordion tree -->
 						</div>
 					</div>
 				</div>
@@ -76,8 +54,11 @@ import db from '../data/db.json';
 						<div class="border-b border-slate-100 pb-3 mb-6 flex justify-between items-center">
 							<div>
 								<span class="text-blue-600 text-[9px] font-bold tracking-widest uppercase">Zone 02: Focus Workbench</span>
-								<h3 id="workbench-title" class="font-extrabold text-base text-slate-900 mt-1">선택된 드래프트 없음</h3>
-								<p id="workbench-meta" class="text-[11px] text-slate-400 mt-0.5">왼쪽 대기열에서 검토할 에세이를 선택하세요.</p>
+								<div class="flex items-center gap-2 mt-1">
+									<h3 id="workbench-title" class="font-extrabold text-base text-slate-900">No draft selected</h3>
+									<span id="workbench-master-badge" class="hidden bg-amber-500 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">Master Map View</span>
+								</div>
+								<p id="workbench-meta" class="text-[11px] text-slate-400 mt-0.5">Select an essay from the left queue to review.</p>
 							</div>
 						</div>
 
@@ -86,7 +67,7 @@ import db from '../data/db.json';
 							<div id="workbench-html-output" class="prose max-w-none text-slate-800 text-xs">
 								<div class="text-center py-20 text-slate-400">
 									<span class="text-3xl font-normal">🔬</span>
-									<p class="mt-4 font-bold text-xs">드래프트를 선택하여 작업대 프리뷰를 시작하세요.</p>
+									<p class="mt-4 font-bold text-xs">Select a draft to begin the workbench preview.</p>
 								</div>
 							</div>
 						</div>
@@ -96,20 +77,20 @@ import db from '../data/db.json';
 							<div class="bg-blue-50/50 rounded-xl p-3 border border-blue-100/50 flex gap-3 items-center">
 								<span class="text-lg">🤖</span>
 								<div class="space-y-0.5">
-									<h5 class="text-xs font-bold text-blue-900">Gemini와 에디팅 피드백</h5>
-									<p class="text-[10px] text-blue-700 leading-relaxed">원하는 수정 방향이나 구체적 에피소드를 추가 지시하세요.</p>
+									<h5 class="text-xs font-bold text-blue-900">Editing Feedback with Gemini</h5>
+									<p class="text-[10px] text-blue-700 leading-relaxed">Provide additional instructions for desired edits or specific episodes.</p>
 								</div>
 							</div>
 							
 							<div class="flex gap-2">
-								<input type="text" id="feedback-input" class="flex-grow border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none focus:border-blue-600 bg-slate-50" placeholder="예: '인간적 고뇌 부분을 더 강조하고 스크린샷 팁 추가...'" />
+								<input type="text" id="feedback-input" class="flex-grow border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none focus:border-blue-600 bg-slate-50" placeholder="e.g. 'Emphasize the human struggle part more and add screenshot tips...'" />
 								<button id="btn-feedback-submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition">
-									반영
+									Apply
 								</button>
 							</div>
 							<div class="flex gap-2 justify-end">
 								<button id="btn-save-draft" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold px-3 py-1.5 rounded-lg transition">
-									임시 보관
+									Save Draft
 								</button>
 							</div>
 						</div>
@@ -128,19 +109,19 @@ import db from '../data/db.json';
 
 						<div class="space-y-3">
 							<button id="btn-publish" class="hidden w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-2xl text-xs transition shadow-sm">
-								📢 최종 승인 및 발행 배포
+								📢 Final Approval & Publish Deployment
 							</button>
 						</div>
 
 						<!-- SNS Ready Amplification Output -->
 						<div id="sns-output-panel" class="hidden space-y-4">
-							<h4 class="font-bold text-slate-900 text-xs uppercase tracking-wide">SNS 스니펫 버퍼</h4>
+							<h4 class="font-bold text-slate-900 text-xs uppercase tracking-wide">SNS Snippet Buffer</h4>
 							
 							<div class="space-y-3">
 								<div class="bg-white border border-slate-100 rounded-xl p-3 space-y-1.5">
 									<div class="flex justify-between items-center">
 										<span class="text-[9px] font-bold text-slate-800">LinkedIn</span>
-										<button class="btn-copy-sns text-[9px] font-bold text-blue-600 hover:underline" data-target="sns-linkedin">복사</button>
+										<button class="btn-copy-sns text-[9px] font-bold text-blue-600 hover:underline" data-target="sns-linkedin">Copy</button>
 									</div>
 									<textarea id="sns-linkedin" class="w-full text-[10px] text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="3" readonly></textarea>
 								</div>
@@ -148,7 +129,7 @@ import db from '../data/db.json';
 								<div class="bg-white border border-slate-100 rounded-xl p-3 space-y-1.5">
 									<div class="flex justify-between items-center">
 										<span class="text-[9px] font-bold text-slate-800">Twitter/X</span>
-										<button class="btn-copy-sns text-[9px] font-bold text-blue-600 hover:underline" data-target="sns-twitter">복사</button>
+										<button class="btn-copy-sns text-[9px] font-bold text-blue-600 hover:underline" data-target="sns-twitter">Copy</button>
 									</div>
 									<textarea id="sns-twitter" class="w-full text-[10px] text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="3" readonly></textarea>
 								</div>
@@ -156,7 +137,7 @@ import db from '../data/db.json';
 								<div class="bg-white border border-slate-100 rounded-xl p-3 space-y-1.5">
 									<div class="flex justify-between items-center">
 										<span class="text-[9px] font-bold text-slate-800">Instagram</span>
-										<button class="btn-copy-sns text-[9px] font-bold text-blue-600 hover:underline" data-target="sns-instagram">복사</button>
+										<button class="btn-copy-sns text-[9px] font-bold text-blue-600 hover:underline" data-target="sns-instagram">Copy</button>
 									</div>
 									<textarea id="sns-instagram" class="w-full text-[10px] text-slate-600 border-none p-0 outline-none resize-none bg-transparent" rows="3" readonly></textarea>
 								</div>
@@ -172,9 +153,9 @@ import db from '../data/db.json';
 						
 						<div class="space-y-3">
 							<div>
-								<label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">프로젝트 태그</label>
+								<label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Project Tag</label>
 								<select id="flash-tag-select" class="w-full text-xs border border-slate-200 rounded-xl p-2.5 outline-none focus:border-blue-600 bg-white">
-									<option value="general">🌍 General (독립 에세이)</option>
+									<option value="general">🌍 General (Standalone Essay)</option>
 									{db.projects.map(proj => (
 										<option value={proj.id}>📁 {proj.name.replace(' (Sync)', '')}</option>
 									))}
@@ -182,12 +163,12 @@ import db from '../data/db.json';
 							</div>
 
 							<div>
-								<label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">아이디어 메모</label>
-								<textarea id="flash-memo-input" rows="2" class="w-full text-xs border border-slate-200 rounded-xl p-2.5 outline-none focus:border-blue-600 resize-none bg-white" placeholder="간단한 영감을 작성하세요..."></textarea>
+								<label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Idea Memo</label>
+								<textarea id="flash-memo-input" rows="2" class="w-full text-xs border border-slate-200 rounded-xl p-2.5 outline-none focus:border-blue-600 resize-none bg-white" placeholder="Write a quick inspiration..."></textarea>
 							</div>
 
 							<button id="btn-flash-generate" class="w-full bg-slate-900 hover:bg-black text-white text-xs font-bold py-2.5 rounded-xl transition shadow-sm">
-								긴급 발행 큐 추가
+								Add to Flash Queue
 							</button>
 						</div>
 					</div>
@@ -238,9 +219,11 @@ import db from '../data/db.json';
 		}
 	}
 
-	let selectedDraftId: string | null = null;
+	let selectedItemId: string | null = null;
+	let selectedItemType: 'master' | 'draft' | 'published' | null = null;
+	let selectedProjectFolder: string | null = null;
 
-	const draftQueueContainer = document.getElementById('draft-queue-container');
+	const accordionTreeContainer = document.getElementById('accordion-tree-container');
 	const workbenchTitle = document.getElementById('workbench-title');
 	const workbenchMeta = document.getElementById('workbench-meta');
 	const htmlOutput = document.getElementById('workbench-html-output');
@@ -253,6 +236,7 @@ import db from '../data/db.json';
 	const linkedinArea = document.getElementById('sns-linkedin') as HTMLTextAreaElement;
 	const twitterArea = document.getElementById('sns-twitter') as HTMLTextAreaElement;
 	const instagramArea = document.getElementById('sns-instagram') as HTMLTextAreaElement;
+	const workbenchMasterBadge = document.getElementById('workbench-master-badge');
 
 	const flashTagSelect = document.getElementById('flash-tag-select') as HTMLSelectElement;
 	const flashMemoInput = document.getElementById('flash-memo-input') as HTMLTextAreaElement;
@@ -278,7 +262,7 @@ import db from '../data/db.json';
 				<div>
 					<h4 class="text-[10px] font-bold text-blue-800 uppercase tracking-wider">Premium Visual Guide</h4>
 					<p class="text-xs text-blue-700 mt-1">$1</p>
-					<span class="inline-flex items-center gap-1.5 mt-2 bg-blue-100 text-blue-800 text-[10px] font-semibold px-2.5 py-0.5 rounded-full">이미지 추천 포인트</span>
+					<span class="inline-flex items-center gap-1.5 mt-2 bg-blue-100 text-blue-800 text-[10px] font-semibold px-2.5 py-0.5 rounded-full">Image Recommendation</span>
 				</div>
 			</div>
 		`);
@@ -286,97 +270,248 @@ import db from '../data/db.json';
 		return html;
 	}
 
-	function saveDatabase() {
-		localStorage.setItem('control_tower_db', JSON.stringify(db));
-		renderDraftQueue();
+	// Generate Virtual Master Map Content if not present
+	function getProjectMasterContent(project: any): string {
+		if (project.id === 'olivia-choi-wedding') {
+			return `# 🗺️ Project Master Map: Olivia Choi Photography\n\n## 🎯 1. Project Vision (비전 & 약속)\n- **약속 (Promise)**: 코딩과 직접적인 글쓰기 부담 없이 3일 만에 구축되는 최고 속도의 AI 결합 포트폴리오 웹사이트 및 마케팅 자동화 엔진.\n- **가치 창출**: 작업 로그 기반 스토리 자동 발행으로 예약 극대화.\n\n## ⚠️ 2. Core Problem & Cause (문제 및 진짜 원인)\n- **문제**: 대형 웹 에이전시의 과도한 비용($5,000 이상) 및 느린 구축 기간.\n- **원인**: 무거운 JS 템플릿 빌더의 느린 속도가 로컬 구글 SEO 순위를 떨어트림.\n\n## ⚙️ 3. Technical Stack & SEO Context (기술 스택)\n- **Framework**: Astro.build (Zero-JS SSG 아키텍처)\n- **Hosting**: Firebase Hosting (Google CDN)\n\n## 📅 4. Timeline & Published Ledger\n- 2026-07-09: Olivia Choi Photography - Premium Wedding Portfolio (Status: in-progress)\n\n## 💡 5. Key Milestones & Lessons (주요 교훈)\n- 웨딩 사진 로딩 속도 유실을 방지하기 위해 Astro Image 파이프라인 연동 필수.`;
+		}
+		
+		return `# 🗺️ Project Master Map: ${project.name.replace(' (Sync)', '')}\n\n## 🎯 1. Project Vision\n${project.plan || 'No plan established yet.'}\n\n## ⚠️ 2. Core Problem & Local Context\n${project.context || 'No context established yet.'}\n\n## 📅 3. Technical Execution (Todo)\n${project.todo || 'No todo tasks established yet.'}`;
 	}
 
-	function renderDraftQueue() {
-		if (!draftQueueContainer) return;
-		draftQueueContainer.innerHTML = '';
+	function saveDatabase() {
+		localStorage.setItem('control_tower_db', JSON.stringify(db));
+		renderAccordionTree();
+	}
 
-		const projectDrafts = db.drafts;
-		if (projectDrafts.length === 0) {
-			draftQueueContainer.innerHTML = '<p class="text-xs text-slate-400 py-4 text-center">검토할 대기 드래프트가 없습니다.</p>';
-			return;
-		}
+	// Keep track of which project folders are expanded in UI
+	const expandedFolders: Record<string, boolean> = {
+		'olivia-choi-wedding': true, // Expanded by default
+		'general': true
+	};
 
-		projectDrafts.forEach((draft, idx) => {
-			const project = db.projects.find(p => p.id === draft.projectId);
-			const projName = project ? project.name.replace(' (Sync)', '') : 'General';
-			const isSelected = draft.id === selectedDraftId;
+	function renderAccordionTree() {
+		if (!accordionTreeContainer) return;
+		accordionTreeContainer.innerHTML = '';
 
-			const div = document.createElement('div');
-			div.className = `p-3.5 border rounded-2xl cursor-pointer transition ${isSelected ? 'border-blue-600 bg-white shadow-sm' : 'border-transparent bg-white hover:bg-slate-100'}`;
-			div.innerHTML = `
-				<div class="flex justify-between items-start gap-2">
-					<h4 class="text-xs font-bold text-slate-800 truncate flex-grow">${draft.title}</h4>
-					<span class="text-[9px] bg-slate-200 text-slate-600 font-bold px-2 py-0.5 rounded-full">#${idx + 1}</span>
+		// Add General (Stand-alone Essays)
+		const generalDrafts = db.drafts.filter(d => d.projectId === 'general');
+		const generalPosts = db.posts.filter(p => p.projectId === 'general');
+		
+		const allProjects = [...db.projects];
+		// Inject a virtual "General" project for tree rendering
+		const virtualGeneral = {
+			id: 'general',
+			name: 'General (Global Rules)',
+			plan: 'Global Rules Essays',
+			context: 'Astro, Firebase, Modern Light Design',
+			todo: 'System alignment essays'
+		};
+		
+		// Render projects tree
+		[virtualGeneral, ...allProjects].forEach(proj => {
+			const projName = proj.name.replace(' (Sync)', '');
+			const isExpanded = expandedFolders[proj.id] || false;
+			
+			const projDrafts = db.drafts.filter(d => d.projectId === proj.id);
+			const projPosts = db.posts.filter(p => p.projectId === proj.id);
+
+			const accordionDiv = document.createElement('div');
+			accordionDiv.className = 'project-accordion border border-slate-200/50 rounded-2xl overflow-hidden mb-2.5 bg-white shadow-sm';
+			
+			// Published and draft count display
+			const badgeHtml = `<span class="text-[9px] bg-slate-200 text-slate-600 font-bold px-2 py-0.5 rounded-full">${projPosts.length + projDrafts.length}</span>`;
+
+			accordionDiv.innerHTML = `
+				<!-- Accordion Header -->
+				<div class="accordion-header flex justify-between items-center px-4 py-3 bg-slate-50/70 hover:bg-slate-100/50 cursor-pointer transition select-none border-b border-transparent" data-project-id="${proj.id}">
+					<span class="text-xs font-extrabold text-slate-800 truncate flex-grow">📁 ${projName}</span>
+					<div class="flex items-center gap-2">
+						${badgeHtml}
+						<span class="text-[10px] text-slate-400 font-bold transform transition-transform duration-200 accordion-arrow">${isExpanded ? '▼' : '▶'}</span>
+					</div>
 				</div>
-				<p class="text-[10px] text-slate-500 mt-1.5">📁 ${projName}</p>
+				
+				<!-- Accordion Content -->
+				<div class="accordion-content ${isExpanded ? 'block' : 'hidden'} px-3.5 py-3 space-y-3.5 bg-white" id="content-${proj.id}">
+					<!-- Master Map file link -->
+					${proj.id !== 'general' ? `
+					<div class="tree-item-master flex items-center justify-between p-2 rounded-xl cursor-pointer text-xs font-bold text-slate-700 bg-amber-50/40 border border-amber-100/50 hover:bg-amber-100/30 transition" data-proj-id="${proj.id}">
+						<span class="flex items-center gap-2">📄 <span class="truncate">Master Map (master.md)</span></span>
+						<span class="text-[9px] bg-amber-500/10 text-amber-700 font-extrabold px-1.5 py-0.5 rounded">Core</span>
+					</div>
+					` : ''}
+					
+					<!-- Published Files Tree -->
+					<div class="space-y-1.5">
+						<div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider px-2">Published Ledger (${projPosts.length})</div>
+						<div class="pl-2 space-y-1">
+							${projPosts.length === 0 ? '<p class="text-[10px] text-slate-400 italic px-2">No published logs</p>' : ''}
+							${projPosts.map(post => {
+								const isSelected = selectedItemType === 'published' && selectedItemId === post.id;
+								return `
+									<div class="tree-item-file flex items-center justify-between px-2 py-1.5 rounded-lg cursor-pointer text-[11px] font-semibold transition ${isSelected ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}" data-type="published" data-id="${post.id}" data-proj-id="${proj.id}">
+										<span class="truncate pr-1">🟢 ${post.title.replace('[Improved] ', '')}</span>
+									</div>
+								`;
+							}).join('')}
+						</div>
+					</div>
+					
+					<!-- Draft Files Tree -->
+					<div class="space-y-1.5">
+						<div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider px-2">Draft Reviews (${projDrafts.length})</div>
+						<div class="pl-2 space-y-1">
+							${projDrafts.length === 0 ? '<p class="text-[10px] text-slate-400 italic px-2">No draft reviews</p>' : ''}
+							${projDrafts.map((draft, dIdx) => {
+								const isSelected = selectedItemType === 'draft' && selectedItemId === draft.id;
+								return `
+									<div class="tree-item-file flex items-center justify-between px-2 py-1.5 rounded-lg cursor-pointer text-[11px] font-semibold transition ${isSelected ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}" data-type="draft" data-id="${draft.id}" data-proj-id="${proj.id}">
+										<span class="truncate pr-1">🔬 ${draft.title.replace('[Improved] ', '')}</span>
+										<span class="text-[9px] text-slate-400 font-bold">#${dIdx + 1}</span>
+									</div>
+								`;
+							}).join('')}
+						</div>
+					</div>
+				</div>
 			`;
-			div.addEventListener('click', () => loadDraft(draft.id));
-			draftQueueContainer.appendChild(div);
+
+			// Toggle folder expand on header click
+			const header = accordionDiv.querySelector('.accordion-header');
+			header?.addEventListener('click', () => {
+				const arrow = header.querySelector('.accordion-arrow');
+				const content = accordionDiv.querySelector('.accordion-content');
+				const isCurrentlyExpanded = content?.classList.contains('block');
+				
+				if (isCurrentlyExpanded) {
+					content?.classList.remove('block');
+					content?.classList.add('hidden');
+					if (arrow) arrow.textContent = '▶';
+					expandedFolders[proj.id] = false;
+				} else {
+					content?.classList.remove('hidden');
+					content?.classList.add('block');
+					if (arrow) arrow.textContent = '▼';
+					expandedFolders[proj.id] = true;
+				}
+			});
+
+			// Master Map link click handler
+			const masterBtn = accordionDiv.querySelector('.tree-item-master');
+			masterBtn?.addEventListener('click', () => {
+				loadItem('master', proj.id, proj.id);
+			});
+
+			// Published & Draft click handlers
+			accordionDiv.querySelectorAll('.tree-item-file').forEach(item => {
+				item.addEventListener('click', (e) => {
+					const type = item.getAttribute('data-type') as 'published' | 'draft';
+					const id = item.getAttribute('data-id')!;
+					const projId = item.getAttribute('data-proj-id')!;
+					loadItem(type, id, projId);
+				});
+			});
+
+			accordionTreeContainer.appendChild(accordionDiv);
 		});
 	}
 
-	function loadDraft(id: string) {
-		selectedDraftId = id;
-		const draft = db.drafts.find(d => d.id === id);
-		if (!draft) return;
+	function loadItem(type: 'master' | 'draft' | 'published', id: string, projId: string) {
+		selectedItemId = id;
+		selectedItemType = type;
+		selectedProjectFolder = projId;
 
-		const project = db.projects.find(p => p.id === draft.projectId);
-		
-		if (workbenchTitle) workbenchTitle.textContent = draft.title;
-		if (workbenchMeta) workbenchMeta.textContent = `📁 분류: ${project ? project.name : 'General Essay'}`;
-		if (htmlOutput) htmlOutput.innerHTML = parseToHumanFriendlyHTML(draft.content);
+		const project = db.projects.find(p => p.id === projId) || { id: 'general', name: 'General', plan: '', context: '', todo: '' };
+		const projName = project.name.replace(' (Sync)', '');
 
-		if (feedbackPanel) feedbackPanel.classList.remove('hidden');
-		if (publishBtn) publishBtn.classList.remove('hidden');
+		if (workbenchMasterBadge) workbenchMasterBadge.classList.add('hidden');
+		if (feedbackPanel) feedbackPanel.classList.add('hidden');
+		if (publishBtn) publishBtn.classList.add('hidden');
 		if (snsPanel) snsPanel.classList.add('hidden');
 
-		renderDraftQueue();
+		if (type === 'master') {
+			// Master Map Viewer
+			const content = getProjectMasterContent(project);
+			if (workbenchTitle) workbenchTitle.textContent = `🗺️ master.md - ${projName}`;
+			if (workbenchMeta) workbenchMeta.textContent = `📁 Project Master Map (Source of Truth)`;
+			if (workbenchMasterBadge) workbenchMasterBadge.classList.remove('hidden');
+			if (htmlOutput) htmlOutput.innerHTML = parseToHumanFriendlyHTML(content);
+			
+			// Master editing via feedback panel enabled
+			if (feedbackPanel) feedbackPanel.classList.remove('hidden');
+		} else if (type === 'draft') {
+			// Draft Reviewer
+			const draft = db.drafts.find(d => d.id === id);
+			if (draft) {
+				if (workbenchTitle) workbenchTitle.textContent = draft.title;
+				if (workbenchMeta) workbenchMeta.textContent = `📁 Category: ${projName} (Draft review)`;
+				if (htmlOutput) htmlOutput.innerHTML = parseToHumanFriendlyHTML(draft.content);
+				
+				if (feedbackPanel) feedbackPanel.classList.remove('hidden');
+				if (publishBtn) publishBtn.classList.remove('hidden');
+			}
+		} else if (type === 'published') {
+			// Published Essay Viewer (Read-only)
+			const post = db.posts.find(p => p.id === id);
+			if (post) {
+				if (workbenchTitle) workbenchTitle.textContent = post.title;
+				if (workbenchMeta) workbenchMeta.textContent = `📁 Category: ${projName} (Published Log)`;
+				if (htmlOutput) htmlOutput.innerHTML = parseToHumanFriendlyHTML(post.content);
+			}
+		}
+
+		renderAccordionTree();
 	}
 
 	feedbackSubmitBtn?.addEventListener('click', () => {
 		const val = feedbackInput ? feedbackInput.value.trim() : '';
-		if (!val || !selectedDraftId) return;
-
-		const draft = db.drafts.find(d => d.id === selectedDraftId);
-		if (!draft) return;
+		if (!val || !selectedItemId || !selectedItemType) return;
 
 		if (htmlOutput) {
-			htmlOutput.innerHTML = `<p class="text-blue-600 text-xs font-bold py-12 text-center animate-pulse">🤖 Gemini가 피드백을 수용하여 스토리 빌드 중...</p>`;
+			htmlOutput.innerHTML = `<p class="text-blue-600 text-xs font-bold py-12 text-center animate-pulse">🤖 Gemini is accepting feedback and refining the document...</p>`;
 		}
 
 		setTimeout(() => {
-			draft.content += `\n\n## ✍️ Gemini 피드백 반영 피드\n사령관님의 지시 사항을 검토하여 내용을 확장하였습니다: "${val}"`;
-			draft.title = `[개선됨] ` + draft.title;
-			
-			if (workbenchTitle) workbenchTitle.textContent = draft.title;
-			if (htmlOutput) htmlOutput.innerHTML = parseToHumanFriendlyHTML(draft.content);
+			if (selectedItemType === 'draft') {
+				const draft = db.drafts.find(d => d.id === selectedItemId);
+				if (draft) {
+					draft.content += `\n\n## ✍️ Gemini Feedback Applied Feed\nExpanded the content based on Commander's instructions: "${val}"`;
+					draft.title = `[Improved] ` + draft.title;
+					loadItem('draft', draft.id, selectedProjectFolder!);
+				}
+			} else if (selectedItemType === 'master') {
+				const project = db.projects.find(p => p.id === selectedProjectFolder);
+				if (project) {
+					// Append to project plan or context as a form of master update
+					project.plan += `\n- [Updated Vision Log] ${val}`;
+					project.lastSync = new Date().toISOString();
+					loadItem('master', selectedProjectFolder!, selectedProjectFolder!);
+				}
+			}
 			if (feedbackInput) feedbackInput.value = '';
 			saveDatabase();
 		}, 1000);
 	});
 
 	saveDraftBtn?.addEventListener('click', () => {
-		alert('보관함에 저장되었습니다.');
+		alert('Changes saved to drafts in local database.');
 	});
 
 	publishBtn?.addEventListener('click', () => {
-		if (!selectedDraftId) return;
-		const draftIndex = db.drafts.findIndex(d => d.id === selectedDraftId);
+		if (!selectedItemId || selectedItemType !== 'draft') return;
+		const draftIndex = db.drafts.findIndex(d => d.id === selectedItemId);
 		if (draftIndex === -1) return;
 
 		const draft = db.drafts[draftIndex];
 		const project = db.projects.find(p => p.id === draft.projectId);
+		const projName = project ? project.name.replace(' (Sync)', '') : 'General';
 
 		const newPost = {
 			id: draft.id,
 			projectId: draft.projectId,
 			title: draft.title,
-			description: `${project ? project.name : 'General'}에 대한 AI 여정 에세이`,
+			description: `${projName}에 대한 AI 여정 에세이`,
 			pubDate: new Date().toISOString(),
 			category: draft.category || "Insight Essay",
 			tags: project ? project.tags : ["General", "Insight"],
@@ -386,11 +521,17 @@ import db from '../data/db.json';
 		};
 		db.posts.unshift(newPost);
 
+		// Append this new post dynamically to the master timeline in local memory
+		if (project) {
+			const today = new Date().toISOString().split('T')[0];
+			project.todo = `- [x] ${draft.title} (${today})\n` + (project.todo || '');
+		}
+
 		// Generate SNS channel versions
-		const cleanTitle = draft.title.replace('[개선됨] ', '');
-		const linkedin = `🔗 [LinkedIn AI Journal] ${cleanTitle}\n\nAI Build Lab 저널에 새로운 개발 일지가 공개되었습니다.\n\n${draft.content.substring(0, 100)}...\n#BuildInPublic #AIJourney`;
-		const twitter = `🐦 [Twitter/X] ${cleanTitle}\n\nAI Experiment Lab에서 작성한 최신 개발 일지.\n${draft.content.substring(0, 80)}...\n#BuildInPublic`;
-		const instagram = `📸 [Instagram] ${cleanTitle}\n\nAI 빌드 스토리 저널 공개 ✨\n${draft.content.substring(0, 90)}...\n#AIJournal`;
+		const cleanTitle = draft.title.replace('[Improved] ', '');
+		const linkedin = `🔗 [LinkedIn AI Journal] ${cleanTitle}\n\nAI Build Lab journal has a new entry.\n\n${draft.content.substring(0, 100)}...\n#BuildInPublic #AIJourney`;
+		const twitter = `🐦 [Twitter/X] ${cleanTitle}\n\nLatest journal from the AI Experiment Lab.\n${draft.content.substring(0, 80)}...\n#BuildInPublic`;
+		const instagram = `📸 [Instagram] ${cleanTitle}\n\nAI Build Story Journal released ✨\n${draft.content.substring(0, 90)}...\n#AIJournal`;
 
 		linkedinArea.value = linkedin;
 		twitterArea.value = twitter;
@@ -414,8 +555,8 @@ import db from '../data/db.json';
 				db.drafts.push({
 					id: `draft-${draft.projectId}-${Date.now()}-${i}`,
 					projectId: draft.projectId,
-					title: `${project ? project.name : 'General'}의 AI 여정 분석 에세이 #${Date.now()}`,
-					content: `# ${project ? project.name : 'General'} - 신규 저널 기록\n\n## 1. Why (기획의도)\n이 프로젝트는 마일스톤 단계에 맞춰 구축을 지향합니다.\n\n## 2. Human Struggle (인간적 극복)\n이 단계에서 겪은 에러 해결 투쟁기.\n\n[📷 이미지 추천 포인트: 개발용 콘솔 코드 터미널 창과 시스템 설계 도식 캡처]\n\n## 3. AI Insight (AI의 통찰)\n로컬 시장과 개발 인프라 최적화를 연결해내는 AI 모델의 가능성을 증명합니다.`,
+					title: `${projName} AI Journey Analysis Essay #${Date.now()}`,
+					content: `# ${projName} - New Journal Record\n\n## 1. Why (Intent)\nThis project aims for construction according to milestone stages.\n\n## 2. Human Struggle (Human Struggle)\nDevelopment struggle story in this stage.\n\n[📷 Image Recommendation: Terminal console and system diagram capture]\n\n## 3. AI Insight (AI Insight)\nProving the potential of AI models to optimize local market and development infrastructure.`,
 					status: "review"
 				});
 			}
@@ -423,16 +564,14 @@ import db from '../data/db.json';
 
 		saveDatabase();
 
-		saveDatabase();
-
-		if (workbenchTitle) workbenchTitle.textContent = "배포 완료!";
-		if (workbenchMeta) workbenchMeta.textContent = "A공식 호스팅 서버에 퍼블리싱되었으며 SNS 스니펫이 완성되었습니다.";
+		if (workbenchTitle) workbenchTitle.textContent = "Publish Complete!";
+		if (workbenchMeta) workbenchMeta.textContent = "Successfully deployed to host server.";
 		if (htmlOutput) {
 			htmlOutput.innerHTML = `
 				<div class="text-center py-10">
 					<span class="text-4xl">🎉</span>
-					<h3 class="font-bold text-slate-800 mt-4">저널 포스트 배포 성공</h3>
-					<p class="text-xs text-slate-500 mt-1">블로그 저널 목록에 배포되었습니다.</p>
+					<h3 class="font-bold text-slate-800 mt-4">Post Published Successfully</h3>
+					<p class="text-xs text-slate-500 mt-1">Published to the Journal list.</p>
 				</div>
 			`;
 		}
@@ -447,7 +586,7 @@ import db from '../data/db.json';
 		const memo = flashMemoInput.value.trim();
 
 		if (!memo) {
-			alert('메모 내용을 입력해 주세요!');
+			alert('Please enter memo content!');
 			return;
 		}
 
@@ -457,7 +596,7 @@ import db from '../data/db.json';
 			id: draftId,
 			projectId: tag,
 			title: `⚡ [Flash] ${memo.substring(0, 30)}...`,
-			content: `# Flash Insight - ${projName}\n\n**아이디어 메모:**\n"${memo}"\n\n## 1. Why (기획의도)\n이 아이디어가 시작된 배경과 해결하려는 고통(Pain Point)에 대해 깊이 기술합니다.\n\n## 2. Human Struggle (인간적 고뇌)\n이 아이디어를 개발 환경에 정착시키기 위해 필요한 투쟁과 해결 로드맵.\n\n[📷 이미지 추천 포인트: 브레인스토밍 메모가 채워진 종이 노트 사진 또는 코딩 화면 캡처]\n\n## 3. AI Insight (AI의 통찰)\n직관적 의도를 AI 지식 생태계로 증폭시켜 최적화된 저널 마일스톤 에세이를 형성합니다.`,
+			content: `# Flash Insight - ${projName}\n\n**Idea Memo:**\n"${memo}"\n\n## 1. Why (Intent)\nDeeply describe the background of this idea and the Pain Points to solve.\n\n## 2. Human Struggle (Human Struggle)\nStruggle and roadmap required to establish this idea in the dev environment.\n\n[📷 Image Recommendation: Brainstorming notes or coding screen capture]\n\n## 3. AI Insight (AI Insight)\nAmplify intuitive intent into the AI knowledge ecosystem to form an optimized milestone essay.`,
 			category: "Insight Essay",
 			status: "review"
 		};
@@ -465,8 +604,8 @@ import db from '../data/db.json';
 		db.drafts.unshift(newDraft);
 		flashMemoInput.value = '';
 		saveDatabase();
-		loadDraft(draftId);
-		alert('플래시 인사이트 드래프트가 큐 최상단(#1)에 등록되었습니다!');
+		loadItem('draft', draftId, tag);
+		alert('Flash insight draft registered at the top of the queue (#1)!');
 	});
 
 	// SNS Copy Button handlers
@@ -477,15 +616,15 @@ import db from '../data/db.json';
 			const txtArea = document.getElementById(targetId!) as HTMLTextAreaElement;
 			if (txtArea && txtArea.value) {
 				navigator.clipboard.writeText(txtArea.value).then(() => {
-					alert('SNS 스니펫이 복사되었습니다!');
+					alert('SNS snippet copied!');
 				});
 			}
 		});
 	});
 
 	syncTriggerBtn?.addEventListener('click', () => {
-		alert('C:/appdev/ 로컬 리포지토리 동기화 완료!');
+		alert('C:/appdev/ local repository sync complete!');
 	});
 
-	renderDraftQueue();
+	renderAccordionTree();
 </script>

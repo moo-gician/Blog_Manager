@@ -33,3 +33,9 @@
 - **Core Principle**: All generated blog drafts must refer to the Global Rules as the 'Supreme Logic' to maintain consistent tone, technical stack priorities (Google Ecosystem, Astro, Firebase), design constraints (Modern Light Design), and project tracking SOPs (3-core files, '약문통 원해자' framework).
 - **Behind the Scenes Narrative**: Explain why each rule was established by the founder (e.g. why 3-core files are critical for context preservation, why dark mode is rejected for local biz sites, why Google Ecosystem is the default).
 - **General Essays**: Write these interpretations as standalone thought-pieces under the 'General' tag.
+
+## 5. Architectural Pivot: Project-Centric Knowledge Vault & master.md System (2026-07-10)
+- **지식 저장소(Vault) 도입**: 각 프로젝트를 `src/content/projects/[project-name]/` 하위의 독립된 지식 베이스로 재편하여 `master.md`, `/published/`, `/drafts/`를 체계적으로 격리 보관.
+- **master.md (Source of Truth)**: 프로젝트 비전, 로컬 SEO 타겟, 히스토리 타임라인을 총망라하여 AI 작가에게 고정 컨텍스트로 주입함으로써 연재 에세이의 톤앤매너와 논리적 일관성을 확보함.
+- **실시간 클라이언트 상태 동기화**: 정적 호스팅(Firebase Hosting)의 API 제약을 극복하고 라이브 웹 시뮬레이션을 가능하게 하기 위해, `/operator`에서 발행한 데이터(LocalStorage)를 메인 피드 및 저널 목록에 클라이언트 사이드에서 동적으로 가산/병합하는 동기화 엔진을 구축함.
+

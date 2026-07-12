@@ -2,6 +2,15 @@
 
 This document tracks the deployment and major updates matching the GitHub release commits.
 
+## v1.9.0 - Minimal Tech SaaS Redesign for Control Tower (index.astro)
+- **Date**: 2026-07-12
+- **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
+- **Features**:
+  - Overhauled `index.astro` to a 4-column minimal tech SaaS layout.
+  - Implemented sticky sidebar with category filtering.
+  - Applied Pure White background, Dark Gray typography, and Purple accent colors.
+  - Removed all borders and shadows in favor of `rounded-3xl` spacing and clean aesthetics.
+
 ## v1.8.0 - DALO UI Overhaul & Premium SaaS Aesthetics (Luna Standard)
 - **Date**: 2026-07-10
 - **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)

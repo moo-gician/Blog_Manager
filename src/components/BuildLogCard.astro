@@ -10,47 +10,215 @@ interface Props {
 }
 
 const { title, description, pubDate, slug, status, tags = [], heroImage } = Astro.props;
+
+const statusColor: Record<string, string> = {
+	'in-progress': 'status-inprogress',
+	'completed':   'status-completed',
+	'planning':    'status-planning',
+};
+const statusClass = statusColor[status] ?? 'status-default';
 ---
 
-<div class="card" style="background: #ffffff; border: none; border-radius: 24px; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; height: 100%; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);">
+<!-- Josh Comeau style: full-overlay + triple-arrow stagger -->
+<article class="jwc-card">
+	<a href={`/blog/${slug}`} class="jwc-card-overlay" tabindex="-1" aria-hidden="true"></a>
+
 	{heroImage && (
-		<div style="position: relative; height: 180px; overflow: hidden; background: #f8fafc;">
-			<img src={heroImage} alt={title} style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="card-img" />
-			<span style="position: absolute; top: 12px; right: 12px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px); color: var(--text-main); padding: 4px 10px; border-radius: 99px; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; tracking-wider border: 1px solid rgba(0, 0, 0, 0.03);">
-				{status}
-			</span>
+		<div class="jwc-img-wrap">
+			<img src={heroImage} alt={title} class="jwc-img" loading="lazy" />
+			<span class={`jwc-badge ${statusClass}`}>{status}</span>
 		</div>
 	)}
-	<div style="padding: 24px; flex-grow: 1; display: flex; flex-direction: column; gap: 12px; text-align: left;">
-		<div style="display: flex; gap: 6px; flex-wrap: wrap;">
+
+	<div class="jwc-body">
+		<div class="jwc-tags">
 			{tags.slice(0, 3).map(tag => (
-				<span style="background: rgba(235, 242, 255, 0.7); color: #0052FF; font-size: 0.65rem; padding: 3px 10px; border-radius: 99px; font-weight: 700; border: 1px solid rgba(0, 82, 255, 0.08); text-transform: uppercase; tracking-wide">
-					#{tag}
-				</span>
+				<span class="jwc-tag">#{tag}</span>
 			))}
 		</div>
 
-		<h3 style="font-size: 1.15rem; font-weight: 800; line-height: 1.4; color: var(--text-main); margin-top: 4px;">
-			<a href={`/blog/${slug}`} style="color: inherit;" class="card-link">
-				{title}
-			</a>
+		<h3 class="jwc-title">
+			<a href={`/blog/${slug}`} class="jwc-title-link">{title}</a>
 		</h3>
 
-		<p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; flex-grow: 1;">
-			{description}
-		</p>
+		<p class="jwc-desc">{description}</p>
+
+		<div class="jwc-footer">
+			<span class="jwc-date">
+				{new Date(pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+			</span>
+			<span class="jwc-readmore">
+				Read more
+				<svg width="36" height="12" viewBox="0 0 36 12" fill="none" class="jwc-arrow" aria-hidden="true">
+					<path class="a1" d="M0.75 6H11.25 M6 0.75L11.25 6L6 11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+					<path class="a2" d="M15 10L19.5 5.5L15 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+					<path class="a3" d="M23 10L27.5 5.5L23 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.66"/>
+					<path class="a4" d="M31 10L35.5 5.5L31 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.35"/>
+				</svg>
+			</span>
+		</div>
 	</div>
-</div>
+</article>
 
 <style>
-	.card:hover {
-		transform: translateY(-6px);
-		box-shadow: 0 20px 40px rgba(0, 82, 255, 0.06);
+	/* ── Card shell ── */
+	.jwc-card {
+		position: relative;
+		background: #fff;
+		border: 1px solid hsl(220deg 16% 93%);
+		border-radius: 20px;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		box-shadow: 0 2px 12px hsl(225deg 25% 10% / 0.04);
+		transition:
+			transform 350ms cubic-bezier(0.16, 1, 0.3, 1),
+			box-shadow 350ms cubic-bezier(0.16, 1, 0.3, 1),
+			border-color 200ms ease;
 	}
-	.card:hover .card-img {
-		transform: scale(1.04);
+	.jwc-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 20px 48px hsl(225deg 80% 55% / 0.09);
+		border-color: hsl(225deg 80% 85% / 0.5);
 	}
-	.card-link:hover {
-		color: var(--accent-blue) !important;
+
+	/* invisible full-card link (Josh Comeau t1s5uocr pattern) */
+	.jwc-card-overlay {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
 	}
+
+	/* ── Image ── */
+	.jwc-img-wrap {
+		position: relative;
+		height: 180px;
+		overflow: hidden;
+		background: hsl(220deg 20% 97%);
+		flex-shrink: 0;
+	}
+	.jwc-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.jwc-card:hover .jwc-img { transform: scale(1.04); }
+
+	.jwc-badge {
+		position: absolute;
+		top: 10px; right: 10px;
+		padding: 3px 10px;
+		border-radius: 99px;
+		font-size: 0.58rem;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		border: 1px solid transparent;
+		backdrop-filter: blur(8px);
+	}
+	.status-inprogress { background: hsl(215deg 90% 96%); color: hsl(225deg 80% 50%); border-color: hsl(220deg 70% 88%); }
+	.status-completed  { background: hsl(145deg 60% 95%); color: hsl(145deg 80% 28%); border-color: hsl(145deg 50% 86%); }
+	.status-planning   { background: hsl(45deg 90% 95%);  color: hsl(37deg 100% 40%); border-color: hsl(45deg 75% 85%); }
+	.status-default    { background: rgba(255,255,255,0.88); color: hsl(222deg 22% 18%); border-color: rgba(0,0,0,0.06); }
+
+	/* ── Body ── */
+	.jwc-body {
+		padding: 22px 24px 20px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		flex-grow: 1;
+		position: relative;
+		z-index: 2;
+	}
+
+	/* ── Tags ── */
+	.jwc-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+	.jwc-tag {
+		background: hsl(220deg 90% 97%);
+		color: hsl(225deg 80% 52%);
+		border: 1px solid hsl(225deg 70% 90%);
+		font-size: 0.6rem;
+		font-weight: 700;
+		padding: 2px 9px;
+		border-radius: 99px;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		transition: background 200ms, border-color 200ms;
+	}
+	.jwc-card:hover .jwc-tag {
+		background: hsl(225deg 80% 94%);
+		border-color: hsl(225deg 70% 82%);
+	}
+
+	/* ── Title ── */
+	.jwc-title {
+		font-size: 1.05rem;
+		font-weight: 800;
+		line-height: 1.4;
+		letter-spacing: -0.02em;
+		color: hsl(222deg 22% 8%);
+		margin: 0;
+	}
+	.jwc-title-link {
+		color: inherit;
+		text-decoration: none;
+		position: relative;
+		z-index: 2;
+		transition: color 200ms ease;
+	}
+	.jwc-card:hover .jwc-title-link { color: hsl(240deg 95% 60%); }
+
+	/* ── Description ── */
+	.jwc-desc {
+		font-size: 0.82rem;
+		color: hsl(225deg 12% 44%);
+		line-height: 1.65;
+		flex-grow: 1;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	/* ── Footer ── */
+	.jwc-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border-top: 1px solid hsl(220deg 16% 93%);
+		padding-top: 12px;
+		margin-top: 4px;
+	}
+	.jwc-date {
+		font-size: 0.7rem;
+		color: hsl(225deg 8% 56%);
+		font-variant-numeric: tabular-nums;
+	}
+
+	/* ── Josh triple-arrow ── */
+	.jwc-readmore {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 0.72rem;
+		font-weight: 700;
+		color: hsl(240deg 95% 60%);
+		position: relative;
+		z-index: 2;
+	}
+	.jwc-arrow { overflow: visible; }
+	.jwc-arrow .a1,
+	.jwc-arrow .a2,
+	.jwc-arrow .a3,
+	.jwc-arrow .a4 {
+		opacity: 0;
+		transition: opacity 125ms ease;
+	}
+	.jwc-card:hover .a1 { opacity: 1; transition-delay: 0ms; }
+	.jwc-card:hover .a2 { opacity: 1; transition-delay: 75ms; }
+	.jwc-card:hover .a3 { opacity: 1; transition-delay: 150ms; }
+	.jwc-card:hover .a4 { opacity: 1; transition-delay: 225ms; }
 </style>

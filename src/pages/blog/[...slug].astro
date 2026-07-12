@@ -8,21 +8,25 @@ export async function getStaticPaths() {
 	const dbPosts = db.posts;
 
 	const allPosts = [
-		...postsCollection.map(p => ({
-			id: p.id,
-			title: p.data.title,
-			description: p.data.description,
-			tags: p.data.tags,
-			pubDate: p.data.pubDate,
-			client: p.data.client || '',
-			location: p.data.location || '',
-			category: p.data.category,
-			content: p.body,
-			likes: 12,
-			comments: [
-				{ author: "사령관", text: "로컬 속도가 아주 만족스럽네요.", date: "2026-07-09T12:00:00Z" }
-			]
-		})),
+		...postsCollection.map(p => {
+			const parts = p.id.split('/');
+			const simpleId = parts.pop() || p.id;
+			return {
+				id: simpleId,
+				title: p.data.title,
+				description: p.data.description,
+				tags: p.data.tags,
+				pubDate: p.data.pubDate,
+				client: p.data.client || '',
+				location: p.data.location || '',
+				category: p.data.category,
+				content: p.body || '',
+				likes: 12,
+				comments: [
+					{ author: "사령관", text: "로컬 속도가 아주 만족스럽네요.", date: "2026-07-09T12:00:00Z" }
+				]
+			};
+		}),
 		...dbPosts.map(p => ({
 			id: p.id,
 			title: p.title,

@@ -13,7 +13,7 @@
 	<div style="background: var(--accent-blue); color: white; padding: 20px; border-top-left-radius: 15px; border-top-right-radius: 15px; display: flex; align-items: center; gap: 12px;">
 		<div style="width: 10px; height: 10px; background: #4ADE80; border-radius: 99px;"></div>
 		<div>
-			<h4 style="font-weight: 700; font-size: 0.95rem; line-height: 1.2;">시카고 AI 상담 비서 (Gemini)</h4>
+			<h4 style="font-weight: 700; font-size: 0.95rem; line-height: 1.2;">Chicago AI Consultant (Gemini)</h4>
 			<p style="font-size: 0.75rem; opacity: 0.8;">Chicago AI-Local Web Factory</p>
 		</div>
 	</div>
@@ -22,20 +22,20 @@
 	<div id="chat-messages" style="flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem;">
 		<!-- Welcome Message -->
 		<div style="background: var(--bg-light); padding: 12px 16px; border-radius: 12px; max-width: 85%; align-self: flex-start; line-height: 1.5; color: var(--text-main);">
-			안녕하세요! 시카고 AI 웹 공장의 컨설턴트 봇입니다. 3일 만에 구축되는 초고속 로컬 웹 제작 및 AI 마케팅 시스템에 대해 궁금한 점을 물어보세요!
+			Hello! I am the consultant bot of Chicago AI Web Factory. Feel free to ask any questions about our ultra-fast local web development and AI marketing system built in 3 days!
 		</div>
 		
 		<!-- Chips -->
 		<div id="suggestion-chips" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
-			<button class="chip" data-question="3일 구축 프로세스가 어떻게 되나요?">⏱️ 3일 구축 과정</button>
-			<button class="chip" data-question="Astro 프레임워크의 장점이 무엇인가요?">⚡ Astro의 장점</button>
-			<button class="chip" data-question="AI 오퍼레이터는 무엇을 자동화하나요?">🤖 AI 오퍼레이터 기능</button>
+			<button class="chip" data-question="What is the 3-day build process?">⏱️ 3-Day Build Process</button>
+			<button class="chip" data-question="What are the advantages of Astro framework?">⚡ Astro Advantages</button>
+			<button class="chip" data-question="What does the AI Operator automate?">🤖 AI Operator Features</button>
 		</div>
 	</div>
 
 	<!-- Input Area -->
 	<div style="padding: 16px; border-top: 1px solid var(--border-color); display: flex; gap: 8px;">
-		<input type="text" id="chat-input" placeholder="메시지를 입력하세요..." style="flex-grow: 1; border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 99px; font-family: inherit; font-size: 0.9rem; outline: none; transition: border-color 0.2s;" />
+		<input type="text" id="chat-input" placeholder="Type your message..." style="flex-grow: 1; border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 99px; font-family: inherit; font-size: 0.9rem; outline: none; transition: border-color 0.2s;" />
 		<button id="chat-send" style="background: var(--accent-blue); border: none; color: white; width: 40px; height: 40px; border-radius: 99px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s;">
 			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
 		</button>
@@ -100,19 +100,19 @@
 
 	// AI Response Data mapping
 	const qaDatabase: Record<string, string> = {
-		"3일 구축 프로세스가 어떻게 되나요?": `시카고 AI 웹 공장의 3일 프로세스는 다음과 같습니다:<br/><br/>
-		<strong>1일차 (기획 및 뼈대):</strong> 3대 핵심 파일(Plan, Context, Todo)을 수립하고 사이트 뼈대를 설정합니다.<br/>
-		<strong>2일차 (개발 및 최적화):</strong> Astro.build를 통해 웹 디자인 시스템을 로딩 최적화 상태로 빌드하고 갤러리 및 로컬 매핑을 완료합니다.<br/>
-		<strong>3일차 (AI 결합 및 배포):</strong> Gemini 마케팅 봇을 탑재하고 Firebase Hosting으로 초고속 호스팅 배포를 완료합니다.`,
+		"what is the 3-day build process?": `The 3-day process of Chicago AI Web Factory is as follows:<br/><br/>
+		<strong>Day 1 (Planning & Skeleton):</strong> Establish 3 core files (Plan, Context, Todo) and set the site skeleton.<br/>
+		<strong>Day 2 (Development & Optimization):</strong> Build the web design system through Astro.build with optimal loading, and complete the gallery and local mapping.<br/>
+		<strong>Day 3 (AI Integration & Deployment):</strong> Integrate Gemini marketing bot and complete ultra-fast hosting deployment with Firebase Hosting.`,
 		
-		"astro 프레임워크의 장점이 무엇인가요?": `Astro는 <strong>Zero-JS (초경량 아키텍처)</strong>를 기본으로 동작합니다.<br/><br/>
-		1. <strong>압도적인 스피드:</strong> 필요하지 않은 경우 클라이언트에 자바스크립트를 전혀 전송하지 않아 구글 라이트하우스 100점을 쉽게 달성합니다.<br/>
-		2. <strong>최상의 SEO:</strong> 서버사이드 혹은 정적 빌드로 완벽한 HTML을 만들어 구글 로컬 검색 로봇에 가장 친화적입니다.<br/>
-		3. <strong>로컬 마케팅 최적화:</strong> 웹 로딩 속도가 1초 빨라질 때마다 전환율이 최대 20% 상승합니다.`,
+		"what are the advantages of astro framework?": `Astro operates basically on <strong>Zero-JS (ultra-lightweight architecture)</strong>.<br/><br/>
+		1. <strong>Overwhelming Speed:</strong> Easily achieves 100 on Google Lighthouse by sending absolutely no JavaScript to the client unless necessary.<br/>
+		2. <strong>Best SEO:</strong> Creates perfect HTML via server-side or static build, making it extremely friendly to Google local search bots.<br/>
+		3. <strong>Local Marketing Optimization:</strong> For every 1-second improvement in load speed, conversion rates can increase by up to 20%.`,
 		
-		"ai 오퍼레이터는 무엇을 자동화하나요?": `AI 오퍼레이터는 소상공인의 실시간 작업로그(.md)를 돈이 되는 마케팅 콘텐츠로 복사합니다.<br/><br/>
-		1. <strong>블로그 스토리텔링:</strong> Plan/Context/Todo의 원시 로그를 감성적인 클라이언트 사례 마케팅 포스트로 변환.<br/>
-		2. <strong>SNS 증폭기:</strong> 링크드인 및 인스타그램에 최적화된 마케팅 문구 및 해시태그 스니펫 자동 생성.`
+		"what does the ai operator automate?": `The AI Operator copies local business owners' real-time work logs (.md) into profitable marketing content.<br/><br/>
+		1. <strong>Blog Storytelling:</strong> Converts raw logs of Plan/Context/Todo into emotional client case marketing posts.<br/>
+		2. <strong>SNS Amplifier:</strong> Automatically generates optimized marketing copy and hashtag snippets for LinkedIn and Instagram.`
 	};
 
 	function appendMessage(text: string, isUser: boolean) {
@@ -147,12 +147,12 @@
 		typing.style.alignSelf = 'flex-start';
 		typing.style.color = 'var(--text-muted)';
 		typing.style.fontSize = '0.8rem';
-		typing.textContent = "답변을 입력하고 있습니다...";
+		typing.textContent = "Typing...";
 		messagesContainer?.insertBefore(typing, document.getElementById('suggestion-chips'));
 		
 		setTimeout(() => {
 			typing.remove();
-			const answer = qaDatabase[question] || `죄송합니다. "${question}"에 대한 최적의 답변을 찾지 못했습니다. 구체적인 견적이나 맞춤형 솔루션 상담은 '3일 구축 문의'를 이용해 주시기 바랍니다.`;
+			const answer = qaDatabase[question.toLowerCase()] || `Sorry, I couldn't find an optimal answer for "${question}". For specific quotes or custom solution consultations, please use the '3-Day Build Inquiry'.`;
 			appendMessage(answer, false);
 		}, 1000);
 	}

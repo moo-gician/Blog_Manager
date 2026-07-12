@@ -1,6 +1,5 @@
 ---
 import ControlTowerLayout from '../layouts/ControlTowerLayout.astro';
-import BuildLogCard from '../components/BuildLogCard.astro';
 import GeminiBot from '../components/GeminiBot.astro';
 import { getCollection } from 'astro:content';
 import db from '../data/db.json';
@@ -11,16 +10,22 @@ const dbPosts = db.posts;
 
 // Merge and sort published logs
 const allLogs = [
-	...postsCollection.map(p => ({
-		id: p.id,
-		title: p.data.title,
-		description: p.data.description,
-		tags: p.data.tags,
-		pubDate: p.data.pubDate,
-		status: p.data.status,
-		category: p.data.category,
-		heroImage: p.data.heroImage || '/images/olivia-wedding-hero.png'
-	})),
+	...postsCollection.map(p => {
+		const parts = p.id.split('/');
+		const projectId = parts[0];
+		const simpleId = parts.pop() || p.id;
+		return {
+			id: simpleId,
+			title: p.data.title,
+			description: p.data.description,
+			tags: p.data.tags,
+			pubDate: p.data.pubDate,
+			status: p.data.status,
+			category: p.data.category || 'Uncategorized',
+			projectId: projectId,
+			heroImage: p.data.heroImage || '/images/olivia-wedding-hero.png'
+		};
+	}),
 	...dbPosts.map(p => ({
 		id: p.id,
 		title: p.title,
@@ -28,225 +33,290 @@ const allLogs = [
 		tags: p.tags,
 		pubDate: new Date(p.pubDate),
 		status: p.projectId === 'general' ? 'completed' : 'in-progress',
-		category: p.category,
-		heroImage: '/images/olivia-wedding-hero.png'
+		category: p.category || 'Uncategorized',
+		projectId: p.projectId,
+		heroImage: '/images/dalo-logo.svg'
 	}))
 ];
 
 const sortedLogs = allLogs.sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
-
-// List of Active Projects
-const activeProjects = db.projects;
+const categories = Array.from(new Set(sortedLogs.map(log => log.category)));
 ---
 
 <ControlTowerLayout 
-	title="DALO | To the Moon with AI"
-	description="AI 기반 비즈니스 모델 구축 여정과 DALO 성장 서사 로그를 투명하게 기록하는 공간"
+	title="DALO | Resources"
+	description="Browse our resources and tips."
 >
-	<!-- Interactive space Hero Section -->
-	<section id="interactive-hero" class="relative bg-slate-900 text-white py-36 overflow-hidden transition-all duration-300 rounded-[32px] mx-4 my-6 shadow-xl">
-		<!-- Space background gradient layer -->
-		<div id="hero-gradient" class="absolute inset-0 pointer-events-none opacity-40 transition-all duration-300" style="background: radial-gradient(circle 350px at 50% 50%, rgba(99, 102, 241, 0.25), transparent 80%);"></div>
-
-		<!-- Subtle starry background layout -->
-		<div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: radial-gradient(white 1px, transparent 0); background-size: 40px 40px;"></div>
-
-		<div class="max-w-5xl mx-auto px-6 relative z-10 text-center space-y-8">
-			<span class="inline-flex items-center gap-1.5 bg-indigo-500/10 text-indigo-300 text-[10px] font-extrabold px-3 py-1.5 rounded-full border border-indigo-500/20 uppercase tracking-widest animate-pulse">
-				🚀 To the Moon with AI
-			</span>
-			
-			<h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none max-w-4xl mx-auto" style="font-family: var(--font-sans);">
-				AI로 한계를 넘어,<br/><span class="bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">달로 가자.</span>
-			</h1>
-			
-			<p class="text-slate-400 text-base max-w-2xl mx-auto leading-relaxed">
-				수많은 시도와 실패를 겪으며 AI 비즈니스 모델의 프로토타이핑 과정을 가감 없이 'Build in Public'으로 기록합니다.
-			</p>
-			
-			<div class="flex flex-wrap justify-center gap-4 pt-4">
-				<a href="/blog" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-4 rounded-2xl transition text-xs shadow-lg shadow-indigo-600/20 hover:scale-[1.02] active:scale-[0.98]">
-					🚀 빌드 저널 읽기
-				</a>
-				<a href="/about" class="bg-slate-800/80 hover:bg-slate-800 text-slate-200 border border-slate-700 font-bold px-8 py-4 rounded-2xl transition text-xs hover:scale-[1.02] active:scale-[0.98]">
-					스토리 읽기 (About)
-				</a>
-			</div>
-		</div>
-	</section>
-
-	<!-- Section 1: Bento Grid Active Projects -->
-	<section class="py-24 max-w-6xl mx-auto px-6 space-y-12">
-		<div class="text-center space-y-2 max-w-2xl mx-auto">
-			<span class="text-blue-600 text-[10px] font-extrabold uppercase tracking-widest">Active Experiments</span>
-			<h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">📁 Active Projects</h2>
-			<p class="text-slate-500 text-xs">현재 진행하고 있는 프로젝트들의 인게스천 상태 및 경로 벤토 뷰입니다.</p>
-		</div>
-
-		<!-- Bento Grid Layout -->
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[220px]">
-			{activeProjects.map((proj, idx) => {
-				const isBig = idx === 0 || idx === 3;
-				const statusColor = proj.status === 'in-progress' 
-					? 'bg-blue-50/70 text-blue-600 border-blue-100/50' 
-					: proj.status === 'completed' 
-					? 'bg-emerald-50/70 text-emerald-600 border-emerald-100/50'
-					: 'bg-slate-100/80 text-slate-500 border-slate-200/50';
-
-				return (
-					<div class={`bg-white rounded-[24px] p-6 transition duration-300 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(0,82,255,0.05)] border border-transparent hover:border-blue-100 cursor-pointer ${
-						isBig ? 'md:col-span-2' : 'md:col-span-1'
-					}`}>
-						<div class="space-y-3">
-							<div class="flex justify-between items-center">
-								<span class="text-[9px] font-bold text-slate-400 font-mono">ID: {proj.id}</span>
-								<span class={`text-[9px] font-extrabold px-2.5 py-0.5 rounded-full border uppercase tracking-wider ${statusColor}`}>
-									{proj.status === 'in-progress' ? 'Developing' : proj.status === 'completed' ? 'Completed' : 'Planning'}
-								</span>
-							</div>
-							<h3 class="font-extrabold text-base text-slate-900 leading-snug">{proj.name.replace(' (Sync)', '')}</h3>
-							<p class="text-xs text-slate-500 leading-relaxed font-mono truncate">📍 경로: {proj.path}</p>
-						</div>
-						<div class="border-t border-slate-100 pt-3 flex justify-between items-center text-[10px]">
-							<span class="text-slate-400">동기화: {new Date(proj.lastSync).toLocaleDateString('ko-KR')}</span>
-							<a href={`/blog`} class="text-blue-600 hover:text-blue-700 font-bold">저널 보기 →</a>
-						</div>
-					</div>
-				);
-			})}
-		</div>
-	</section>
-
-	<!-- Section 2: Product Gallery (Portfolio) -->
-	<section class="py-24 bg-slate-50 rounded-[32px] mx-4 border border-slate-100">
-		<div class="max-w-6xl mx-auto px-6 space-y-12">
-			<div class="text-center space-y-2 max-w-2xl mx-auto">
-				<span class="text-blue-600 text-[10px] font-extrabold uppercase tracking-widest">SaaS Portfolio</span>
-				<h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">🛰️ Product Gallery</h2>
-				<p class="text-slate-500 text-xs">완성되거나 검증 단계를 밟고 있는 DALO 핵심 프로토타입 결과물 리포트입니다.</p>
-			</div>
-
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-				<!-- Project Cards: Floating card style -->
-				<div class="bg-white rounded-[24px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_20px_40px_rgba(0,82,255,0.05)] transition duration-300">
-					<div class="space-y-4">
-						<span class="bg-emerald-50/70 text-emerald-600 text-[9px] font-extrabold px-2.5 py-1 rounded-full border border-emerald-100/50 uppercase tracking-wide">Live & Operating</span>
-						<h3 class="font-extrabold text-base text-slate-900 mt-2">Olivia Choi Photography</h3>
-						<p class="text-slate-500 text-xs leading-relaxed">시카고 로컬 웨딩 전문 포토그래퍼를 위한 고성능 포트폴리오 갤러리 및 로컬 구글 맵 마케팅 연동 플랫폼.</p>
-					</div>
-					<div class="pt-4 border-t border-slate-100 mt-6 flex justify-between items-center text-[10px]">
-						<span class="text-slate-400 font-mono">Astro + Firebase</span>
-						<a href="https://chicago-ai-web-factory.web.app/blog/olivia-choi-wedding" target="_blank" class="text-blue-600 hover:text-blue-700 font-bold">자세히 보기 →</a>
-					</div>
+	<div class="bg-white min-h-screen pb-32 text-gray-900 font-sans">
+		
+		<!-- Header Area -->
+		<div class="max-w-7xl mx-auto px-4 pt-20 pb-16">
+			<div class="text-center">
+				<div class="inline-block bg-purple-50 text-purple-600 font-bold px-4 py-1.5 rounded-full text-xs tracking-wide mb-6">
+					Read Our Blog
 				</div>
-
-				<div class="bg-white rounded-[24px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_20px_40px_rgba(0,82,255,0.05)] transition duration-300">
-					<div class="space-y-4">
-						<span class="bg-blue-50/70 text-blue-600 text-[9px] font-extrabold px-2.5 py-1 rounded-full border border-blue-100/50 uppercase tracking-wide">Developing</span>
-						<h3 class="font-extrabold text-base text-slate-900 mt-2">StorySeed</h3>
-						<p class="text-slate-500 text-xs leading-relaxed">AI 에이전트와 LLM을 결합하여 창의적인 시나리오와 스토리를 자동 생성하고 시각화하는 콘텐츠 생산 파이프라인.</p>
-					</div>
-					<div class="pt-4 border-t border-slate-100 mt-6 flex justify-between items-center text-[10px]">
-						<span class="text-slate-400 font-mono">React + Fastify</span>
-						<a href="/blog" class="text-blue-600 hover:text-blue-700 font-bold">저널 보기 →</a>
-					</div>
-				</div>
-
-				<div class="bg-white rounded-[24px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_20px_40px_rgba(0,82,255,0.05)] transition duration-300">
-					<div class="space-y-4">
-						<span class="bg-slate-100/80 text-slate-500 text-[9px] font-extrabold px-2.5 py-1 rounded-full border border-slate-200/50 uppercase tracking-wide">Planning</span>
-						<h3 class="font-extrabold text-base text-slate-900 mt-2">Habitmon</h3>
-						<p class="text-slate-500 text-xs leading-relaxed">사용자의 일일 습관과 목표 행동을 캐릭터 성장 게임화 기법으로 관리하는 AI 기반 데일리 코칭 앱.</p>
-					</div>
-					<div class="pt-4 border-t border-slate-100 mt-6 flex justify-between items-center text-[10px]">
-						<span class="text-slate-400 font-mono">Flutter + Firestore</span>
-						<a href="/blog" class="text-blue-600 hover:text-blue-700 font-bold">저널 보기 →</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- Luna Mascot Placeholder widget -->
-	<section class="py-20 max-w-6xl mx-auto px-6">
-		<div class="bg-indigo-600 text-white rounded-[32px] p-8 md:p-12 shadow-xl flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
-			<!-- Visual elements inside -->
-			<div class="absolute right-0 bottom-0 translate-y-12 translate-x-12 opacity-10 pointer-events-none text-9xl">🚀</div>
-			
-			<div class="text-5xl md:text-6xl flex-shrink-0 animate-bounce">🌙</div>
-			<div class="space-y-4 flex-grow relative z-10 text-left">
-				<div class="bg-indigo-500/30 border border-indigo-400/20 text-indigo-200 text-[9px] font-bold px-3 py-1 rounded-full inline-block uppercase tracking-wider">Luna Mascot Guide</div>
-				<h3 class="text-2xl font-black">안녕하세요! DALO의 AI 안내자 '루나(Luna)'입니다.</h3>
-				<p class="text-indigo-100 text-sm max-w-xl leading-relaxed">
-					"우리는 단순한 웹사이트를 만드는 것에서 멈추지 않습니다. AI 오퍼레이터가 작성한 성장 서사는 현실을 돌파해 성공의 지향점인 달(Moon)로 뻗어갑니다. 뉴스레터 탑승 준비가 되셨나요?"
+				<h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 mb-6">
+					Browse Our Resources
+				</h1>
+				<p class="text-gray-600 text-base md:text-lg max-w-xl mx-auto">
+					We provide tips and resources from industry leaders. For real.
 				</p>
-				
-				<!-- Subscription form -->
-				<div class="max-w-md flex gap-2 pt-2 flex-col sm:flex-row">
-					<input type="email" id="mascot-email" placeholder="이메일 주소 입력..." class="flex-grow text-xs border border-transparent rounded-xl px-4 py-3 outline-none focus:border-indigo-400 bg-white/10 backdrop-blur text-white placeholder-indigo-200" />
-					<button id="btn-mascot-subscribe" class="bg-white hover:bg-indigo-50 text-indigo-900 font-bold px-6 py-3 rounded-xl text-xs transition">
-						달로켓 탑승
-					</button>
+			</div>
+		</div>
+
+		<!-- 4-Column Layout Area -->
+		<div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-16">
+			
+			<!-- Left Sidebar -->
+			<aside class="lg:col-span-1 space-y-10">
+				<div class="sticky top-12 space-y-10">
+					<!-- Search -->
+					<div>
+						<label class="block text-sm font-bold text-gray-900 mb-3">Label</label>
+						<div class="relative">
+							<span class="absolute inset-y-0 left-4 flex items-center text-gray-400 font-medium">
+								🔍
+							</span>
+							<input type="text" id="search-input" placeholder="Search article..." class="w-full bg-white border border-gray-200 text-gray-900 rounded-2xl pl-10 pr-4 py-3 text-sm outline-none focus:border-purple-300 focus:ring-4 focus:ring-purple-50 transition" />
+						</div>
+					</div>
+
+					<!-- Filter Placeholder -->
+					<div>
+						<label class="block text-sm font-bold text-gray-900 mb-3">Filter</label>
+						<select class="w-full bg-white border border-gray-200 text-gray-600 rounded-2xl px-4 py-3 text-sm outline-none focus:border-purple-300 focus:ring-4 focus:ring-purple-50 transition appearance-none">
+							<option value="">Filter article...</option>
+							<option value="recent">Most Recent</option>
+							<option value="popular">Most Popular</option>
+						</select>
+					</div>
+
+					<!-- Categories -->
+					<div>
+						<h3 class="text-xs font-bold text-purple-600 mb-4 tracking-wide">Browse By Categories</h3>
+						<ul class="space-y-1" id="category-list">
+							<li>
+								<button class="w-full text-left font-bold text-gray-900 border-l-[3px] border-purple-600 pl-4 py-2.5 bg-purple-50 rounded-r-xl transition category-btn active" data-category="all">
+									All Category
+								</button>
+							</li>
+							{categories.map(cat => (
+								<li>
+									<button class="w-full text-left font-medium text-gray-500 hover:text-gray-900 border-l-[3px] border-transparent hover:border-gray-200 pl-4 py-2.5 transition category-btn" data-category={cat}>
+										{cat}
+									</button>
+								</li>
+							))}
+						</ul>
+					</div>
 				</div>
-			</div>
-		</div>
-	</section>
+			</aside>
 
-	<!-- Section 3: Latest Build Logs & Articles -->
-	<section class="py-24 max-w-6xl mx-auto px-6 space-y-12">
-		<div class="flex justify-between items-end flex-wrap gap-4 border-b border-slate-100 pb-6">
-			<div class="text-left space-y-2">
-				<span class="text-blue-600 text-[10px] font-extrabold uppercase tracking-widest">Build Logs</span>
-				<h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">📚 Latest Build Logs</h2>
-				<p class="text-slate-500 text-xs">최근에 오퍼레이터가 발행한 소소한 실패담 및 기획 에세이 목록입니다.</p>
-			</div>
-			<a href="/blog" class="text-blue-600 hover:text-blue-700 text-xs font-extrabold flex items-center gap-1">
-				전체 저널 목록 보기 →
-			</a>
-		</div>
+			<!-- Right Main Feed -->
+			<main class="lg:col-span-3 space-y-16" id="posts-feed">
+				
+				<!-- Featured Post -->
+				{sortedLogs.length > 0 && (
+					<article class="flex flex-col md:flex-row gap-8 lg:gap-12 items-center cursor-pointer group post-item" data-category={sortedLogs[0].category} onclick={`window.location.href='/blog/${sortedLogs[0].id}'`}>
+						<div class="w-full md:w-[55%] aspect-[4/3] md:aspect-[5/4] overflow-hidden rounded-3xl bg-gray-50 flex-shrink-0 relative">
+							<img src={sortedLogs[0].heroImage} alt={sortedLogs[0].title} class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out" />
+						</div>
+						<div class="w-full md:w-[45%] flex flex-col justify-center text-left py-4 relative">
+							<span class="inline-block bg-purple-50 text-purple-600 text-[10px] font-extrabold px-3 py-1 rounded-full mb-5 self-start tracking-wide uppercase">
+								Featured
+							</span>
+							<h2 class="text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight mb-5 group-hover:text-purple-600 transition duration-300">
+								{sortedLogs[0].title}
+							</h2>
+							<p class="text-gray-500 text-sm lg:text-base leading-relaxed mb-8">
+								{sortedLogs[0].description}
+							</p>
+							<div class="flex items-center gap-3">
+								<div class="w-10 h-10 rounded-full bg-gray-100 border border-gray-200 overflow-hidden flex items-center justify-center text-lg">
+									👤
+								</div>
+								<div>
+									<div class="text-sm font-extrabold text-gray-900">Operator</div>
+									<div class="text-xs text-gray-400 font-medium">5min read · {new Date(sortedLogs[0].pubDate).toLocaleDateString('en-US')}</div>
+								</div>
+							</div>
+							<!-- Interactive Arrow -->
+							<div class="absolute bottom-4 right-4 text-gray-300 group-hover:text-gray-900 transition text-2xl font-light">↗</div>
+						</div>
+					</article>
+				)}
 
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-			{sortedLogs.slice(0, 3).map(log => (
-				<BuildLogCard 
-					title={log.title}
-					description={log.description}
-					pubDate={log.pubDate}
-					slug={log.id}
-					status={log.status}
-					tags={log.tags}
-					heroImage={log.heroImage}
-				/>
-			))}
+				<!-- Grid Posts -->
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16" id="grid-posts-container">
+					{sortedLogs.slice(1).map(post => (
+						<article class="cursor-pointer group flex flex-col h-full post-item relative" data-category={post.category} onclick={`window.location.href='/blog/${post.id}'`}>
+							<div class="w-full aspect-[4/3] overflow-hidden rounded-3xl bg-gray-50 mb-6">
+								<img src={post.heroImage} alt={post.title} class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out" />
+							</div>
+							<div class="flex-grow flex flex-col text-left px-1">
+								<span class="inline-block bg-purple-50 text-purple-600 text-[10px] font-extrabold px-3 py-1 rounded-full mb-4 self-start tracking-wide uppercase">
+									{post.category}
+								</span>
+								<h3 class="text-2xl font-extrabold text-gray-900 leading-snug mb-3 group-hover:text-purple-600 transition duration-300">
+									{post.title}
+								</h3>
+								<p class="text-gray-500 text-sm leading-relaxed mb-8 line-clamp-2">
+									{post.description}
+								</p>
+								
+								<div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-5">
+									<div class="flex items-center gap-3">
+										<div class="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-sm">
+											👤
+										</div>
+										<div>
+											<div class="text-xs font-extrabold text-gray-900">Operator</div>
+											<div class="text-[10px] text-gray-400 font-medium">5min read</div>
+										</div>
+									</div>
+									<div class="text-gray-300 group-hover:text-gray-900 transition text-xl font-light">↗</div>
+								</div>
+							</div>
+						</article>
+					))}
+				</div>
+				
+				<div id="no-results" class="hidden text-center py-20 text-gray-400 font-medium">
+					No articles found matching your criteria.
+				</div>
+			</main>
 		</div>
-	</section>
+	</div>
 
 	<!-- Gemini Bot Widget -->
 	<GeminiBot />
-
-	<!-- Interactive Hero Script -->
-	<script>
-		const hero = document.getElementById('interactive-hero');
-		const gradient = document.getElementById('hero-gradient');
-
-		hero?.addEventListener('mousemove', (e) => {
-			const rect = hero.getBoundingClientRect();
-			const x = e.clientX - rect.left;
-			const y = e.clientY - rect.top;
-			gradient!.style.background = `radial-gradient(circle 350px at ${x}px ${y}px, rgba(99, 102, 241, 0.25), transparent 80%)`;
-		});
-
-		// Mascot Subscribe handler
-		const mascotEmail = document.getElementById('mascot-email') as HTMLInputElement;
-		const mascotBtn = document.getElementById('btn-mascot-subscribe');
-
-		mascotBtn?.addEventListener('click', () => {
-			const mail = mascotEmail ? mascotEmail.value.trim() : '';
-			if (!mail) {
-				alert("이메일 주소를 입력해주세요!");
-				return;
-			}
-			alert(`🚀 "${mail}" 주소로 달로켓 탑승 신청이 완료되었습니다!`);
-			if (mascotEmail) mascotEmail.value = '';
-		});
-	</script>
 </ControlTowerLayout>
+
+<script>
+	// Search and Filter Logic
+	const categoryBtns = document.querySelectorAll('.category-btn');
+	const postItems = document.querySelectorAll('.post-item');
+	const searchInput = document.getElementById('search-input') as HTMLInputElement;
+	const noResults = document.getElementById('no-results');
+
+	let activeCategory = 'all';
+	let searchTerm = '';
+
+	function filterPosts() {
+		let visibleCount = 0;
+		
+		const currentPostItems = document.querySelectorAll('.post-item');
+		
+		currentPostItems.forEach(post => {
+			const el = post as HTMLElement;
+			const cat = el.getAttribute('data-category');
+			const title = el.querySelector('h2, h3')?.textContent?.toLowerCase() || '';
+			const desc = el.querySelector('p')?.textContent?.toLowerCase() || '';
+			
+			const matchCategory = activeCategory === 'all' || cat === activeCategory;
+			const matchSearch = searchTerm === '' || title.includes(searchTerm) || desc.includes(searchTerm);
+
+			if (matchCategory && matchSearch) {
+				el.style.display = '';
+				visibleCount++;
+			} else {
+				el.style.display = 'none';
+			}
+		});
+
+		if (noResults) {
+			if (visibleCount === 0) {
+				noResults.classList.remove('hidden');
+			} else {
+				noResults.classList.add('hidden');
+			}
+		}
+	}
+
+	categoryBtns.forEach(btn => {
+		btn.addEventListener('click', (e) => {
+			// Reset styles
+			categoryBtns.forEach(b => {
+				b.classList.remove('font-bold', 'border-purple-600', 'bg-purple-50', 'text-gray-900');
+				b.classList.add('font-medium', 'border-transparent', 'text-gray-500');
+			});
+			
+			// Set active style
+			const current = e.currentTarget as HTMLElement;
+			current.classList.remove('font-medium', 'border-transparent', 'text-gray-500');
+			current.classList.add('font-bold', 'border-purple-600', 'bg-purple-50', 'text-gray-900');
+
+			activeCategory = current.getAttribute('data-category') || 'all';
+			filterPosts();
+		});
+	});
+
+	searchInput?.addEventListener('input', (e) => {
+		searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
+		filterPosts();
+	});
+
+	// Dynamic Injection for LocalStorage Posts (Operator Simulation)
+	if (typeof window !== 'undefined') {
+		const saved = localStorage.getItem('control_tower_db');
+		if (saved) {
+			try {
+				const db = JSON.parse(saved);
+				if (db && Array.isArray(db.posts)) {
+					const grid = document.getElementById('grid-posts-container');
+					if (grid) {
+						// Collect existing slugs in the DOM
+						const existingSlugs = Array.from(document.querySelectorAll('.post-item'))
+							.map(el => {
+								const onClick = el.getAttribute('onclick') || '';
+								const match = onClick.match(/\/blog\/([^']+)/);
+								return match ? match[1] : '';
+							}).filter(Boolean);
+
+						// Find posts in localStorage not present in HTML
+						const localOnlyPosts = db.posts.filter(p => !existingSlugs.includes(p.id));
+
+						localOnlyPosts.forEach(post => {
+							const article = document.createElement('article');
+							article.className = 'cursor-pointer group flex flex-col h-full post-item relative';
+							article.setAttribute('data-category', post.category || 'Uncategorized');
+							article.setAttribute('onclick', `window.location.href='/blog/${post.id}'`);
+
+							article.innerHTML = `
+								<div class="w-full aspect-[4/3] overflow-hidden rounded-3xl bg-gray-50 mb-6">
+									<img src="/images/dalo-logo.svg" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out" />
+								</div>
+								<div class="flex-grow flex flex-col text-left px-1">
+									<span class="inline-block bg-purple-50 text-purple-600 text-[10px] font-extrabold px-3 py-1 rounded-full mb-4 self-start tracking-wide uppercase">
+										${post.category || 'Uncategorized'}
+									</span>
+									<h3 class="text-2xl font-extrabold text-gray-900 leading-snug mb-3 group-hover:text-purple-600 transition duration-300">
+										${post.title}
+									</h3>
+									<p class="text-gray-500 text-sm leading-relaxed mb-8 line-clamp-2">
+										${post.description}
+									</p>
+									<div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-5">
+										<div class="flex items-center gap-3">
+											<div class="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-sm">👤</div>
+											<div>
+												<div class="text-xs font-extrabold text-gray-900">Operator</div>
+												<div class="text-[10px] text-gray-400 font-medium">5min read</div>
+											</div>
+										</div>
+										<div class="text-gray-300 group-hover:text-gray-900 transition text-xl font-light">↗</div>
+									</div>
+								</div>
+							`;
+
+							// Prepend to grid
+							grid.insertBefore(article, grid.firstChild);
+						});
+					}
+				}
+			} catch (e) {
+				console.error("Error loading localStorage posts on index:", e);
+			}
+		}
+	}
+</script>
