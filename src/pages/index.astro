@@ -1,6 +1,5 @@
 ---
 import ControlTowerLayout from '../layouts/ControlTowerLayout.astro';
-import GeminiBot from '../components/GeminiBot.astro';
 import { getCollection } from 'astro:content';
 import db from '../data/db.json';
 
@@ -9,6 +8,7 @@ const postsCollection = await getCollection('blog');
 const dbPosts = db.posts;
 
 // Merge and sort published logs
+// Removed dynamic localstorage/operator injection per user request
 const allLogs = [
 	...postsCollection.map(p => {
 		const parts = p.id.split('/');
@@ -40,283 +40,111 @@ const allLogs = [
 ];
 
 const sortedLogs = allLogs.sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
-const categories = Array.from(new Set(sortedLogs.map(log => log.category)));
 ---
 
 <ControlTowerLayout 
-	title="DALO | Resources"
-	description="Browse our resources and tips."
+	title="DALO Fictions | Substack Style"
+	description="all models are wrong, but some are useful"
 >
-	<div class="bg-white min-h-screen pb-32 text-gray-900 font-sans">
+	<!-- Substack style background (#fffdf7) overriding layout default -->
+	<div class="bg-[#fffdf7] min-h-screen font-sans text-[#111111] pb-32">
 		
-		<!-- Header Area -->
-		<div class="max-w-7xl mx-auto px-4 pt-20 pb-16">
-			<div class="text-center">
-				<div class="inline-block bg-purple-50 text-purple-600 font-bold px-4 py-1.5 rounded-full text-xs tracking-wide mb-6">
-					Read Our Blog
-				</div>
-				<h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 mb-6">
-					Browse Our Resources
-				</h1>
-				<p class="text-gray-600 text-base md:text-lg max-w-xl mx-auto">
-					We provide tips and resources from industry leaders. For real.
+		<!-- Hero / Header Section -->
+		<div class="max-w-3xl mx-auto px-4 pt-20 pb-16 text-center border-b border-gray-200/60">
+			<!-- Logo / Avatar -->
+			<div class="flex justify-center mb-6">
+				<img src="/images/dalo-logo.svg" alt="DALO Logo" class="w-24 h-24 rounded-full border border-gray-200 p-2 bg-white object-cover" />
+			</div>
+			
+			<h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+				DALO Fictions
+			</h1>
+			<p class="text-lg md:text-xl text-gray-600 mb-8 font-medium">
+				all models are wrong, but some are useful
+			</p>
+			
+			<div class="flex items-center justify-center gap-2 mb-10 text-sm text-gray-500 font-medium">
+				<span>By Operator</span>
+				<span>·</span>
+				<span>Over 32,000 subscribers</span>
+			</div>
+
+			<!-- Subscribe Form (Substack Style CTA) -->
+			<div class="max-w-md mx-auto">
+				<form class="flex flex-col sm:flex-row gap-2" onsubmit="event.preventDefault();">
+					<input 
+						type="email" 
+						placeholder="Type your email..." 
+						class="flex-1 px-4 py-3 rounded-lg border border-gray-300 bg-white focus:outline-none focus:border-[#5272cc] focus:ring-1 focus:ring-[#5272cc] transition"
+					/>
+					<button 
+						type="submit" 
+						class="bg-[#5272cc] hover:bg-[#3e62c6] text-white font-bold py-3 px-6 rounded-lg transition"
+					>
+						Subscribe
+					</button>
+				</form>
+				<p class="text-xs text-gray-400 mt-4 text-center">
+					By subscribing, you agree to Substack's Terms of Use.
 				</p>
 			</div>
 		</div>
 
-		<!-- 4-Column Layout Area -->
-		<div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-16">
+		<!-- Main Feed Container -->
+		<div class="max-w-5xl mx-auto px-4 pt-16">
 			
-			<!-- Left Sidebar -->
-			<aside class="lg:col-span-1 space-y-10">
-				<div class="sticky top-12 space-y-10">
-					<!-- Search -->
-					<div>
-						<label class="block text-sm font-bold text-gray-900 mb-3">Label</label>
-						<div class="relative">
-							<span class="absolute inset-y-0 left-4 flex items-center text-gray-400 font-medium">
-								🔍
-							</span>
-							<input type="text" id="search-input" placeholder="Search article..." class="w-full bg-white border border-gray-200 text-gray-900 rounded-2xl pl-10 pr-4 py-3 text-sm outline-none focus:border-purple-300 focus:ring-4 focus:ring-purple-50 transition" />
+			<!-- Featured Post (Magaziney Layout) -->
+			{sortedLogs.length > 0 && (
+				<article class="mb-20 group cursor-pointer" onclick={`window.location.href='/blog/${sortedLogs[0].id}'`}>
+					<div class="w-full aspect-video md:aspect-[21/9] overflow-hidden rounded-xl mb-6 bg-gray-100 border border-gray-100">
+						<img src={sortedLogs[0].heroImage} alt={sortedLogs[0].title} class="w-full h-full object-cover group-hover:opacity-95 transition duration-300" />
+					</div>
+					<div class="max-w-3xl mx-auto text-center px-4">
+						<span class="text-[#5272cc] font-bold text-xs tracking-widest uppercase mb-3 block">
+							{sortedLogs[0].category}
+						</span>
+						<h2 class="text-3xl md:text-5xl font-extrabold mb-4 group-hover:text-[#5272cc] transition duration-200">
+							{sortedLogs[0].title}
+						</h2>
+						<p class="text-lg text-gray-600 mb-6 line-clamp-3">
+							{sortedLogs[0].description}
+						</p>
+						<div class="text-sm font-medium text-gray-500">
+							Operator · {new Date(sortedLogs[0].pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
 						</div>
 					</div>
+				</article>
+			)}
 
-					<!-- Filter Placeholder -->
-					<div>
-						<label class="block text-sm font-bold text-gray-900 mb-3">Filter</label>
-						<select class="w-full bg-white border border-gray-200 text-gray-600 rounded-2xl px-4 py-3 text-sm outline-none focus:border-purple-300 focus:ring-4 focus:ring-purple-50 transition appearance-none">
-							<option value="">Filter article...</option>
-							<option value="recent">Most Recent</option>
-							<option value="popular">Most Popular</option>
-						</select>
-					</div>
+			<!-- Recent Posts Divider -->
+			<div class="flex items-center gap-4 mb-10">
+				<h3 class="font-bold text-xl text-gray-900">Recent Posts</h3>
+				<div class="h-px bg-gray-200 flex-1"></div>
+			</div>
 
-					<!-- Categories -->
-					<div>
-						<h3 class="text-xs font-bold text-purple-600 mb-4 tracking-wide">Browse By Categories</h3>
-						<ul class="space-y-1" id="category-list">
-							<li>
-								<button class="w-full text-left font-bold text-gray-900 border-l-[3px] border-purple-600 pl-4 py-2.5 bg-purple-50 rounded-r-xl transition category-btn active" data-category="all">
-									All Category
-								</button>
-							</li>
-							{categories.map(cat => (
-								<li>
-									<button class="w-full text-left font-medium text-gray-500 hover:text-gray-900 border-l-[3px] border-transparent hover:border-gray-200 pl-4 py-2.5 transition category-btn" data-category={cat}>
-										{cat}
-									</button>
-								</li>
-							))}
-						</ul>
-					</div>
-				</div>
-			</aside>
-
-			<!-- Right Main Feed -->
-			<main class="lg:col-span-3 space-y-16" id="posts-feed">
-				
-				<!-- Featured Post -->
-				{sortedLogs.length > 0 && (
-					<article class="flex flex-col md:flex-row gap-8 lg:gap-12 items-center cursor-pointer group post-item" data-category={sortedLogs[0].category} onclick={`window.location.href='/blog/${sortedLogs[0].id}'`}>
-						<div class="w-full md:w-[55%] aspect-[4/3] md:aspect-[5/4] overflow-hidden rounded-3xl bg-gray-50 flex-shrink-0 relative">
-							<img src={sortedLogs[0].heroImage} alt={sortedLogs[0].title} class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out" />
+			<!-- Grid Posts (3-Column Layout) -->
+			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+				{sortedLogs.slice(1).map(post => (
+					<article class="group cursor-pointer flex flex-col h-full" onclick={`window.location.href='/blog/${post.id}'`}>
+						<div class="w-full aspect-video overflow-hidden rounded-lg mb-4 bg-gray-100 border border-gray-100">
+							<img src={post.heroImage} alt={post.title} class="w-full h-full object-cover group-hover:opacity-95 transition duration-300" />
 						</div>
-						<div class="w-full md:w-[45%] flex flex-col justify-center text-left py-4 relative">
-							<span class="inline-block bg-purple-50 text-purple-600 text-[10px] font-extrabold px-3 py-1 rounded-full mb-5 self-start tracking-wide uppercase">
-								Featured
-							</span>
-							<h2 class="text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight mb-5 group-hover:text-purple-600 transition duration-300">
-								{sortedLogs[0].title}
-							</h2>
-							<p class="text-gray-500 text-sm lg:text-base leading-relaxed mb-8">
-								{sortedLogs[0].description}
-							</p>
-							<div class="flex items-center gap-3">
-								<div class="w-10 h-10 rounded-full bg-gray-100 border border-gray-200 overflow-hidden flex items-center justify-center text-lg">
-									👤
-								</div>
-								<div>
-									<div class="text-sm font-extrabold text-gray-900">Operator</div>
-									<div class="text-xs text-gray-400 font-medium">5min read · {new Date(sortedLogs[0].pubDate).toLocaleDateString('en-US')}</div>
-								</div>
-							</div>
-							<!-- Interactive Arrow -->
-							<div class="absolute bottom-4 right-4 text-gray-300 group-hover:text-gray-900 transition text-2xl font-light">↗</div>
+						<span class="text-[#5272cc] font-bold text-[10px] tracking-wider uppercase mb-2">
+							{post.category}
+						</span>
+						<h3 class="text-xl font-bold mb-2 leading-tight group-hover:text-[#5272cc] transition duration-200 line-clamp-2">
+							{post.title}
+						</h3>
+						<p class="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow">
+							{post.description}
+						</p>
+						<div class="text-xs font-medium text-gray-400 mt-auto">
+							Operator · {new Date(post.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
 						</div>
 					</article>
-				)}
+				))}
+			</div>
 
-				<!-- Grid Posts -->
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16" id="grid-posts-container">
-					{sortedLogs.slice(1).map(post => (
-						<article class="cursor-pointer group flex flex-col h-full post-item relative" data-category={post.category} onclick={`window.location.href='/blog/${post.id}'`}>
-							<div class="w-full aspect-[4/3] overflow-hidden rounded-3xl bg-gray-50 mb-6">
-								<img src={post.heroImage} alt={post.title} class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out" />
-							</div>
-							<div class="flex-grow flex flex-col text-left px-1">
-								<span class="inline-block bg-purple-50 text-purple-600 text-[10px] font-extrabold px-3 py-1 rounded-full mb-4 self-start tracking-wide uppercase">
-									{post.category}
-								</span>
-								<h3 class="text-2xl font-extrabold text-gray-900 leading-snug mb-3 group-hover:text-purple-600 transition duration-300">
-									{post.title}
-								</h3>
-								<p class="text-gray-500 text-sm leading-relaxed mb-8 line-clamp-2">
-									{post.description}
-								</p>
-								
-								<div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-5">
-									<div class="flex items-center gap-3">
-										<div class="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-sm">
-											👤
-										</div>
-										<div>
-											<div class="text-xs font-extrabold text-gray-900">Operator</div>
-											<div class="text-[10px] text-gray-400 font-medium">5min read</div>
-										</div>
-									</div>
-									<div class="text-gray-300 group-hover:text-gray-900 transition text-xl font-light">↗</div>
-								</div>
-							</div>
-						</article>
-					))}
-				</div>
-				
-				<div id="no-results" class="hidden text-center py-20 text-gray-400 font-medium">
-					No articles found matching your criteria.
-				</div>
-			</main>
 		</div>
 	</div>
-
-	<!-- Gemini Bot Widget -->
-	<GeminiBot />
 </ControlTowerLayout>
-
-<script>
-	// Search and Filter Logic
-	const categoryBtns = document.querySelectorAll('.category-btn');
-	const postItems = document.querySelectorAll('.post-item');
-	const searchInput = document.getElementById('search-input') as HTMLInputElement;
-	const noResults = document.getElementById('no-results');
-
-	let activeCategory = 'all';
-	let searchTerm = '';
-
-	function filterPosts() {
-		let visibleCount = 0;
-		
-		const currentPostItems = document.querySelectorAll('.post-item');
-		
-		currentPostItems.forEach(post => {
-			const el = post as HTMLElement;
-			const cat = el.getAttribute('data-category');
-			const title = el.querySelector('h2, h3')?.textContent?.toLowerCase() || '';
-			const desc = el.querySelector('p')?.textContent?.toLowerCase() || '';
-			
-			const matchCategory = activeCategory === 'all' || cat === activeCategory;
-			const matchSearch = searchTerm === '' || title.includes(searchTerm) || desc.includes(searchTerm);
-
-			if (matchCategory && matchSearch) {
-				el.style.display = '';
-				visibleCount++;
-			} else {
-				el.style.display = 'none';
-			}
-		});
-
-		if (noResults) {
-			if (visibleCount === 0) {
-				noResults.classList.remove('hidden');
-			} else {
-				noResults.classList.add('hidden');
-			}
-		}
-	}
-
-	categoryBtns.forEach(btn => {
-		btn.addEventListener('click', (e) => {
-			// Reset styles
-			categoryBtns.forEach(b => {
-				b.classList.remove('font-bold', 'border-purple-600', 'bg-purple-50', 'text-gray-900');
-				b.classList.add('font-medium', 'border-transparent', 'text-gray-500');
-			});
-			
-			// Set active style
-			const current = e.currentTarget as HTMLElement;
-			current.classList.remove('font-medium', 'border-transparent', 'text-gray-500');
-			current.classList.add('font-bold', 'border-purple-600', 'bg-purple-50', 'text-gray-900');
-
-			activeCategory = current.getAttribute('data-category') || 'all';
-			filterPosts();
-		});
-	});
-
-	searchInput?.addEventListener('input', (e) => {
-		searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
-		filterPosts();
-	});
-
-	// Dynamic Injection for LocalStorage Posts (Operator Simulation)
-	if (typeof window !== 'undefined') {
-		const saved = localStorage.getItem('control_tower_db');
-		if (saved) {
-			try {
-				const db = JSON.parse(saved);
-				if (db && Array.isArray(db.posts)) {
-					const grid = document.getElementById('grid-posts-container');
-					if (grid) {
-						// Collect existing slugs in the DOM
-						const existingSlugs = Array.from(document.querySelectorAll('.post-item'))
-							.map(el => {
-								const onClick = el.getAttribute('onclick') || '';
-								const match = onClick.match(/\/blog\/([^']+)/);
-								return match ? match[1] : '';
-							}).filter(Boolean);
-
-						// Find posts in localStorage not present in HTML
-						const localOnlyPosts = db.posts.filter(p => !existingSlugs.includes(p.id));
-
-						localOnlyPosts.forEach(post => {
-							const article = document.createElement('article');
-							article.className = 'cursor-pointer group flex flex-col h-full post-item relative';
-							article.setAttribute('data-category', post.category || 'Uncategorized');
-							article.setAttribute('onclick', `window.location.href='/blog/${post.id}'`);
-
-							article.innerHTML = `
-								<div class="w-full aspect-[4/3] overflow-hidden rounded-3xl bg-gray-50 mb-6">
-									<img src="/images/dalo-logo.svg" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out" />
-								</div>
-								<div class="flex-grow flex flex-col text-left px-1">
-									<span class="inline-block bg-purple-50 text-purple-600 text-[10px] font-extrabold px-3 py-1 rounded-full mb-4 self-start tracking-wide uppercase">
-										${post.category || 'Uncategorized'}
-									</span>
-									<h3 class="text-2xl font-extrabold text-gray-900 leading-snug mb-3 group-hover:text-purple-600 transition duration-300">
-										${post.title}
-									</h3>
-									<p class="text-gray-500 text-sm leading-relaxed mb-8 line-clamp-2">
-										${post.description}
-									</p>
-									<div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-5">
-										<div class="flex items-center gap-3">
-											<div class="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-sm">👤</div>
-											<div>
-												<div class="text-xs font-extrabold text-gray-900">Operator</div>
-												<div class="text-[10px] text-gray-400 font-medium">5min read</div>
-											</div>
-										</div>
-										<div class="text-gray-300 group-hover:text-gray-900 transition text-xl font-light">↗</div>
-									</div>
-								</div>
-							`;
-
-							// Prepend to grid
-							grid.insertBefore(article, grid.firstChild);
-						});
-					}
-				}
-			} catch (e) {
-				console.error("Error loading localStorage posts on index:", e);
-			}
-		}
-	}
-</script>

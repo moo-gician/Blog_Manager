@@ -2,6 +2,14 @@
 
 This document tracks the deployment and major updates matching the GitHub release commits.
 
+## v1.10.0 - Substack Style Complete Overhaul (index.astro)
+- **Date**: 2026-07-12
+- **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
+- **Features**:
+  - Completely rewrote `index.astro` to clone the Useful Fictions Substack UI.
+  - Applied cream background (`#fffdf7`) and indigo blue (`#5272cc`) accents.
+  - Implemented centralized magazine-style hero and subscribe CTA.
+  - Shifted to a clean 3-column post grid and removed local storage JS logic.
 ## v1.9.0 - Minimal Tech SaaS Redesign for Control Tower (index.astro)
 - **Date**: 2026-07-12
 - **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
