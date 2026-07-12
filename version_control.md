@@ -2,6 +2,12 @@
 
 This document tracks the deployment and major updates matching the GitHub release commits.
 
+## v1.10.2 - Exact Substack HTML Clone (index.astro)
+- **Date**: 2026-07-12
+- **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
+- **Features**:
+  - Completely replaced `index.astro` with the exact raw HTML and CSS from the Useful Fictions Substack Archive page.
+  - Removed all Tailwind dependencies for this specific page to guarantee 100% fidelity.
 ## v1.10.0 - Substack Style Complete Overhaul (index.astro)
 - **Date**: 2026-07-12
 - **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
