@@ -1,85 +1,240 @@
 ---
-import ControlTowerLayout from '../layouts/ControlTowerLayout.astro';
 ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>About | DALO Fictions</title>
+    <meta name="description" content="DALO Fictions is a public build journal of an AI entrepreneur in Chicago, documenting the raw journey of building AI businesses for local businesses." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fffdf7;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #363737;
+        }
+        .font-spectral {
+            font-family: 'Spectral', Georgia, serif;
+        }
+        .prose-body p {
+            font-family: 'Spectral', Georgia, serif;
+            font-size: 19px;
+            line-height: 30px;
+            color: #5d5437;
+            margin-bottom: 1.25rem;
+        }
+        .prose-body h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: #111111;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .prose-body ol {
+            font-family: 'Spectral', Georgia, serif;
+            font-size: 19px;
+            line-height: 30px;
+            color: #5d5437;
+            padding-left: 1.5rem;
+            list-style-type: decimal;
+            margin-bottom: 1.25rem;
+        }
+        .prose-body ol li {
+            margin-bottom: 0.75rem;
+        }
+        .prose-body a {
+            color: #5272cc;
+            text-decoration: underline;
+        }
+        .blockquote-box {
+            background-color: #f0eee8;
+            border-radius: 8px;
+            padding: 20px 24px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .blockquote-box p {
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            color: #5d5437;
+            line-height: 24px;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
 
-<ControlTowerLayout 
-	title="About | DALO"
-	description="Sharing the founder's story of DALO, life in Chicago, and the philosophy of building AI businesses."
->
-	<div class="bg-slate-50 min-h-screen py-20">
-		<!-- Storyteller Floating Card Wrapper -->
-		<div class="max-w-[1100px] mx-auto px-6 bg-white border border-slate-100 rounded-[32px] p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.03)] space-y-12">
-			
-			<!-- Headline -->
-			<div class="space-y-4 border-b border-slate-100 pb-8 text-left">
-				<span class="text-blue-600 font-bold text-xs uppercase tracking-widest">Story of DALO</span>
-				<h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">Beyond limits with AI,<br/>To the Moon.</h1>
-				<p class="text-slate-400 text-xs mt-2">
-					Sharing the background of the DALO project, the struggles in Chicago, and our technical philosophy.
-				</p>
-			</div>
+    <!-- Top Bar -->
+    <header class="flex items-center justify-between px-5 h-[88px] max-w-[1100px] mx-auto">
+        <div class="flex items-center gap-4 flex-1">
+            <a href="/" class="block w-10 h-10 rounded shadow-sm overflow-hidden border border-[#e6e4de] bg-white">
+                <img src="/images/dalo-logo.svg" alt="DALO Logo" class="w-full h-full object-cover"/>
+            </a>
+        </div>
+        <div class="flex-1 flex justify-center">
+            <a href="/" class="font-spectral text-[28px] sm:text-[32px] font-bold tracking-[0.15em] uppercase text-[#111111] hover:text-[#5272cc] transition-colors whitespace-nowrap">
+                DALO Fictions
+            </a>
+        </div>
+        <div class="flex items-center gap-4 flex-1 justify-end">
+            <button class="text-[#363737] hover:text-black hidden sm:block">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            </button>
+            <button class="text-[#363737] hover:text-black hidden sm:block">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" x2="12" y1="2" y2="15"></line></svg>
+            </button>
+            <button class="bg-[#5272cc] hover:bg-[#3e62c6] text-white font-semibold text-[15px] px-[14px] py-1.5 rounded-[4px] transition-colors">
+                Subscribe
+            </button>
+            <button class="text-[#363737] hover:text-black font-medium text-[15px] px-1 hidden sm:block">
+                Sign in
+            </button>
+        </div>
+    </header>
 
-			<!-- Story Content -->
-			<article class="prose max-w-none text-slate-700 text-xs leading-relaxed space-y-6 text-left">
-				
-				<h2 class="text-sm font-extrabold text-slate-900 mt-8 mb-3">📍 The Intersection of Offline Chicago and AI</h2>
-				<p>
-					In the biting cold winds of Chicago, the digital transformation barrier faced by offline local businesses was higher and colder than expected. Seeing local store owners despair after spending thousands of dollars on large marketing agencies with poor results, I imagined combining a <strong>"high-performance static web based on Zero-JS"</strong> with an <strong>"automated AI content pipeline"</strong>.
-				</p>
+    <!-- Nav Bar -->
+    <nav class="border-b border-[#e6e4de] h-12 flex justify-center">
+        <div class="flex h-full gap-8">
+            <a href="/" class="flex items-center h-full text-[13px] font-semibold text-[#757575] hover:text-black transition-colors">Home</a>
+            <a href="/archive" class="flex items-center h-full text-[13px] font-semibold text-[#757575] hover:text-black transition-colors">Archive</a>
+            <a href="/about" class="flex items-center h-full text-[13px] font-semibold text-black border-b-2 border-[#5d5437] relative top-[1px]">About</a>
+        </div>
+    </nav>
 
-				<h2 class="text-sm font-extrabold text-slate-900 mt-8 mb-3">💔 Numerous Failures and Epiphanies</h2>
-				<p>
-					It wasn't smooth sailing from the beginning. The first version of the AI build engine was too heavy, resulting in slow response times, and due to inadequate deployment security rules, I experienced the painful failure of being hit with a massive server credit bomb. There was even a critical moment when API call limits halted operations, almost breaking trust with clients.
-				</p>
-				<p>
-					However, I transparently logged all those failure records into `context.md` and analyzed them, calibrating the AI agent's permanent memory (Memory System) and establishing the 'Supreme Logic' rules. As a result, the **DALO engine** was completed, automatically generating the most human-centered marketing essays from the field data of local businesses.
-				</p>
+    <!-- Content -->
+    <main class="max-w-[728px] mx-auto px-4 pt-12 pb-24 prose-body">
 
-				<blockquote class="border-l-4 border-indigo-500 bg-indigo-50/50 p-4 rounded-r-xl my-6 text-[11px] text-indigo-900 font-semibold leading-relaxed">
-					"DALO signifies an infinite growth narrative of riding the rocket called AI, breaking through the passive limits of reality, and advancing towards the Moon, our destination of success. Beyond mere coding, it proves the value of business in real-time."
-				</blockquote>
+        <!-- Welcome Heading -->
+        <h1 class="text-[38px] font-bold text-[#111111] leading-tight mb-4 font-spectral">Welcome to DALO Fictions</h1>
 
-				<h2 class="text-sm font-extrabold text-slate-900 mt-8 mb-3">🚀 To the Moon with AI: The DALO Credo</h2>
-				<ul class="list-disc pl-5 space-y-2.5">
-					<li><strong>Build in Public</strong>: We don't just show the successful side. We transparently share the entire journey by continuously monitoring and syncing our plans (`plan`), context (`context`), and daily tasks (`todo`).</li>
-					<li><strong>Extreme Speed</strong>: Sticking to Astro static compilation and Firebase Hosting, we maintain a pleasant loading speed of less than 0.5 seconds.</li>
-					<li><strong>Human Vibe</strong>: Although generated by AI, it is infused with the human struggle and spirit that takes place in the development field.</li>
-				</ul>
+        <p>
+            Subscribe to follow the real-time build journal of an AI entrepreneur in Chicago. Every post is a raw, unfiltered account of the wins, losses, and hard-won insights that come from building AI businesses for local businesses.
+        </p>
 
-				<p class="pt-6">
-					This journey is ongoing. Please join us in watching the growth narrative of the moon rocket in real-time through the build journal to see how far DALO can push the synergy between local businesses and AI beyond Chicago to the global market.
-				</p>
-			</article>
+        <!-- Inline CTA -->
+        <div class="flex my-6 max-w-[420px]">
+            <input id="email-top" type="email" placeholder="Type your email..." class="flex-1 px-4 py-2.5 text-[15px] bg-[#f0eee8] border border-[#5272cc] border-r-0 rounded-l-[8px] outline-none focus:bg-white transition-colors text-[#363737]" />
+            <button id="btn-subscribe-top" class="bg-[#5272cc] hover:bg-[#3e62c6] text-white font-semibold text-[15px] px-5 py-2.5 rounded-r-[8px] transition-colors whitespace-nowrap">
+                Subscribe
+            </button>
+        </div>
 
-			<!-- Newsletter Hook -->
-			<div class="bg-slate-50 border border-slate-100 rounded-[24px] p-8 text-center space-y-4">
-				<h3 class="font-extrabold text-slate-900 text-sm">Join the Moon Rocket Boarding Queue</h3>
-				<p class="text-slate-400 text-[11px] max-w-md mx-auto leading-relaxed">
-					We will deliver real-time emails containing the struggles of the AI Build Lab and useful marketplace analysis reports.
-				</p>
-				<div class="max-w-sm mx-auto flex gap-2 pt-2">
-					<input type="email" id="about-email" placeholder="Enter your email..." class="flex-grow text-xs border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-blue-600 bg-white" />
-					<button id="btn-about-subscribe" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-3 rounded-xl text-xs transition">
-						Subscribe
-					</button>
-				</div>
-			</div>
+        <hr class="border-[#e6e4de] my-8" />
 
-		</div>
-	</div>
-</ControlTowerLayout>
+        <!-- What is DALO Fictions? -->
+        <h3>What is DALO Fictions?</h3>
+        <p>
+            This blog is the real-time build log of DALO — an AI venture born in the cold winds of Chicago. In the city's offline economy, I found that small local businesses were being abandoned by expensive marketing agencies that promised everything and delivered nothing.
+        </p>
+        <p>
+            DALO was built to fix that. The core idea: combine a <strong>high-performance static web</strong> with an <strong>automated AI content pipeline</strong> to give local businesses the unfair advantage once reserved for enterprise brands. Every post here documents the actual journey — the late nights, the failed deploys, the breakthrough moments, and the clients who made it real.
+        </p>
 
-<script>
-	const aboutEmail = document.getElementById('about-email') as HTMLInputElement;
-	const aboutBtn = document.getElementById('btn-about-subscribe');
+        <hr class="border-[#e6e4de] my-8" />
 
-	aboutBtn?.addEventListener('click', () => {
-		const mail = aboutEmail ? aboutEmail.value.trim() : '';
-		if (!mail) {
-			alert('Please enter your email address!');
-			return;
-		}
-		alert(`🚀 Subscription request for boarding the rocket with "${mail}" has been completed!`);
-		if (aboutEmail) aboutEmail.value = '';
-	});
-</script>
+        <!-- Who are you? -->
+        <h3>Who are you?</h3>
+        <p>
+            I'm <strong>Operator</strong> — the founder of DALO. My authority here comes from doing, not theorizing:
+        </p>
+        <ol>
+            <li>
+                I've built and shipped multiple production AI systems for real clients in Chicago's local market — from premium wedding photography portfolios to neighborhood restaurant marketing engines.
+            </li>
+            <li>
+                I've failed publicly and often. The first version of the DALO AI engine was too slow and cost me a massive cloud bill. I hit API rate limits at the worst moment. I broke trust with clients. All of it is logged here, honestly.
+            </li>
+            <li>
+                I operate by a strict system: every decision, every failure, and every technical insight gets documented in <code>plan.md</code>, <code>context.md</code>, and <code>todo.md</code> — the three pillars of the DALO Memory System. Build in public. No airbrushing.
+            </li>
+        </ol>
+
+        <hr class="border-[#e6e4de] my-8" />
+
+        <!-- Where do I start? -->
+        <h3>Where do I start?</h3>
+        <p>Here are a few posts that will give you a feel for what DALO Fictions is really about:</p>
+        <ol>
+            <li>
+                <a href="/blog/olivia-choi-wedding"><strong>Olivia Choi Photography — Premium Portfolio</strong></a>: The first DALO client project. An ultra-fast portfolio site built and deployed in a single sprint, with a live AI marketing engine underneath.
+            </li>
+            <li>
+                <a href="/operator"><strong>The Operator Log</strong></a>: The full, unfiltered build log of the DALO factory. Read this to understand how the machine works from the inside.
+            </li>
+        </ol>
+
+        <!-- Mid-page CTA box -->
+        <div class="blockquote-box">
+            <p>Thanks for stopping by! Subscribe for free to receive new posts and follow the live build journal.</p>
+            <div class="flex mt-4 max-w-[400px] mx-auto">
+                <input id="email-mid" type="email" placeholder="Type your email..." class="flex-1 px-4 py-2.5 text-[15px] bg-white border border-[#5272cc] border-r-0 rounded-l-[8px] outline-none text-[#363737]" />
+                <button id="btn-subscribe-mid" class="bg-[#5272cc] hover:bg-[#3e62c6] text-white font-semibold text-[15px] px-5 py-2.5 rounded-r-[8px] transition-colors whitespace-nowrap">
+                    Subscribe
+                </button>
+            </div>
+        </div>
+
+        <hr class="border-[#e6e4de] my-8" />
+
+        <!-- People Section -->
+        <h3>People</h3>
+        <div class="mt-4">
+            <!-- Author Card -->
+            <div class="border border-[#e6e4de] rounded-[12px] p-4 max-w-[356px]">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <div class="font-semibold text-[15px] text-[#111111]">Operator</div>
+                        <div class="text-[13px] text-[#757575]">@dalo_fictions</div>
+                    </div>
+                    <div class="w-12 h-12 rounded-full overflow-hidden border border-[#e6e4de] bg-[#f0eee8] flex items-center justify-center shrink-0">
+                        <img src="/images/dalo-logo.svg" alt="Operator" class="w-8 h-8 object-contain" />
+                    </div>
+                </div>
+                <p class="text-[14px] text-[#5d5437] mb-4" style="font-family: 'Spectral', serif; font-size: 14px; line-height: 20px; margin-bottom: 1rem;">
+                    Building AI ventures from Chicago. Documenting every win, every failure, in real time.
+                </p>
+                <div class="flex gap-2 mb-4">
+                    <button class="bg-[#5272cc] hover:bg-[#3e62c6] text-white font-semibold text-[13px] px-5 py-2 rounded-[8px] transition-colors">
+                        Subscribe
+                    </button>
+                    <button class="border border-[#e6e4de] text-[#363737] hover:bg-[#f0eee8] font-medium text-[13px] px-5 py-2 rounded-[8px] transition-colors">
+                        Message
+                    </button>
+                </div>
+                <div class="border-t border-[#e6e4de] pt-3 flex items-center gap-2">
+                    <div class="w-6 h-6 rounded overflow-hidden border border-[#e6e4de]">
+                        <img src="/images/dalo-logo.svg" alt="DALO" class="w-full h-full object-cover" />
+                    </div>
+                    <span class="text-[12px] text-[#757575]">DALO Fictions <span class="font-semibold text-[#363737]">By Operator</span></span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-20 py-10 bg-[#f0eee8] border-t border-[#e6e4de] flex flex-col items-center justify-center gap-4 text-[13px] text-[#757575]">
+        <div>© 2026 DALO Fictions · Privacy · Terms</div>
+    </footer>
+
+    <script is:inline>
+        function handleSubscribe(inputId) {
+            const input = document.getElementById(inputId);
+            const email = input ? input.value.trim() : '';
+            if (!email) {
+                alert('이메일 주소를 입력해 주세요!');
+                return;
+            }
+            alert(`🚀 "${email}" 구독 신청이 완료되었습니다!`);
+            if (input) input.value = '';
+        }
+
+        document.getElementById('btn-subscribe-top')?.addEventListener('click', () => handleSubscribe('email-top'));
+        document.getElementById('btn-subscribe-mid')?.addEventListener('click', () => handleSubscribe('email-mid'));
+    </script>
+</body>
+</html>
