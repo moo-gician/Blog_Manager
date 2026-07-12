@@ -2,6 +2,13 @@
 
 This document tracks the deployment and major updates matching the GitHub release commits.
 
+## v1.10.3 - Substack Tailwind Perfect Clone (index.astro)
+- **Date**: 2026-07-12
+- **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)
+- **Features**:
+  - Re-implemented the exact Substack Archive layout using Tailwind CSS.
+  - Fixed the collapsed flexbox layout issue caused by missing Substack stylesheets.
+  - Accurate replication of Spectral/Inter fonts, borders, #fffdf7 background, and flex header alignment.
 ## v1.10.2 - Exact Substack HTML Clone (index.astro)
 - **Date**: 2026-07-12
 - **Deployment URL**: [https://chicago-ai-web-factory.web.app](https://chicago-ai-web-factory.web.app)

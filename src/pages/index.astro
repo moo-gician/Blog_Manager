@@ -14,11 +14,7 @@ const allLogs = [
 			id: simpleId,
 			title: p.data.title,
 			description: p.data.description,
-			tags: p.data.tags,
 			pubDate: p.data.pubDate,
-			status: p.data.status,
-			category: p.data.category || 'Uncategorized',
-			projectId: projectId,
 			heroImage: p.data.heroImage || '/images/olivia-wedding-hero.png'
 		};
 	}),
@@ -26,168 +22,114 @@ const allLogs = [
 		id: p.id,
 		title: p.title,
 		description: p.description,
-		tags: p.tags,
 		pubDate: new Date(p.pubDate),
-		status: p.projectId === 'general' ? 'completed' : 'in-progress',
-		category: p.category || 'Uncategorized',
-		projectId: p.projectId,
 		heroImage: '/images/dalo-logo.svg'
 	}))
 ];
 const sortedLogs = allLogs.sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
 
-// Formatting helper
 function formatDate(date: string | number | Date) {
     return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 ---
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Archive - DALO Fictions</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
-    
-    <link rel="preload" as="style" href="https://substackcdn.com/bundle/theme/main.e4bf917b6f8868126b4b.css" />
-    <link rel="preload" as="style" href="https://substackcdn.com/bundle/theme/color_links.c9908948e2f4e05476e6.css" />
-    <link rel="stylesheet" href="https://substackcdn.com/bundle/theme/main.e4bf917b6f8868126b4b.css" />
-    <link rel="stylesheet" href="https://substackcdn.com/bundle/theme/color_links.c9908948e2f4e05476e6.css" />
-
-    <style>:root{--color_theme_bg_pop:#5272cc;--background_pop:#5272cc;--color_theme_bg_web:#fffdf7;--cover_bg_color:#fffdf7;--cover_bg_color_secondary:#f0eee8;--background_pop_darken:#3e62c6;--print_on_pop:#ffffff;--color_theme_bg_pop_darken:#3e62c6;--color_theme_print_on_pop:#ffffff;--color_theme_bg_pop_20:rgba(82, 114, 204, 0.2);--color_theme_bg_pop_30:rgba(82, 114, 204, 0.3);--print_pop:#5272cc;--color_theme_accent:#5272cc;--cover_print_primary:#363737;--cover_print_secondary:#757575;--cover_print_tertiary:#b6b6b6;--cover_border_color:#5272cc;--font_family_headings_preset:'SF Pro Display', -apple-system, system-ui, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';--font_weight_headings_preset:700;--font_preset_heading:sans;--home_hero:magaziney;--home_posts:grid;--home_show_top_posts:true;--web_bg_color:#fffdf7;--background_contrast_1:#f0eee8;--background_contrast_2:#dddbd6;--background_contrast_3:#b7b6b1;--background_contrast_4:#92918e;--background_contrast_5:#51504e;--color_theme_bg_contrast_1:#f0eee8;--color_theme_bg_contrast_2:#dddbd6;--color_theme_bg_contrast_3:#b7b6b1;--color_theme_bg_contrast_4:#92918e;--color_theme_bg_contrast_5:#51504e;--color_theme_bg_elevated:#fffdf7;--color_theme_bg_elevated_secondary:#f0eee8;--color_theme_bg_elevated_tertiary:#dddbd6;--color_theme_detail:#e6e4de;--background_contrast_pop:rgba(82, 114, 204, 0.4);--color_theme_bg_contrast_pop:rgba(82, 114, 204, 0.4);--theme_bg_is_dark:0;--print_on_web_bg_color:hsl(45.00000000000005, 25.68807339449542%, 29.078431372549023%);--print_secondary_on_web_bg_color:#868684;--background_pop_rgb:82, 114, 204;--color_theme_bg_pop_rgb:82, 114, 204;--color_theme_accent_rgb:82, 114, 204;}</style>
+    <title>DALO Fictions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Spectral:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fffdf7;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #363737;
+        }
+        .font-serif {
+            font-family: 'Spectral', Georgia, serif;
+        }
+    </style>
 </head>
-<body class="">
-    <div id="entry">
-        <div id="main" style="--post-preview-border-radius:var(--border-radius-xs);" class="main typography use-theme-bg">
-            <div class="pencraft pc-display-contents pc-reset pubTheme-yiXxQA">
-                <!-- Navigation -->
-                <div data-testid="navbar" class="main-menu">
-                    <div class="mainMenuContent-DME8DR">
-                        <div style="position:relative;height:88px;" class="pencraft pc-display-flex pc-gap-12 pc-paddingLeft-20 pc-paddingRight-20 pc-justifyContent-space-between pc-alignItems-center pc-reset topBar-pIF0J1">
-                            <div style="flex-basis:0px;flex-grow:1;" class="logoContainer-p12gJb">
-                                <a href="/" class="pencraft pc-display-contents pc-reset">
-                                    <div draggable="false" class="pencraft pc-display-flex pc-position-relative pc-reset">
-                                        <div style="width:40px;height:40px;" class="pencraft pc-display-flex pc-reset bg-white-ZBV5av pc-borderRadius-sm overflow-hidden-WdpwT6 sizing-border-box-DggLA4">
-                                            <img style="object-fit:cover;width:40px;height:40px;" src="/images/dalo-logo.svg" alt="DALO Logo" class="pencraft pc-reset"/>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div style="flex-grow:0;" class="titleContainer-DJYq5v">
-                                <h1 class="pencraft pc-reset font-pub-headings-FE5byy reset-IxiVJZ title-oOnUGd titleWithWordmark-GfqxEZ">
-                                    <a href="/" class="pencraft pc-display-contents pc-reset" style="text-decoration:none; color:inherit;">
-                                        DALO Fictions
-                                    </a>
-                                </h1>
-                            </div>
-                            <div style="flex-basis:0px;flex-grow:1;" class="pencraft pc-display-flex pc-justifyContent-flex-end pc-alignItems-center pc-reset buttonsContainerContainer-ThaN_w">
-                                <div class="buttonsContainer-SJBuep">
-                                    <div class="pencraft pc-display-flex pc-gap-8 pc-justifyContent-flex-end pc-alignItems-center pc-reset navbar-buttons">
-                                        <div class="pencraft pc-display-flex pc-gap-4 pc-reset">
-                                            <button aria-label="Search" class="pencraft pc-reset pencraft iconButton-mq_Et5 iconButtonBase-dJGHgN buttonBase-GK1x3M buttonStyle-r7yGCK size_md-gCDS3o priority_tertiary-rlke8z">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                                            </button>
-                                        </div>
-                                        <button class="pencraft pc-reset pencraft buttonBase-GK1x3M buttonText-X0uSmG buttonStyle-r7yGCK priority_primary-RfbeYt size_md-gCDS3o">Subscribe</button>
-                                        <button class="pencraft pc-reset pencraft buttonBase-GK1x3M buttonText-X0uSmG buttonStyle-r7yGCK priority_tertiary-rlke8z size_md-gCDS3o">Sign in</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="overflow-list-container sections-overflow">
-                            <div class="pencraft pc-display-flex pc-height-48 pc-paddingLeft-4 pc-paddingRight-4 pc-justifyContent-center pc-position-relative pc-reset border-top-detail-bzjFmN border-bottom-detail-k1F6C4 font-text-qe4AeH section-bar scroll">
-                                <div class="overflow-items">
-                                    <div class="menu-item"><a role="button" tabindex="0" href="/"><span class="overflow-item-text">Home</span></a></div>
-                                    <div class="menu-item selected"><a role="button" tabindex="0" href="/archive"><span class="overflow-item-text">Archive</span></a></div>
-                                    <div class="menu-item"><a role="button" tabindex="0" href="/about"><span class="overflow-item-text">About</span></a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="height:138px;"></div>
-                    </div>
-                </div>
-
-                <!-- Archive Feed -->
-                <div class="pencraft pc-display-contents pc-reset pubTheme-yiXxQA">
-                    <div class="archive-page typography container-b1BW1a use-theme-bg">
-                        <div class="container">
-                            <div class="portable-archive">
-                                
-                                <!-- Sort Tabs -->
-                                <div aria-label="Archive sort tabs" role="navigation" class="pencraft pc-display-flex pc-gap-12 pc-paddingLeft-8 pc-paddingRight-8 pc-paddingBottom-16 pc-justifyContent-space-between pc-alignItems-center pc-reset">
-                                    <div class="pencraft pc-display-flex pc-flexDirection-column pc-position-relative pc-minWidth-0 pc-reset bg-primary-zk6FDl outline-detail-vcQLyr pc-borderRadius-sm overflow-hidden-WdpwT6">
-                                        <div dir="ltr" data-orientation="horizontal" class="pencraft pc-display-flex pc-flexDirection-column pc-reset flex-grow-rzmknG">
-                                            <div style="outline:none;" tabindex="-1" aria-label="Tabs" role="tablist" aria-orientation="horizontal" data-orientation="horizontal" class="pencraft pc-display-flex pc-gap-4 pc-padding-4 pc-position-relative pc-reset cursor-default-flE2S1 pc-borderRadius-sm overflow-auto-7WTsTi scrollBar-hidden-HcAIpI">
-                                                <button tabindex="-1" type="button" role="tab" aria-selected="false" class="pencraft pc-reset flex-auto-j3S2WA pencraft segment-j4TeZ4 buttonBase-GK1x3M buttonText-X0uSmG buttonStyle-r7yGCK priority_quaternary-kpMibu size_sm-G3LciD">Latest</button>
-                                                <button tabindex="-1" type="button" role="tab" aria-selected="false" class="pencraft pc-reset flex-auto-j3S2WA pencraft segment-j4TeZ4 buttonBase-GK1x3M buttonText-X0uSmG buttonStyle-r7yGCK priority_quaternary-kpMibu size_sm-G3LciD">Top</button>
-                                                <button tabindex="-1" type="button" role="tab" aria-selected="true" class="pencraft pc-reset flex-auto-j3S2WA pencraft segment-j4TeZ4 buttonBase-GK1x3M buttonText-X0uSmG buttonStyle-r7yGCK priority_quaternary-kpMibu size_sm-G3LciD">Discussions</button>
-                                                <div class="pencraft pc-position-absolute pc-height-32 pc-reset bg-secondary-UUD3_J pc-borderRadius-xs sizing-border-box-DggLA4 highlight-U002IP"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button aria-label="Search" class="pencraft pc-reset pencraft iconButton-mq_Et5 iconButtonBase-dJGHgN buttonBase-GK1x3M buttonStyle-r7yGCK size_md-gCDS3o priority_tertiary-rlke8z">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                                    </button>
-                                </div>
-
-                                <!-- List of Posts -->
-                                <div class="portable-archive-list">
-                                    <div>
-                                        <div class="container-O1YsI6 two-column-list-BLHtzo two-column-list--with-dividers-cHfR0M">
-                                            
-                                            {sortedLogs.map((post, idx) => (
-                                                <>
-                                                    <div tabindex="0" role="article" class="pencraft pc-display-flex pc-flexDirection-column pc-padding-8 pc-position-relative pc-reset pc-borderRadius-sm container-H2dyKk" onclick={`window.location.href='/blog/${post.id}'`} style="cursor: pointer;">
-                                                        <div class="container-Qnseki">
-                                                            <div class="pencraft pc-display-flex pc-flexDirection-column pc-gap-4 pc-position-relative pc-reset flex-grow-rzmknG">
-                                                                <div class="pencraft pc-display-flex pc-flexDirection-column pc-reset">
-                                                                    <a style="font-size:calc(19px * var(--font_size_headings_multiplier, 1));line-height:calc(1em * var(--font_size_headings_line_height_ratio, 1.368421052631579));" href={`/blog/${post.id}`} class="pencraft pc-reset color-pub-primary-text-NyXPlw font-pub-headings-FE5byy clamp-y7pNm8 clamp-3-lxFDfR reset-IxiVJZ">{post.title}</a>
-                                                                </div>
-                                                                <div class="pencraft pc-display-flex pc-flexDirection-column pc-reset">
-                                                                    <a href={`/blog/${post.id}`} class="pencraft pc-reset color-primary-zABazT line-height-20-t4M0El font-text-qe4AeH size-15-Psle70 clamp-y7pNm8 clamp-2-kM02pu reset-IxiVJZ">{post.description}</a>
-                                                                </div>
-                                                                <div class="pencraft pc-display-inline pc-reset color-pub-secondary-text-hGQ02T line-height-20-t4M0El font-meta-MWBumP size-11-NuY2Zx weight-medium-fw81nC transform-uppercase-yKDgcq reset-IxiVJZ meta-EgzBVA">
-                                                                    <time class="date-rtYe1v">{formatDate(post.pubDate)}</time>
-                                                                    <span class="dividerChar-SbAJEi">•</span>
-                                                                    <span class="pencraft pc-reset reset-IxiVJZ"><span class="link-HFGLqU">Operator</span></span>
-                                                                </div>
-                                                                <div class="pencraft pc-display-flex pc-flexDirection-column pc-reset actions-YFg47u">
-                                                                    <div class="post-ufi style-compressed justified themed">
-                                                                        <div class="like-button-container post-ufi-button style-compressed">
-                                                                            <button class="pencraft pc-reset pencraft post-ufi-button style-compressed has-label with-border">
-                                                                                <svg role="img" style="height:14px;width:14px;" width="14" height="14" viewBox="0 0 24 24" fill="#000000" stroke-width="2" stroke="#000" xmlns="http://www.w3.org/2000/svg" class="icon"><g><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg></g></svg>
-                                                                                <div class="label">{Math.floor(Math.random() * 500) + 10}</div>
-                                                                            </button>
-                                                                        </div>
-                                                                        <button class="pencraft pc-reset pencraft post-ufi-button style-compressed post-ufi-comment-button has-label with-border">
-                                                                            <svg role="img" style="height:14px;width:14px;" width="14" height="14" viewBox="0 0 24 24" fill="#000000" stroke-width="2" stroke="#000" xmlns="http://www.w3.org/2000/svg" class="icon"><g><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg></g></svg>
-                                                                            <div class="label">{Math.floor(Math.random() * 50) + 2}</div>
-                                                                        </button>
-                                                                        <button class="pencraft pc-reset pencraft post-ufi-button style-compressed no-label with-border">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-share icon"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" x2="12" y1="2" y2="15"></line></svg>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div style="aspect-ratio:1.5;" class="image-tkPTAj container-XxSyR3">
-                                                                <img src={post.heroImage} alt={post.title} width="320" height="213" loading="lazy" style="aspect-ratio:1.5; object-fit: cover;" class="img-OACg1c image-nBNbRY pencraft pc-reset"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    {idx < sortedLogs.length - 1 && (
-                                                        <div class="pencraft pc-display-flex pc-reset border-bottom-detail-themed-Ua9186 divider-QOeHtM"></div>
-                                                    )}
-                                                </>
-                                            ))}
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<body class="min-h-screen text-[#363737]">
+    
+    <!-- Top Bar -->
+    <header class="flex items-center justify-between px-5 h-[88px] max-w-[1100px] mx-auto">
+        <div class="flex items-center gap-4 flex-1">
+            <a href="/" class="block w-10 h-10 rounded shadow-sm overflow-hidden border border-[#e6e4de] bg-white">
+                <img src="/images/dalo-logo.svg" alt="DALO Logo" class="w-full h-full object-cover"/>
+            </a>
         </div>
-    </div>
+        <div class="flex-1 flex justify-center">
+            <a href="/" class="font-serif text-[28px] sm:text-[32px] font-bold tracking-[0.15em] uppercase text-[#111111] hover:text-[#5272cc] transition-colors whitespace-nowrap">
+                DALO Fictions
+            </a>
+        </div>
+        <div class="flex items-center gap-4 flex-1 justify-end">
+            <button class="text-[#363737] hover:text-black hidden sm:block">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            </button>
+            <button class="text-[#363737] hover:text-black hidden sm:block">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" x2="12" y1="2" y2="15"></line></svg>
+            </button>
+            <button class="bg-[#5272cc] hover:bg-[#3e62c6] text-white font-semibold text-[15px] px-[14px] py-1.5 rounded-[4px] transition-colors">
+                Subscribe
+            </button>
+            <button class="text-[#363737] hover:text-black font-medium text-[15px] px-1 hidden sm:block">
+                Sign in
+            </button>
+        </div>
+    </header>
+
+    <!-- Nav Bar -->
+    <nav class="border-b border-[#e6e4de] h-12 flex justify-center">
+        <div class="flex h-full gap-8">
+            <a href="/" class="flex items-center h-full text-[13px] font-semibold text-[#757575] hover:text-black transition-colors">Home</a>
+            <a href="/archive" class="flex items-center h-full text-[13px] font-semibold text-black border-b-2 border-black relative top-[1px]">Archive</a>
+            <a href="/about" class="flex items-center h-full text-[13px] font-semibold text-[#757575] hover:text-black transition-colors">About</a>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="max-w-[728px] mx-auto px-4 pt-10 pb-24">
+        
+        <!-- Filters -->
+        <div class="flex justify-between items-center mb-8 border border-[#e6e4de] rounded bg-[#f0eee8] w-fit p-[3px]">
+            <button class="text-[13px] font-medium px-4 py-1 text-[#757575] hover:text-black rounded">Latest</button>
+            <button class="text-[13px] font-medium px-4 py-1 text-[#757575] hover:text-black rounded">Top</button>
+            <button class="text-[13px] font-medium px-4 py-1 bg-white shadow-sm rounded text-black">Discussions</button>
+        </div>
+
+        <!-- Posts List -->
+        <div class="flex flex-col">
+            {sortedLogs.map((post, idx) => (
+                <article class="flex justify-between gap-6 py-6 border-b border-[#e6e4de] group cursor-pointer" onclick={`window.location.href='/blog/${post.id}'`}>
+                    
+                    <div class="flex-1 flex flex-col">
+                        <h2 class="text-[20px] font-bold leading-snug mb-1 text-[#111111] group-hover:text-[#5272cc] transition-colors font-serif">
+                            {post.title}
+                        </h2>
+                        <p class="text-[15px] text-[#757575] mb-2 leading-snug line-clamp-2">
+                            {post.description}
+                        </p>
+                        <div class="text-[11px] font-medium text-[#92918e] uppercase tracking-wide mt-2">
+                            {formatDate(post.pubDate)} <span class="mx-1">•</span> Operator
+                        </div>
+                    </div>
+
+                    <div class="w-[200px] h-[133px] sm:w-[240px] sm:h-[160px] rounded overflow-hidden shrink-0 border border-[#e6e4de] bg-white">
+                        <img src={post.heroImage} alt={post.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    </div>
+                </article>
+            ))}
+        </div>
+
+    </main>
+
+    <footer class="mt-20 py-10 bg-[#f0eee8] border-t border-[#e6e4de] flex flex-col items-center justify-center gap-4 text-[13px] text-[#757575]">
+        <div>© 2026 DALO Fictions · Privacy · Terms</div>
+    </footer>
 </body>
 </html>
